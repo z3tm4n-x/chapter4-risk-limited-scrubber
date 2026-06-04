@@ -1,0 +1,5 @@
+rtl/ecc/secded_32_39_encoder.sv:36: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+rtl/ecc/secded_32_39_decoder.sv:46: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+SCRUB_PASS_ENGINE_SUMMARY depth=8 pass_count=1 reads=8 writes=1 corrected=1 detected_due=1 wait_cycles=26 failures=0
+SCRUB_PASS_ENGINE_PASS
+tb/tb_scrub_pass_engine.sv:173: $finish called at 325000 (1ps)
