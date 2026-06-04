@@ -1,4 +1,4 @@
-.PHONY: help check-env test schedule-demo feasibility-demo secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis clean
+.PHONY: help check-env test schedule-demo feasibility-demo secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
 
 help:
 	@echo "Targets:"
@@ -13,6 +13,7 @@ help:
 	@echo "  dangerous-audit-rtl - run dangerous-state audit RTL test"
 	@echo "  rtl                 - run all RTL tests"
 	@echo "  synthesis           - run Yosys resource estimates"
+	@echo "  evidence            - regenerate all Chapter 4 evidence artifacts"
 	@echo "  clean               - remove generated simulation outputs"
 
 check-env:
@@ -51,6 +52,9 @@ rtl: secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl
 
 synthesis:
 	python3 scripts/run_synthesis.py
+
+evidence: test schedule-demo feasibility-demo rtl synthesis
+	python3 scripts/build_chapter4_evidence_pack.py
 
 clean:
 	rm -f *.vcd *.fst *.out *.vvp
