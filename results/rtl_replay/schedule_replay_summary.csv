@@ -1,0 +1,3 @@
+strategy,mission_cycles,period_updates,expected_passes,observed_pass_starts,completed_passes,pass_start_delta_vs_expected,reads,writes,safe_mode_cycles,selected_mismatches,failures,log_path
+fixed,216000,6,2160,2160,2160,0,17280,0,0,0,0,results/rtl_replay/schedule_replay_fixed.log
+adaptive,216000,6,1098,1098,1098,0,8784,0,0,0,0,results/rtl_replay/schedule_replay_adaptive.log

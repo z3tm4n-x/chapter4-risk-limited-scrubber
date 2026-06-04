@@ -1,4 +1,4 @@
-.PHONY: help check-env test schedule-demo feasibility-demo secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
+.PHONY: help check-env test schedule-demo feasibility-demo schedule-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
 
 help:
 	@echo "Targets:"
@@ -6,6 +6,7 @@ help:
 	@echo "  test                - run Python unit tests"
 	@echo "  schedule-demo       - generate schedule evidence pack"
 	@echo "  feasibility-demo    - generate protection-envelope evidence pack"
+	@echo "  schedule-replay-rtl - replay model schedules on RTL controller"
 	@echo "  secded-rtl          - run SEC-DED RTL exhaustive test"
 	@echo "  scheduler-rtl       - run period scheduler RTL test"
 	@echo "  pass-engine-rtl     - run scrub pass engine RTL test"
@@ -32,6 +33,10 @@ schedule-demo:
 
 feasibility-demo:
 	python3 scripts/run_feasibility_demo.py
+
+
+schedule-replay-rtl:
+	python3 scripts/run_schedule_replay_rtl.py
 
 secded-rtl:
 	python3 scripts/run_secded_rtl.py

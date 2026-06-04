@@ -202,8 +202,8 @@ def main() -> int:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
     geometry = MemoryGeometry(word_bits=39, codeword_count=4096)
+    # Eight entries match the 3-bit RTL period_index table.
     period_set_seconds = (
-        1.0,
         2.0,
         5.0,
         10.0,

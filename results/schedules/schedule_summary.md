@@ -20,7 +20,7 @@ geometry.
 
 ## Allowed period set
 
-`[1.0, 2.0, 5.0, 10.0, 30.0, 60.0, 120.0, 300.0, 600.0]` seconds.
+`[2.0, 5.0, 10.0, 30.0, 60.0, 120.0, 300.0, 600.0]` seconds.
 
 The adaptive schedule uses conservative floor-down rounding:
 
