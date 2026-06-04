@@ -1,0 +1,6 @@
+rtl/ecc/secded_32_39_encoder.sv:36: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+rtl/ecc/secded_32_39_decoder.sv:46: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+rtl/ecc/secded_32_39_decoder.sv:46: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+FAULT_REPLAY_SUMMARY strategy=adaptive mission_cycles=216000 schedule_updates=6 faults_injected=9 expected_passes=1098 observed_pass_starts=1098 completed_passes=1098 reads=8784 writes=5 corrected_events=5 detected_due_events=1096 final_uncorrectable_words=1 final_sdc_words=1 final_dangerous_words=2 safe_mode_cycles=0 selected_mismatches=0 failures=0
+FAULT_REPLAY_PASS strategy=adaptive
+/home/z3tm4n/diss-work/chapter4-risk-limited-scrubber/generated/rtl/fault_replay/tb_fault_replay_adaptive.sv:301: $finish called at 2160063000 (1ps)

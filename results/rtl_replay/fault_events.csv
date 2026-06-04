@@ -1,0 +1,10 @@
+event_id,cycle,physical_event_id,event_type,addr,bit_index,bit_mask_hex,multiplicity,interleave_depth
+0,1000,1,single_accumulation,1,7,0000000080,1,1
+1,5000,2,mbu_split_interleaved,2,2,0000000004,3,3
+2,5000,2,mbu_split_interleaved,3,3,0000000008,3,3
+3,5000,2,mbu_split_interleaved,4,4,0000000010,3,3
+4,7000,3,mbu_same_word_due,5,3,0000000008,2,1
+5,7000,3,mbu_same_word_due,5,10,0000000400,2,1
+6,9000,4,triple_same_word_sdc,6,4,0000000010,3,1
+7,9000,4,triple_same_word_sdc,6,5,0000000020,3,1
+8,9000,4,triple_same_word_sdc,6,6,0000000040,3,1
