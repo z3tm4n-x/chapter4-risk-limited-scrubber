@@ -17,3 +17,6 @@ results/logs/
 .vscode/
 .idea/
 .DS_Store
+
+# synthesis logs are reproducible and can be large
+results/synthesis/logs/

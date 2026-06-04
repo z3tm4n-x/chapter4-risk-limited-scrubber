@@ -1,4 +1,4 @@
-.PHONY: help check-env test schedule-demo feasibility-demo secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl clean
+.PHONY: help check-env test schedule-demo feasibility-demo secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis clean
 
 help:
 	@echo "Targets:"
@@ -12,6 +12,7 @@ help:
 	@echo "  controller-rtl      - run integrated adaptive controller RTL test"
 	@echo "  dangerous-audit-rtl - run dangerous-state audit RTL test"
 	@echo "  rtl                 - run all RTL tests"
+	@echo "  synthesis           - run Yosys resource estimates"
 	@echo "  clean               - remove generated simulation outputs"
 
 check-env:
@@ -47,6 +48,9 @@ dangerous-audit-rtl:
 	python3 scripts/run_dangerous_audit_rtl.py
 
 rtl: secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl
+
+synthesis:
+	python3 scripts/run_synthesis.py
 
 clean:
 	rm -f *.vcd *.fst *.out *.vvp
