@@ -1,0 +1,58 @@
+{
+  "cases": [
+    {
+      "E_acc_at_tau_min": "8.93047891737e-05",
+      "E_inst": "0",
+      "E_residual": "0.00100050033358",
+      "case_name": "scrub_period_selectable_D3",
+      "description": "Sufficient interleaving suppresses instant MBU mapping.",
+      "event_count": "1000",
+      "g_D": "0",
+      "instant_utilization": "0",
+      "residual_utilization_at_tau_min": "0.0892601293333",
+      "risk_slack_after_tau_min": "0.00091119554441",
+      "status": "scrub_period_selectable",
+      "target_e": "0.00100050033358",
+      "tau_min_seconds": "1"
+    },
+    {
+      "E_acc_at_tau_min": "8.93047891737e-05",
+      "E_inst": "0.009",
+      "E_residual": "-0.00799949966642",
+      "case_name": "architecture_change_required_D1",
+      "description": "Instant MBU mapping alone exceeds the risk target.",
+      "event_count": "1",
+      "g_D": "0.009",
+      "instant_utilization": "8.99549924962",
+      "residual_utilization_at_tau_min": "inf",
+      "risk_slack_after_tau_min": "-0.00808880445559",
+      "status": "architecture_change_required",
+      "target_e": "0.00100050033358",
+      "tau_min_seconds": "1"
+    },
+    {
+      "E_acc_at_tau_min": "0.00396466689616",
+      "E_inst": "0.0001",
+      "E_residual": "0.000900500333584",
+      "case_name": "bandwidth_or_tau_min_insufficient",
+      "description": "Residual budget is positive but tau_min cannot meet accumulated risk.",
+      "event_count": "1000",
+      "g_D": "1e-07",
+      "instant_utilization": "0.0999499916625",
+      "residual_utilization_at_tau_min": "4.40273784284",
+      "risk_slack_after_tau_min": "-0.00306416656258",
+      "status": "bandwidth_or_tau_min_insufficient",
+      "target_e": "0.00100050033358",
+      "tau_min_seconds": "1"
+    }
+  ],
+  "geometry": {
+    "alpha": 0.0001189410490600527,
+    "codeword_count": 4096,
+    "physical_bits": 159744,
+    "word_bits": 39
+  },
+  "risk_kernel": "exact",
+  "target_e": 0.0010005003335835344,
+  "target_probability": 0.001
+}

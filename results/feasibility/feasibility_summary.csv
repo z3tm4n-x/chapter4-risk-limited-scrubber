@@ -1,0 +1,4 @@
+case_name,description,status,target_e,event_count,g_D,E_inst,E_residual,E_acc_at_tau_min,tau_min_seconds,risk_slack_after_tau_min,instant_utilization,residual_utilization_at_tau_min
+scrub_period_selectable_D3,Sufficient interleaving suppresses instant MBU mapping.,scrub_period_selectable,0.00100050033358,1000,0,0,0.00100050033358,8.93047891737e-05,1,0.00091119554441,0,0.0892601293333
+architecture_change_required_D1,Instant MBU mapping alone exceeds the risk target.,architecture_change_required,0.00100050033358,1,0.009,0.009,-0.00799949966642,8.93047891737e-05,1,-0.00808880445559,8.99549924962,inf
+bandwidth_or_tau_min_insufficient,Residual budget is positive but tau_min cannot meet accumulated risk.,bandwidth_or_tau_min_insufficient,0.00100050033358,1000,1e-07,0.0001,0.000900500333584,0.00396466689616,1,-0.00306416656258,0.0999499916625,4.40273784284

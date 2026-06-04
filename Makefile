@@ -1,11 +1,12 @@
-.PHONY: help check-env test schedule-demo clean
+.PHONY: help check-env test schedule-demo feasibility-demo clean
 
 help:
 	@echo "Targets:"
-	@echo "  check-env  - show tool versions"
-	@echo "  test       - run Python unit tests"
-	@echo "  schedule-demo - generate schedule evidence pack"
-	@echo "  clean      - remove generated simulation outputs"
+	@echo "  check-env        - show tool versions"
+	@echo "  test             - run Python unit tests"
+	@echo "  schedule-demo    - generate schedule evidence pack"
+	@echo "  feasibility-demo - generate protection-envelope evidence pack"
+	@echo "  clean            - remove generated simulation outputs"
 
 check-env:
 	@echo "Python:" && python3 --version
@@ -20,6 +21,9 @@ test:
 
 schedule-demo:
 	python3 scripts/run_schedule_demo.py
+
+feasibility-demo:
+	python3 scripts/run_feasibility_demo.py
 
 clean:
 	rm -f *.vcd *.fst *.out *.vvp
