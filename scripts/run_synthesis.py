@@ -45,7 +45,7 @@ TARGETS = {
 
 def run_yosys(script: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        ["yosys", "-q", "-p", script],
+        ["yosys", "-p", script],
         cwd=REPO_ROOT,
         check=False,
         text=True,
@@ -158,17 +158,27 @@ def synthesize_target(top: str, sources: list[str], flow: str) -> dict[str, str]
     block = extract_module_stat_block(proc.stdout, top)
     cell_counts = parse_cell_counts(block)
 
+    wires = parse_int_metric(block, "Number of wires")
+    wire_bits = parse_int_metric(block, "Number of wire bits")
+    cells = parse_int_metric(block, "Number of cells")
+
+    if wires == 0 and wire_bits == 0 and cells == 0:
+        raise RuntimeError(
+            f"failed to parse non-zero Yosys statistics for {flow}/{top}. "
+            f"Check {log_path}"
+        )
+
     return {
         "flow": flow,
         "top": top,
-        "wires": str(parse_int_metric(block, "Number of wires")),
-        "wire_bits": str(parse_int_metric(block, "Number of wire bits")),
+        "wires": str(wires),
+        "wire_bits": str(wire_bits),
         "public_wires": str(parse_int_metric(block, "Number of public wires")),
         "public_wire_bits": str(parse_int_metric(block, "Number of public wire bits")),
         "memories": str(parse_int_metric(block, "Number of memories")),
         "memory_bits": str(parse_int_metric(block, "Number of memory bits")),
         "processes": str(parse_int_metric(block, "Number of processes")),
-        "cells": str(parse_int_metric(block, "Number of cells")),
+        "cells": str(cells),
         "ff_estimate": str(estimate_ff_count(cell_counts)),
         "lut_estimate": str(estimate_lut_count(cell_counts)),
         "mux_estimate": str(estimate_mux_count(cell_counts)),
