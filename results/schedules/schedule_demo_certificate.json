@@ -1,0 +1,76 @@
+{
+  "adaptive": {
+    "gain_fixed_over_strategy": "1.96721311475",
+    "max_tau_seconds": "600",
+    "mean_tau_seconds": "305",
+    "min_tau_seconds": "10",
+    "p_mission": "0.000951062369769",
+    "pass_count": "1098",
+    "risk_e": "0.000951514916541",
+    "risk_utilization": "0.95103907975",
+    "saturated_at_tau_max": "true",
+    "saturated_at_tau_min": "false",
+    "strategy": "adaptive_current_exact_floor_down",
+    "target_e": "0.00100050033358"
+  },
+  "dt_hours": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "fixed": {
+    "gain_fixed_over_strategy": "1",
+    "max_tau_seconds": "10",
+    "mean_tau_seconds": "10",
+    "min_tau_seconds": "10",
+    "p_mission": "0.000892638556677",
+    "pass_count": "2160",
+    "risk_e": "0.000893037195719",
+    "risk_utilization": "0.892590602664",
+    "saturated_at_tau_max": "false",
+    "saturated_at_tau_min": "false",
+    "strategy": "fixed_allowed_10s",
+    "target_e": "0.00100050033358"
+  },
+  "gain_fixed_over_adaptive": 1.9672131147540983,
+  "geometry": {
+    "alpha": 0.0001189410490600527,
+    "codeword_count": 4096,
+    "physical_bits": 159744,
+    "word_bits": 39
+  },
+  "nu_hat_values_per_hour": [
+    1.0,
+    30.0,
+    1.0,
+    30.0,
+    1.0,
+    30.0
+  ],
+  "nu_values_per_hour": [
+    1.0,
+    30.0,
+    1.0,
+    30.0,
+    1.0,
+    30.0
+  ],
+  "period_set_seconds": [
+    1.0,
+    2.0,
+    5.0,
+    10.0,
+    30.0,
+    60.0,
+    120.0,
+    300.0,
+    600.0
+  ],
+  "risk_kernel": "exact",
+  "rounding_rule": "floor_down_to_period_set",
+  "target_e": 0.0010005003335835344,
+  "target_probability": 0.001
+}

@@ -1,0 +1,3 @@
+strategy,target_e,risk_e,risk_utilization,p_mission,pass_count,gain_fixed_over_strategy,mean_tau_seconds,min_tau_seconds,max_tau_seconds,saturated_at_tau_min,saturated_at_tau_max
+fixed_allowed_10s,0.00100050033358,0.000893037195719,0.892590602664,0.000892638556677,2160,1,10,10,10,false,false
+adaptive_current_exact_floor_down,0.00100050033358,0.000951514916541,0.95103907975,0.000951062369769,1098,1.96721311475,305,10,600,false,true
