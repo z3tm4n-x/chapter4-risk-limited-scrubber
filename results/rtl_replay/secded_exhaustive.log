@@ -1,0 +1,5 @@
+rtl/ecc/secded_32_39_encoder.sv:36: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+rtl/ecc/secded_32_39_decoder.sv:46: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+SECDED_EXHAUSTIVE_SUMMARY no_error=8 single=312 double=5928 triple_samples=24 triple_detected_due=8 triple_sdc=16 failures=0
+SECDED_EXHAUSTIVE_PASS
+tb/tb_secded_exhaustive.sv:165: $finish called at 6280000 (1ps)
