@@ -1,4 +1,4 @@
-.PHONY: help check-env test schedule-demo feasibility-demo secded-rtl clean
+.PHONY: help check-env test schedule-demo feasibility-demo secded-rtl scheduler-rtl rtl clean
 
 help:
 	@echo "Targets:"
@@ -7,6 +7,8 @@ help:
 	@echo "  schedule-demo    - generate schedule evidence pack"
 	@echo "  feasibility-demo - generate protection-envelope evidence pack"
 	@echo "  secded-rtl       - run SEC-DED RTL exhaustive test"
+	@echo "  scheduler-rtl    - run period scheduler RTL test"
+	@echo "  rtl              - run all RTL tests"
 	@echo "  clean            - remove generated simulation outputs"
 
 check-env:
@@ -28,6 +30,11 @@ feasibility-demo:
 
 secded-rtl:
 	python3 scripts/run_secded_rtl.py
+
+scheduler-rtl:
+	python3 scripts/run_period_scheduler_rtl.py
+
+rtl: secded-rtl scheduler-rtl
 
 clean:
 	rm -f *.vcd *.fst *.out *.vvp

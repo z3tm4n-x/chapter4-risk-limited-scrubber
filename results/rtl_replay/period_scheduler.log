@@ -1,0 +1,3 @@
+PERIOD_SCHEDULER_SUMMARY measured_interval=50 last_pass_cycles=10 safe_entries=2 failures=0
+PERIOD_SCHEDULER_PASS
+tb/tb_period_scheduler.sv:182: $finish called at 3195000 (1ps)
