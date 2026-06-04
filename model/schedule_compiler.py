@@ -194,9 +194,18 @@ def stats_for_tau_seconds(
     tau_seconds: list[float],
     dt_hours: list[float],
     geometry: MemoryGeometry,
+    period_set_seconds: Iterable[float] | None = None,
 ) -> ScheduleStats:
     """Compute exact accumulated risk and pass count for a tau schedule."""
     tau_hours = [value / 3600.0 for value in tau_seconds]
+
+    if period_set_seconds is None:
+        tau_min_seconds = min(tau_seconds)
+        tau_max_seconds = max(tau_seconds)
+    else:
+        periods = normalize_period_set(period_set_seconds)
+        tau_min_seconds = periods[0]
+        tau_max_seconds = periods[-1]
 
     risk_e = accumulated_risk_for_schedule(
         nu_values=nu_values,
@@ -218,8 +227,8 @@ def stats_for_tau_seconds(
         mean_tau_seconds=mean(tau_seconds),
         min_tau_seconds=min(tau_seconds),
         max_tau_seconds=max(tau_seconds),
-        saturated_at_tau_min=min(tau_seconds) == min(tau_seconds),
-        saturated_at_tau_max=max(tau_seconds) == max(tau_seconds),
+        saturated_at_tau_min=min(tau_seconds) == tau_min_seconds,
+        saturated_at_tau_max=max(tau_seconds) == tau_max_seconds,
     )
 
 
@@ -250,6 +259,7 @@ def compile_schedule_for_c(
         tau_seconds=tau_seconds,
         dt_hours=dt_hours,
         geometry=geometry,
+        period_set_seconds=periods,
     )
 
     return ScheduleResult(
@@ -289,6 +299,7 @@ def find_largest_c_under_exact_risk(
         tau_seconds=min_tau_seconds,
         dt_hours=dt_hours,
         geometry=geometry,
+        period_set_seconds=periods,
     )
 
     if min_stats.risk_e > target_e:
@@ -390,6 +401,7 @@ def compile_fixed_allowed_schedule(
             tau_seconds=tau_seconds,
             dt_hours=dt_hours,
             geometry=geometry,
+            period_set_seconds=periods,
         )
 
         if stats.risk_e <= target_e:

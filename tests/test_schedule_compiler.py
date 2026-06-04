@@ -36,6 +36,24 @@ class ScheduleCompilerTests(unittest.TestCase):
         self.assertEqual(tau, [1.0, 10.0])
         self.assertEqual(indices, [0, 3])
 
+    def test_saturation_flags(self):
+        geometry = MemoryGeometry(word_bits=39, codeword_count=4096)
+        nu_values = [1.0, 30.0, 1.0, 30.0]
+        dt_hours = [1.0 for _ in nu_values]
+        target_e = risk_from_mission_probability(0.001)
+        periods = (1.0, 2.0, 5.0, 10.0, 30.0, 60.0, 120.0, 300.0, 600.0)
+
+        result = compile_adaptive_current_schedule(
+            nu_values=nu_values,
+            dt_hours=dt_hours,
+            target_e=target_e,
+            period_set_seconds=periods,
+            geometry=geometry,
+        )
+
+        self.assertEqual(result.stats.saturated_at_tau_min, min(result.tau_seconds) == min(periods))
+        self.assertEqual(result.stats.saturated_at_tau_max, max(result.tau_seconds) == max(periods))
+
     def test_adaptive_schedule_respects_exact_target(self):
         geometry = MemoryGeometry(word_bits=39, codeword_count=4096)
         nu_values = [1.0, 30.0, 1.0, 30.0, 1.0, 30.0]
