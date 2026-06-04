@@ -1,0 +1,5 @@
+rtl/ecc/secded_32_39_encoder.sv:36: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+rtl/ecc/secded_32_39_decoder.sv:46: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+ADAPTIVE_CONTROLLER_SUMMARY passes=4 reads=25 writes=1 corrected=1 detected_due=3 safe_entries=2 last_pass_cycles=27 failures=0
+ADAPTIVE_CONTROLLER_PASS
+tb/tb_adaptive_scrub_controller.sv:222: $finish called at 1365000 (1ps)

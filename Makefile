@@ -1,4 +1,4 @@
-.PHONY: help check-env test schedule-demo feasibility-demo secded-rtl scheduler-rtl pass-engine-rtl rtl clean
+.PHONY: help check-env test schedule-demo feasibility-demo secded-rtl scheduler-rtl pass-engine-rtl controller-rtl rtl clean
 
 help:
 	@echo "Targets:"
@@ -9,6 +9,7 @@ help:
 	@echo "  secded-rtl       - run SEC-DED RTL exhaustive test"
 	@echo "  scheduler-rtl    - run period scheduler RTL test"
 	@echo "  pass-engine-rtl  - run scrub pass engine RTL test"
+	@echo "  controller-rtl   - run integrated adaptive controller RTL test"
 	@echo "  rtl              - run all RTL tests"
 	@echo "  clean            - remove generated simulation outputs"
 
@@ -38,7 +39,10 @@ scheduler-rtl:
 pass-engine-rtl:
 	python3 scripts/run_scrub_pass_engine_rtl.py
 
-rtl: secded-rtl scheduler-rtl pass-engine-rtl
+controller-rtl:
+	python3 scripts/run_adaptive_controller_rtl.py
+
+rtl: secded-rtl scheduler-rtl pass-engine-rtl controller-rtl
 
 clean:
 	rm -f *.vcd *.fst *.out *.vvp
