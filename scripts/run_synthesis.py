@@ -133,14 +133,14 @@ def synthesize_target(top: str, sources: list[str], flow: str) -> dict[str, str]
         script = (
             f"read_verilog -sv {source_cmd}; "
             f"hierarchy -check -top {top}; "
-            "proc; opt; fsm; opt; memory; opt; techmap; opt; "
-            "stat"
+            "proc; flatten; opt; fsm; opt; memory; opt; techmap; opt; "
+            f"stat -top {top}"
         )
     elif flow == "xilinx_xc7":
         script = (
             f"read_verilog -sv {source_cmd}; "
-            f"synth_xilinx -family xc7 -top {top}; "
-            "stat"
+            f"synth_xilinx -flatten -family xc7 -top {top}; "
+            f"stat -top {top}"
         )
     else:
         raise ValueError(f"unknown synthesis flow: {flow}")
@@ -216,7 +216,7 @@ def write_markdown(path: Path, rows: list[dict[str, str]]) -> None:
     lines = [
         "# RTL synthesis/resource summary",
         "",
-        "This report gives reproducible Yosys resource estimates for the Chapter 4 RTL.",
+        "This report gives reproducible flattened Yosys resource estimates for the Chapter 4 RTL.",
         "",
         "Important limitation: these are synthesis estimates only. They are not",
         "place-and-route timing closure and do not establish Fmax.",
@@ -239,7 +239,7 @@ def write_markdown(path: Path, rows: list[dict[str, str]]) -> None:
             "- `secded_32_39_encoder` and `secded_32_39_decoder` represent the ECC datapath.",
             "- `period_scheduler` is the hardware endpoint of the Chapter 3 period-index schedule.",
             "- `scrub_pass_engine` performs the full sequential memory pass and correction writeback.",
-            "- `adaptive_scrub_controller` is the integrated controller proposed for Chapter 4.",
+            "- `adaptive_scrub_controller` is the integrated flattened controller proposed for Chapter 4.",
             "- The Xilinx XC7 flow reports LUT/FF-style estimates but still does not replace",
             "  implementation, placement, routing, and timing analysis.",
             "",
