@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# simulation outputs
+*.vcd
+*.fst
+*.out
+*.vvp
+
+# generated artifacts are reproducible
+generated/
+results/logs/
+
+# editor/system
+.vscode/
+.idea/
+.DS_Store
