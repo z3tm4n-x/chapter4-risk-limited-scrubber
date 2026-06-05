@@ -1,0 +1,31 @@
+{
+  "name": "ch3_main_1pct",
+  "description": "Main Chapter 3 five-year GOES-derived upset-rate configuration.",
+  "target_mission_probability": 0.01,
+  "geometry": {
+    "word_bits": 39,
+    "codeword_count": 1935832
+  },
+  "period_set_seconds": [1, 2, 5, 10, 30, 60, 120, 300, 600, 1200, 1800, 3600],
+  "time_step_hours": 1.0,
+  "proton_scale": 1.0,
+  "gcl_ratio": 10.7,
+  "skl_ratio": 3.0,
+  "background_window_hours": 720,
+  "background_quantile": 0.30,
+  "missing_fill_method": "linear_interpolation",
+  "expected_checks": {
+    "hour_count": 43824,
+    "start_timestamp_utc": "2021-01-01T00:00:00Z",
+    "end_timestamp_utc": "2025-12-31T23:00:00Z",
+    "missing_proton_count": 148,
+    "mean_total_per_hour_reference": 7.07,
+    "cv2_total_reference": 6.24,
+    "eta_const_reference": 7.24
+  },
+  "tolerances": {
+    "mean_total_relative": 0.02,
+    "cv2_total_relative": 0.02,
+    "eta_const_relative": 0.02
+  }
+}

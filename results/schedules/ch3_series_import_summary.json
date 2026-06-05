@@ -1,0 +1,132 @@
+{
+  "config": {
+    "name": "ch3_main_1pct",
+    "description": "Main Chapter 3 five-year GOES-derived upset-rate configuration.",
+    "target_mission_probability": 0.01,
+    "geometry": {
+      "word_bits": 39,
+      "codeword_count": 1935832
+    },
+    "period_set_seconds": [
+      1,
+      2,
+      5,
+      10,
+      30,
+      60,
+      120,
+      300,
+      600,
+      1200,
+      1800,
+      3600
+    ],
+    "time_step_hours": 1.0,
+    "proton_scale": 1.0,
+    "gcl_ratio": 10.7,
+    "skl_ratio": 3.0,
+    "background_window_hours": 720,
+    "background_quantile": 0.3,
+    "missing_fill_method": "linear_interpolation",
+    "expected_checks": {
+      "hour_count": 43824,
+      "start_timestamp_utc": "2021-01-01T00:00:00Z",
+      "end_timestamp_utc": "2025-12-31T23:00:00Z",
+      "missing_proton_count": 148,
+      "mean_total_per_hour_reference": 7.07,
+      "cv2_total_reference": 6.24,
+      "eta_const_reference": 7.24
+    },
+    "tolerances": {
+      "mean_total_relative": 0.02,
+      "cv2_total_relative": 0.02,
+      "eta_const_relative": 0.02
+    }
+  },
+  "metrics": {
+    "input_xlsx_sha256": "06e042e70dd305e83ba78bfe291551ee32644bd3fd04d15c2e3d6fadbe2145dd",
+    "hour_count": 43824,
+    "valid_proton_count": 43676,
+    "missing_proton_count": 148,
+    "missing_interval_count": 8,
+    "start_timestamp_utc": "2021-01-01T00:00:00Z",
+    "end_timestamp_utc": "2025-12-31T23:00:00Z",
+    "proton_filled_sum": 36885.4393474513,
+    "proton_filled_mean": 0.8416721282277131,
+    "proton_filled_median": 0.4879687815825,
+    "proton_filled_max": 298.004011907,
+    "proton_filled_cv2": 26.95739626699577,
+    "proton_filled_eta_const": 27.95739626699577,
+    "background_gp_mean": 0.4688361725377119,
+    "event_sp_mean": 0.39684601894954796,
+    "total_nu_sum": 309956.9539137044,
+    "total_nu_mean": 7.072767294489421,
+    "total_nu_median": 5.173076975091504,
+    "total_nu_max": 1193.9635495832429,
+    "total_nu_cv2": 6.242959917730734,
+    "total_nu_eta_const": 7.242959917730734,
+    "positive_log_growth_q99": 0.10206604705232708,
+    "positive_growth_factor_q99": 1.2649287018833355,
+    "max_growth_factor": 23.969221753575184,
+    "max_log_growth": 1.3796539333405042
+  },
+  "missing_intervals": [
+    {
+      "start_hour_index": "1648",
+      "end_hour_index": "1770",
+      "start_timestamp_utc": "2021-03-10T16:00:00Z",
+      "end_timestamp_utc": "2021-03-15T18:00:00Z",
+      "length_hours": "123"
+    },
+    {
+      "start_hour_index": "1958",
+      "end_hour_index": "1963",
+      "start_timestamp_utc": "2021-03-23T14:00:00Z",
+      "end_timestamp_utc": "2021-03-23T19:00:00Z",
+      "length_hours": "6"
+    },
+    {
+      "start_hour_index": "2853",
+      "end_hour_index": "2854",
+      "start_timestamp_utc": "2021-04-29T21:00:00Z",
+      "end_timestamp_utc": "2021-04-29T22:00:00Z",
+      "length_hours": "2"
+    },
+    {
+      "start_hour_index": "3883",
+      "end_hour_index": "3885",
+      "start_timestamp_utc": "2021-06-11T19:00:00Z",
+      "end_timestamp_utc": "2021-06-11T21:00:00Z",
+      "length_hours": "3"
+    },
+    {
+      "start_hour_index": "4309",
+      "end_hour_index": "4314",
+      "start_timestamp_utc": "2021-06-29T13:00:00Z",
+      "end_timestamp_utc": "2021-06-29T18:00:00Z",
+      "length_hours": "6"
+    },
+    {
+      "start_hour_index": "7851",
+      "end_hour_index": "7854",
+      "start_timestamp_utc": "2021-11-24T03:00:00Z",
+      "end_timestamp_utc": "2021-11-24T06:00:00Z",
+      "length_hours": "4"
+    },
+    {
+      "start_hour_index": "42938",
+      "end_hour_index": "42939",
+      "start_timestamp_utc": "2025-11-25T02:00:00Z",
+      "end_timestamp_utc": "2025-11-25T03:00:00Z",
+      "length_hours": "2"
+    },
+    {
+      "start_hour_index": "43628",
+      "end_hour_index": "43629",
+      "start_timestamp_utc": "2025-12-23T20:00:00Z",
+      "end_timestamp_utc": "2025-12-23T21:00:00Z",
+      "length_hours": "2"
+    }
+  ],
+  "output_csv": "data/ch3_five_year_upsets.csv"
+}

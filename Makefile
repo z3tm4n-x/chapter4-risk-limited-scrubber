@@ -1,4 +1,4 @@
-.PHONY: help check-env test schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
+.PHONY: help check-env test import-ch3-upsets schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
 
 help:
 	@echo "Targets:"
@@ -28,6 +28,9 @@ check-env:
 
 test:
 	python3 -m unittest discover -s tests -p 'test_*.py' -v
+
+import-ch3-upsets:
+	python3 scripts/import_ch3_upsets.py
 
 schedule-demo:
 	python3 scripts/run_schedule_demo.py
