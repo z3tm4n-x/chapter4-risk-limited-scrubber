@@ -1,4 +1,4 @@
-.PHONY: help check-env test import-ch3-upsets period-table schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
+.PHONY: help check-env test import-ch3-upsets period-table ch3-five-year-schedule schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
 
 help:
 	@echo "Targets:"
@@ -34,6 +34,9 @@ import-ch3-upsets:
 
 period-table:
 	python3 scripts/generate_ch3_period_table.py
+
+ch3-five-year-schedule: import-ch3-upsets period-table
+	python3 scripts/run_ch3_five_year_schedule.py
 
 schedule-demo:
 	python3 scripts/run_schedule_demo.py

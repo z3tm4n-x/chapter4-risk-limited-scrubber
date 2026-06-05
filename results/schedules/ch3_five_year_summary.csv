@@ -1,0 +1,4 @@
+strategy_key,strategy,target_p,target_e,risk_e,p_mission,risk_utilization,pass_count,gain_fixed_over_strategy,mean_tau_seconds,min_tau_seconds,max_tau_seconds,saturated_at_tau_min,saturated_at_tau_max,c_value,eta_shape
+fixed,fixed_allowed_5s,0.01,0.0100503358535,0.00555003238058,0.00553465940419,0.552223573568,31553280,1,5,5,5,false,false,,7.24295991773
+current,adaptive_current_exact_floor_down,0.01,0.0100503358535,0.0100502692452,0.00999993405782,0.999993372534,2547210,12.3873885545,87.4180129609,1,120,true,false,0.18166879408,1
+delayed_1h,adaptive_delayed_1h_exact_floor_down,0.01,0.0100503358535,0.0100502366413,0.00999990177991,0.999990128469,2649330,11.9099092978,85.3479600219,1,120,true,false,0.173482454693,1.04935369403
