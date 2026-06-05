@@ -22,6 +22,7 @@ from model.schedule_compiler import (
     compile_fixed_allowed_schedule,
     find_largest_c_under_exact_risk,
     normalize_period_set,
+    stats_for_tau_seconds,
 )
 
 
@@ -32,6 +33,7 @@ OUT_DIR = REPO_ROOT / "results" / "schedules"
 SUMMARY_CSV = OUT_DIR / "ch3_five_year_summary.csv"
 SUMMARY_MD = OUT_DIR / "ch3_five_year_summary.md"
 HISTOGRAM_CSV = OUT_DIR / "ch3_five_year_period_histogram.csv"
+FIXED_SWEEP_CSV = OUT_DIR / "ch3_five_year_fixed_candidate_sweep.csv"
 
 SCHEDULE_PATHS = {
     "fixed": OUT_DIR / "ch3_five_year_schedule_fixed.csv",
@@ -268,6 +270,54 @@ def write_histogram(results: dict[str, ScheduleResult], periods: tuple[float, ..
                     }
                 )
 
+def write_fixed_candidate_sweep(
+    periods: tuple[float, ...],
+    nu_values: list[float],
+    dt_hours: list[float],
+    geometry: MemoryGeometry,
+    target_e: float,
+    target_p: float,
+) -> None:
+    fieldnames = [
+        "period_index",
+        "tau_seconds",
+        "target_p",
+        "target_e",
+        "risk_e",
+        "p_mission",
+        "risk_utilization",
+        "pass_count",
+        "allowed",
+    ]
+
+    with FIXED_SWEEP_CSV.open("w", encoding="utf-8", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+
+        for index, period in enumerate(periods):
+            tau_seconds = [period for _ in nu_values]
+            stats = stats_for_tau_seconds(
+                nu_values=nu_values,
+                tau_seconds=tau_seconds,
+                dt_hours=dt_hours,
+                geometry=geometry,
+                period_set_seconds=periods,
+            )
+
+            writer.writerow(
+                {
+                    "period_index": index,
+                    "tau_seconds": f"{period:g}",
+                    "target_p": f"{target_p:.12g}",
+                    "target_e": f"{target_e:.12g}",
+                    "risk_e": f"{stats.risk_e:.12g}",
+                    "p_mission": f"{stats.p_mission:.12g}",
+                    "risk_utilization": f"{stats.risk_e / target_e:.12g}",
+                    "pass_count": f"{stats.pass_count:.12g}",
+                    "allowed": str(stats.risk_e <= target_e).lower(),
+                }
+            )
+
 
 def main() -> int:
     config = read_config()
@@ -354,14 +404,20 @@ def main() -> int:
 
     write_summary(summary_rows, series_metrics)
     write_histogram(results, periods)
+    write_fixed_candidate_sweep(periods, nu_values, dt_hours, geometry, target_e, target_p)
 
     print("Wrote", SUMMARY_CSV)
     print("Wrote", SUMMARY_MD)
     print("Wrote", HISTOGRAM_CSV)
+    print("Wrote", FIXED_SWEEP_CSV)
 
     print()
     print("=== five-year schedule summary ===")
     print(SUMMARY_CSV.read_text(encoding="utf-8"))
+
+    print()
+    print("=== fixed candidate sweep ===")
+    print(FIXED_SWEEP_CSV.read_text(encoding="utf-8"))
 
     return 0
 
