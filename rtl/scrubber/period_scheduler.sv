@@ -11,32 +11,39 @@
 `timescale 1ns/1ps
 
 module period_scheduler #(
-    parameter int PERIOD0_CYCLES = 10,
-    parameter int PERIOD1_CYCLES = 20,
-    parameter int PERIOD2_CYCLES = 50,
-    parameter int PERIOD3_CYCLES = 100,
-    parameter int PERIOD4_CYCLES = 200,
-    parameter int PERIOD5_CYCLES = 500,
-    parameter int PERIOD6_CYCLES = 1000,
-    parameter int PERIOD7_CYCLES = 2000,
+    parameter int PERIOD_INDEX_WIDTH = 4,
+
+    parameter int PERIOD0_CYCLES  = 10,
+    parameter int PERIOD1_CYCLES  = 20,
+    parameter int PERIOD2_CYCLES  = 50,
+    parameter int PERIOD3_CYCLES  = 100,
+    parameter int PERIOD4_CYCLES  = 200,
+    parameter int PERIOD5_CYCLES  = 500,
+    parameter int PERIOD6_CYCLES  = 1000,
+    parameter int PERIOD7_CYCLES  = 2000,
+    parameter int PERIOD8_CYCLES  = 2000,
+    parameter int PERIOD9_CYCLES  = 2000,
+    parameter int PERIOD10_CYCLES = 2000,
+    parameter int PERIOD11_CYCLES = 2000,
+
     parameter int SAFE_PERIOD_INDEX = 0,
     parameter int MAX_CONTROL_AGE_CYCLES = 200
 ) (
-    input  logic        clk,
-    input  logic        reset_n,
+    input  logic                            clk,
+    input  logic                            reset_n,
 
-    input  logic        period_update_valid,
-    input  logic [2:0]  period_index,
+    input  logic                            period_update_valid,
+    input  logic [PERIOD_INDEX_WIDTH-1:0]   period_index,
 
-    input  logic        pass_done,
+    input  logic                            pass_done,
 
-    output logic        pass_start,
-    output logic [2:0]  applied_period_index,
-    output logic [31:0] selected_period_cycles,
-    output logic        safe_mode_active,
-    output logic        stale_control_flag,
-    output logic [31:0] last_pass_cycles,
-    output logic [31:0] safe_mode_entry_count
+    output logic                            pass_start,
+    output logic [PERIOD_INDEX_WIDTH-1:0]   applied_period_index,
+    output logic [31:0]                     selected_period_cycles,
+    output logic                            safe_mode_active,
+    output logic                            stale_control_flag,
+    output logic [31:0]                     last_pass_cycles,
+    output logic [31:0]                     safe_mode_entry_count
 );
 
     typedef enum logic [0:0] {
@@ -46,24 +53,52 @@ module period_scheduler #(
 
     state_t state;
 
-    logic [2:0]  commanded_period_index;
-    logic [31:0] control_age_cycles;
-    logic [31:0] wait_counter;
-    logic [31:0] pass_cycle_counter;
-    logic        safe_mode_active_d;
+    logic [PERIOD_INDEX_WIDTH-1:0] commanded_period_index;
+    logic [31:0]                   control_age_cycles;
+    logic [31:0]                   wait_counter;
+    logic [31:0]                   pass_cycle_counter;
+    logic                          safe_mode_active_d;
 
-    function automatic logic [31:0] lookup_period_cycles(input logic [2:0] index);
+    function automatic logic [PERIOD_INDEX_WIDTH-1:0] clamp_period_index(
+        input logic [PERIOD_INDEX_WIDTH-1:0] index
+    );
         begin
             case (index)
-                3'd0: lookup_period_cycles = PERIOD0_CYCLES;
-                3'd1: lookup_period_cycles = PERIOD1_CYCLES;
-                3'd2: lookup_period_cycles = PERIOD2_CYCLES;
-                3'd3: lookup_period_cycles = PERIOD3_CYCLES;
-                3'd4: lookup_period_cycles = PERIOD4_CYCLES;
-                3'd5: lookup_period_cycles = PERIOD5_CYCLES;
-                3'd6: lookup_period_cycles = PERIOD6_CYCLES;
-                3'd7: lookup_period_cycles = PERIOD7_CYCLES;
-                default: lookup_period_cycles = PERIOD0_CYCLES;
+                PERIOD_INDEX_WIDTH'(0),
+                PERIOD_INDEX_WIDTH'(1),
+                PERIOD_INDEX_WIDTH'(2),
+                PERIOD_INDEX_WIDTH'(3),
+                PERIOD_INDEX_WIDTH'(4),
+                PERIOD_INDEX_WIDTH'(5),
+                PERIOD_INDEX_WIDTH'(6),
+                PERIOD_INDEX_WIDTH'(7),
+                PERIOD_INDEX_WIDTH'(8),
+                PERIOD_INDEX_WIDTH'(9),
+                PERIOD_INDEX_WIDTH'(10),
+                PERIOD_INDEX_WIDTH'(11): clamp_period_index = index;
+                default: clamp_period_index = PERIOD_INDEX_WIDTH'(SAFE_PERIOD_INDEX);
+            endcase
+        end
+    endfunction
+
+    function automatic logic [31:0] lookup_period_cycles(
+        input logic [PERIOD_INDEX_WIDTH-1:0] index
+    );
+        begin
+            case (clamp_period_index(index))
+                PERIOD_INDEX_WIDTH'(0):  lookup_period_cycles = PERIOD0_CYCLES;
+                PERIOD_INDEX_WIDTH'(1):  lookup_period_cycles = PERIOD1_CYCLES;
+                PERIOD_INDEX_WIDTH'(2):  lookup_period_cycles = PERIOD2_CYCLES;
+                PERIOD_INDEX_WIDTH'(3):  lookup_period_cycles = PERIOD3_CYCLES;
+                PERIOD_INDEX_WIDTH'(4):  lookup_period_cycles = PERIOD4_CYCLES;
+                PERIOD_INDEX_WIDTH'(5):  lookup_period_cycles = PERIOD5_CYCLES;
+                PERIOD_INDEX_WIDTH'(6):  lookup_period_cycles = PERIOD6_CYCLES;
+                PERIOD_INDEX_WIDTH'(7):  lookup_period_cycles = PERIOD7_CYCLES;
+                PERIOD_INDEX_WIDTH'(8):  lookup_period_cycles = PERIOD8_CYCLES;
+                PERIOD_INDEX_WIDTH'(9):  lookup_period_cycles = PERIOD9_CYCLES;
+                PERIOD_INDEX_WIDTH'(10): lookup_period_cycles = PERIOD10_CYCLES;
+                PERIOD_INDEX_WIDTH'(11): lookup_period_cycles = PERIOD11_CYCLES;
+                default:                 lookup_period_cycles = PERIOD0_CYCLES;
             endcase
         end
     endfunction
@@ -89,9 +124,9 @@ module period_scheduler #(
         safe_mode_active = stale_control_flag;
 
         if (safe_mode_active) begin
-            applied_period_index = SAFE_PERIOD_INDEX[2:0];
+            applied_period_index = clamp_period_index(PERIOD_INDEX_WIDTH'(SAFE_PERIOD_INDEX));
         end else begin
-            applied_period_index = commanded_period_index;
+            applied_period_index = clamp_period_index(commanded_period_index);
         end
 
         selected_period_cycles = lookup_period_cycles(applied_period_index);
@@ -100,7 +135,7 @@ module period_scheduler #(
     always_ff @(posedge clk or negedge reset_n) begin
         if (!reset_n) begin
             state <= S_WAIT;
-            commanded_period_index <= SAFE_PERIOD_INDEX[2:0];
+            commanded_period_index <= clamp_period_index(PERIOD_INDEX_WIDTH'(SAFE_PERIOD_INDEX));
             control_age_cycles <= MAX_CONTROL_AGE_CYCLES[31:0];
             wait_counter <= 32'd0;
             pass_cycle_counter <= 32'd0;
@@ -113,7 +148,7 @@ module period_scheduler #(
 
             // External control update.
             if (period_update_valid) begin
-                commanded_period_index <= period_index;
+                commanded_period_index <= clamp_period_index(period_index);
                 control_age_cycles <= 32'd0;
             end else if (control_age_cycles < MAX_CONTROL_AGE_CYCLES[31:0]) begin
                 control_age_cycles <= control_age_cycles + 32'd1;

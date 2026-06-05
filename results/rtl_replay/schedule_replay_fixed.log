@@ -1,5 +1,9 @@
 rtl/ecc/secded_32_39_encoder.sv:36: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
 rtl/ecc/secded_32_39_decoder.sv:46: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+/home/z3tm4n/diss-work/chapter4-risk-limited-scrubber/generated/rtl/schedule_replay/tb_schedule_replay_fixed.sv:80: warning: Port 4 (period_index) of adaptive_scrub_controller expects 4 bits, got 3.
+/home/z3tm4n/diss-work/chapter4-risk-limited-scrubber/generated/rtl/schedule_replay/tb_schedule_replay_fixed.sv:80:        : Padding 1 high bits of the port.
+/home/z3tm4n/diss-work/chapter4-risk-limited-scrubber/generated/rtl/schedule_replay/tb_schedule_replay_fixed.sv:80: warning: Port 13 (applied_period_index) of adaptive_scrub_controller expects 4 bits, got 3.
+/home/z3tm4n/diss-work/chapter4-risk-limited-scrubber/generated/rtl/schedule_replay/tb_schedule_replay_fixed.sv:80:        : Padding 1 high bits of the port.
 SCHEDULE_REPLAY_SUMMARY strategy=fixed mission_cycles=216000 period_updates=6 expected_passes=2160 observed_pass_starts=2160 completed_passes=2160 reads=17280 writes=0 safe_mode_cycles=0 selected_mismatches=0 failures=0
 SCHEDULE_REPLAY_PASS strategy=fixed
 /home/z3tm4n/diss-work/chapter4-risk-limited-scrubber/generated/rtl/schedule_replay/tb_schedule_replay_fixed.sv:216: $finish called at 2160055000 (1ps)

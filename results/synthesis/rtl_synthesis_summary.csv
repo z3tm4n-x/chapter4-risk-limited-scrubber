@@ -1,11 +1,11 @@
 flow,top,wires,wire_bits,public_wires,public_wire_bits,memories,memory_bits,processes,cells,ff_estimate,lut_estimate,mux_estimate,log_path
 generic_yosys,secded_32_39_encoder,90,321,7,207,0,0,0,117,0,0,0,results/synthesis/logs/generic_yosys_secded_32_39_encoder.log
 generic_yosys,secded_32_39_decoder,214,5294,14,262,0,0,0,879,0,0,516,results/synthesis/logs/generic_yosys_secded_32_39_decoder.log
-generic_yosys,period_scheduler,320,1671,21,277,0,0,0,1279,166,0,210,results/synthesis/logs/generic_yosys_period_scheduler.log
+generic_yosys,period_scheduler,406,1866,24,293,0,0,0,1442,167,0,233,results/synthesis/logs/generic_yosys_period_scheduler.log
 generic_yosys,scrub_pass_engine,416,6273,34,528,0,0,0,1543,171,0,517,results/synthesis/logs/generic_yosys_scrub_pass_engine.log
-generic_yosys,adaptive_scrub_controller,763,8302,82,1163,0,0,0,2824,337,0,727,results/synthesis/logs/generic_yosys_adaptive_scrub_controller.log
+generic_yosys,adaptive_scrub_controller,852,8505,85,1181,0,0,0,2987,338,0,750,results/synthesis/logs/generic_yosys_adaptive_scrub_controller.log
 xilinx_xc7,secded_32_39_encoder,17,248,7,207,0,0,0,104,0,32,1,results/synthesis/logs/xilinx_xc7_secded_32_39_encoder.log
 xilinx_xc7,secded_32_39_decoder,129,834,13,261,0,0,0,324,0,143,33,results/synthesis/logs/xilinx_xc7_secded_32_39_decoder.log
-xilinx_xc7,period_scheduler,325,1245,19,213,0,0,0,720,166,157,12,results/synthesis/logs/xilinx_xc7_period_scheduler.log
+xilinx_xc7,period_scheduler,318,1243,21,225,0,0,0,720,167,162,3,results/synthesis/logs/xilinx_xc7_period_scheduler.log
 xilinx_xc7,scrub_pass_engine,345,1720,29,523,0,0,0,861,171,168,28,results/synthesis/logs/xilinx_xc7_scrub_pass_engine.log
-xilinx_xc7,adaptive_scrub_controller,681,3205,75,1094,0,0,0,1561,337,318,31,results/synthesis/logs/xilinx_xc7_adaptive_scrub_controller.log
+xilinx_xc7,adaptive_scrub_controller,731,3261,77,1108,0,0,0,1613,338,341,56,results/synthesis/logs/xilinx_xc7_adaptive_scrub_controller.log

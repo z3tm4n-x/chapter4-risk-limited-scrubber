@@ -9,14 +9,14 @@ place-and-route timing closure and do not establish Fmax.
 |---|---|---:|---:|---:|---:|---:|
 | generic_yosys | secded_32_39_encoder | 117 | 0 | 0 | 0 | 321 |
 | generic_yosys | secded_32_39_decoder | 879 | 0 | 0 | 516 | 5294 |
-| generic_yosys | period_scheduler | 1279 | 166 | 0 | 210 | 1671 |
+| generic_yosys | period_scheduler | 1442 | 167 | 0 | 233 | 1866 |
 | generic_yosys | scrub_pass_engine | 1543 | 171 | 0 | 517 | 6273 |
-| generic_yosys | adaptive_scrub_controller | 2824 | 337 | 0 | 727 | 8302 |
+| generic_yosys | adaptive_scrub_controller | 2987 | 338 | 0 | 750 | 8505 |
 | xilinx_xc7 | secded_32_39_encoder | 104 | 0 | 32 | 1 | 248 |
 | xilinx_xc7 | secded_32_39_decoder | 324 | 0 | 143 | 33 | 834 |
-| xilinx_xc7 | period_scheduler | 720 | 166 | 157 | 12 | 1245 |
+| xilinx_xc7 | period_scheduler | 720 | 167 | 162 | 3 | 1243 |
 | xilinx_xc7 | scrub_pass_engine | 861 | 171 | 168 | 28 | 1720 |
-| xilinx_xc7 | adaptive_scrub_controller | 1561 | 337 | 318 | 31 | 3205 |
+| xilinx_xc7 | adaptive_scrub_controller | 1613 | 338 | 341 | 56 | 3261 |
 
 Interpretation:
 

@@ -1,3 +1,7 @@
+tb/tb_period_scheduler.sv:50: warning: Port 4 (period_index) of period_scheduler expects 4 bits, got 3.
+tb/tb_period_scheduler.sv:50:        : Padding 1 high bits of the port.
+tb/tb_period_scheduler.sv:50: warning: Port 7 (applied_period_index) of period_scheduler expects 4 bits, got 3.
+tb/tb_period_scheduler.sv:50:        : Padding 1 high bits of the port.
 PERIOD_SCHEDULER_SUMMARY measured_interval=50 last_pass_cycles=10 safe_entries=2 failures=0
 PERIOD_SCHEDULER_PASS
 tb/tb_period_scheduler.sv:182: $finish called at 3195000 (1ps)
