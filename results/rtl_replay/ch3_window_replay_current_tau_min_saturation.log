@@ -1,0 +1,5 @@
+rtl/ecc/secded_32_39_encoder.sv:36: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+rtl/ecc/secded_32_39_decoder.sv:46: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+CH3_WINDOW_REPLAY_SUMMARY strategy=current window=tau_min_saturation mission_cycles=5644800 period_updates=49 expected_passes=100260 observed_pass_starts=100260 completed_passes=100260 reads=401040 writes=0 safe_mode_cycles=0 selected_mismatches=0 failures=0
+CH3_WINDOW_REPLAY_PASS strategy=current window=tau_min_saturation
+/home/z3tm4n/diss-work/chapter4-risk-limited-scrubber/generated/rtl/ch3_window_replay/tb_ch3_window_replay_current_tau_min_saturation.sv:272: $finish called at 56448045000 (1ps)
