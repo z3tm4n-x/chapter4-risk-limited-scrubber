@@ -1,5 +1,5 @@
 {
-  "git_commit": "095e36bbd4c70eb39e858a574dc430071860cc07",
+  "git_commit": "25ae0ff51fcb9b54c5c47b0c8ed760adcf0ed101",
   "artifacts": [
     {
       "key": "series_import",
@@ -66,6 +66,12 @@
       "title": "Integrated measured-error controller RTL",
       "path": "results/rtl_replay/measured_error_controller_report.md",
       "claim": "The measured-error estimator is integrated into a complete autonomous scrub controller."
+    },
+    {
+      "key": "measured_policy_model",
+      "title": "Measured-error policy model evaluation",
+      "path": "results/schedules/measured_policy_model_report.md",
+      "claim": "Counter-based measured-error policies are evaluated on the five-year series; conservative settings meet the target but use more passes than external exact-risk schedules."
     },
     {
       "key": "synthesis",

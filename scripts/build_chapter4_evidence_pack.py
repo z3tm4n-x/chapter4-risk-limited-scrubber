@@ -86,6 +86,12 @@ ARTIFACTS = [
         "claim": "The measured-error estimator is integrated into a complete autonomous scrub controller.",
     },
     {
+        "key": "measured_policy_model",
+        "title": "Measured-error policy model evaluation",
+        "path": "results/schedules/measured_policy_model_report.md",
+        "claim": "Counter-based measured-error policies are evaluated on the five-year series; conservative settings meet the target but use more passes than external exact-risk schedules.",
+    },
+    {
         "key": "synthesis",
         "title": "RTL synthesis/resource summary",
         "path": "results/synthesis/rtl_synthesis_summary.md",
@@ -179,6 +185,24 @@ def compact_key_numbers() -> list[str]:
     if mc_rows:
         all_pass = all(row["pass_z_4sigma"] == "true" for row in mc_rows)
         lines.append(f"- Monte Carlo accumulated-risk validation 4-sigma pass: `{str(all_pass).lower()}`.")
+
+    measured_policy = read_csv_rows("results/schedules/measured_policy_model_summary.csv")
+    if measured_policy:
+        passing = [row for row in measured_policy if row["target_met"] == "true"]
+        if passing:
+            best = min(passing, key=lambda row: float(row["pass_count"]))
+            lines.append(
+                f"- Best sampled target-meeting measured policy: `{best['policy']}`; "
+                f"pass count `{best['pass_count']}`, fixed/policy gain `{best['fixed_over_policy_gain']}`."
+            )
+
+        failing = [row for row in measured_policy if row["target_met"] == "false"]
+        if failing:
+            best_failing = min(failing, key=lambda row: float(row["pass_count"]))
+            lines.append(
+                f"- Fastest sampled measured policy fails target: `{best_failing['policy']}`; "
+                f"risk utilization `{best_failing['risk_utilization']}`."
+            )
 
     return lines
 
