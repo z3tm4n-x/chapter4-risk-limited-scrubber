@@ -62,6 +62,9 @@ module tb_diagnostic_supervisor;
     logic [31:0] consecutive_alert_passes;
 
     integer failures;
+    integer alert_path_alert_events;
+    integer alert_path_out_of_envelope;
+    integer clear_path_verified;
 
     diagnostic_supervisor #(
         .ADDR_WIDTH(4),
@@ -143,6 +146,9 @@ module tb_diagnostic_supervisor;
 
     initial begin
         failures = 0;
+        alert_path_alert_events = 0;
+        alert_path_out_of_envelope = 0;
+        clear_path_verified = 0;
 
         clear_flags = 1'b0;
         corrected_pulse = 1'b0;
@@ -184,6 +190,9 @@ module tb_diagnostic_supervisor;
         check_condition(out_of_envelope_flag == 1'b1, "two alert passes should assert out-of-envelope");
         check_condition(force_conservative == 1'b1, "out-of-envelope should force conservative mode");
 
+        alert_path_alert_events = alert_event_count;
+        alert_path_out_of_envelope = out_of_envelope_flag;
+
         // Clear and check DUE/persistent-DUE logic separately.
         pulse_clear();
 
@@ -192,6 +201,14 @@ module tb_diagnostic_supervisor;
         check_condition(persistent_due_flag == 1'b0, "clear should deassert persistent due");
         check_condition(out_of_envelope_flag == 1'b0, "clear should deassert out-of-envelope");
         check_condition(force_conservative == 1'b0, "clear should deassert force_conservative");
+
+        if ((alert_flag == 1'b0) &&
+            (danger_detected_flag == 1'b0) &&
+            (persistent_due_flag == 1'b0) &&
+            (out_of_envelope_flag == 1'b0) &&
+            (force_conservative == 1'b0)) begin
+            clear_path_verified = 1;
+        end
 
         pulse_due(4'd5);
 
@@ -209,12 +226,13 @@ module tb_diagnostic_supervisor;
         check_condition(persistent_due_count == 32'd1, "repeated DUE should increment persistent_due_count");
         check_condition(out_of_envelope_flag == 1'b1, "persistent DUE should assert out-of-envelope");
 
-        $display("DIAGNOSTIC_SUPERVISOR_SUMMARY alert_events=%0d danger_events=%0d new_due_words=%0d persistent_due=%0d consecutive_alert_passes=%0d out_of_envelope=%0d force_conservative=%0d failures=%0d",
-                 alert_event_count,
+        $display("DIAGNOSTIC_SUPERVISOR_SUMMARY alert_path_alert_events=%0d alert_path_out_of_envelope=%0d clear_path_verified=%0d danger_events=%0d new_due_words=%0d persistent_due=%0d out_of_envelope=%0d force_conservative=%0d failures=%0d",
+                 alert_path_alert_events,
+                 alert_path_out_of_envelope,
+                 clear_path_verified,
                  danger_event_count,
                  new_due_word_count,
                  persistent_due_count,
-                 consecutive_alert_passes,
                  out_of_envelope_flag,
                  force_conservative,
                  failures);
@@ -237,8 +255,9 @@ endmodule
 
 def parse_summary(output: str) -> dict[str, str]:
     pattern = re.compile(
-        r"DIAGNOSTIC_SUPERVISOR_SUMMARY alert_events=(\d+) danger_events=(\d+) "
-        r"new_due_words=(\d+) persistent_due=(\d+) consecutive_alert_passes=(\d+) "
+        r"DIAGNOSTIC_SUPERVISOR_SUMMARY alert_path_alert_events=(\d+) "
+        r"alert_path_out_of_envelope=(\d+) clear_path_verified=(\d+) "
+        r"danger_events=(\d+) new_due_words=(\d+) persistent_due=(\d+) "
         r"out_of_envelope=(\d+) force_conservative=(\d+) failures=(\d+)"
     )
 
@@ -247,11 +266,12 @@ def parse_summary(output: str) -> dict[str, str]:
         raise RuntimeError("could not parse diagnostic supervisor summary")
 
     keys = [
-        "alert_events",
+        "alert_path_alert_events",
+        "alert_path_out_of_envelope",
+        "clear_path_verified",
         "danger_events",
         "new_due_words",
         "persistent_due",
-        "consecutive_alert_passes",
         "out_of_envelope",
         "force_conservative",
         "failures",
@@ -264,11 +284,12 @@ def write_outputs(row: dict[str, str]) -> None:
     RESULT_DIR.mkdir(parents=True, exist_ok=True)
 
     fieldnames = [
-        "alert_events",
+        "alert_path_alert_events",
+        "alert_path_out_of_envelope",
+        "clear_path_verified",
         "danger_events",
         "new_due_words",
         "persistent_due",
-        "consecutive_alert_passes",
         "out_of_envelope",
         "force_conservative",
         "failures",

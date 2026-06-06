@@ -5,11 +5,12 @@ from ordinary SEC-DED scrubbing to conservative/out-of-envelope modes.
 
 | Metric | Value |
 |---|---:|
-| alert_events | 0 |
+| alert_path_alert_events | 2 |
+| alert_path_out_of_envelope | 1 |
+| clear_path_verified | 1 |
 | danger_events | 2 |
 | new_due_words | 1 |
 | persistent_due | 1 |
-| consecutive_alert_passes | 0 |
 | out_of_envelope | 1 |
 | force_conservative | 1 |
 | failures | 0 |
