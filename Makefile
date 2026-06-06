@@ -1,4 +1,4 @@
-.PHONY: help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation integrated-diagnostic-rtl measured-error-estimator-rtl schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
+.PHONY: help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation integrated-diagnostic-rtl measured-error-estimator-rtl measured-error-controller-rtl schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
 
 help:
 	@echo "Targets:"
@@ -67,6 +67,9 @@ integrated-diagnostic-rtl:
 
 measured-error-estimator-rtl:
 	python3 scripts/run_measured_error_estimator_rtl.py
+
+measured-error-controller-rtl:
+	python3 scripts/run_measured_error_controller_rtl.py
 
 schedule-demo:
 	python3 scripts/run_schedule_demo.py

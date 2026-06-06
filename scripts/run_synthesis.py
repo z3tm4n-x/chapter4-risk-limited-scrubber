@@ -34,12 +34,27 @@ TARGETS = {
         "rtl/ecc/secded_32_39_decoder.sv",
         "rtl/scrubber/scrub_pass_engine.sv",
     ],
+    "diagnostic_supervisor": [
+        "rtl/scrubber/diagnostic_supervisor.sv",
+    ],
     "adaptive_scrub_controller": [
         "rtl/ecc/secded_32_39_decoder.sv",
         "rtl/scrubber/period_scheduler.sv",
         "rtl/scrubber/scrub_pass_engine.sv",
         "rtl/scrubber/diagnostic_supervisor.sv",
         "rtl/scrubber/adaptive_scrub_controller.sv",
+    ],
+    "measured_error_period_estimator": [
+        "rtl/scrubber/measured_error_period_estimator.sv",
+    ],
+    "measured_error_scrub_controller": [
+        "rtl/ecc/secded_32_39_decoder.sv",
+        "rtl/scrubber/period_scheduler.sv",
+        "rtl/scrubber/scrub_pass_engine.sv",
+        "rtl/scrubber/diagnostic_supervisor.sv",
+        "rtl/scrubber/adaptive_scrub_controller.sv",
+        "rtl/scrubber/measured_error_period_estimator.sv",
+        "rtl/scrubber/measured_error_scrub_controller.sv",
     ],
 }
 
@@ -74,7 +89,6 @@ def parse_int_metric(block: str, name: str) -> int:
 
 def parse_cell_counts(block: str) -> dict[str, int]:
     counts: dict[str, int] = {}
-
     capture = False
 
     for line in block.splitlines():
@@ -240,7 +254,9 @@ def write_markdown(path: Path, rows: list[dict[str, str]]) -> None:
             "- `secded_32_39_encoder` and `secded_32_39_decoder` represent the ECC datapath.",
             "- `period_scheduler` is the hardware endpoint of the Chapter 3 period-index schedule.",
             "- `scrub_pass_engine` performs the full sequential memory pass and correction writeback.",
-            "- `adaptive_scrub_controller` is the integrated flattened controller proposed for Chapter 4.",
+            "- `diagnostic_supervisor` implements hardware symptom flags for alert, DUE persistence, and out-of-envelope escalation.",
+            "- `adaptive_scrub_controller` is the external-period endpoint proposed for Chapter 4.",
+            "- `measured_error_period_estimator` and `measured_error_scrub_controller` represent the onboard fallback mode.",
             "- The Xilinx XC7 flow reports LUT/FF-style estimates but still does not replace",
             "  implementation, placement, routing, and timing analysis.",
             "",
@@ -267,7 +283,7 @@ def main() -> int:
 
     for row in rows:
         print(
-            f"{row['flow']:14s} {row['top']:28s} "
+            f"{row['flow']:14s} {row['top']:34s} "
             f"cells={row['cells']} ff={row['ff_estimate']} "
             f"lut={row['lut_estimate']} mux={row['mux_estimate']}"
         )

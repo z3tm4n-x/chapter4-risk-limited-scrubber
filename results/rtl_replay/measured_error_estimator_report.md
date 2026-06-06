@@ -9,7 +9,7 @@ driven only by SEC-DED corrected/DUE observations.
 | updates | 6 |
 | high_activity_events | 2 |
 | quiet_relax_events | 1 |
-| forced_safe_events | 2 |
+| forced_safe_events | 1 |
 | failures | 0 |
 
 Interpretation:

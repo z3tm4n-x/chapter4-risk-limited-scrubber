@@ -65,6 +65,8 @@ module tb_measured_error_estimator;
     integer quiet_relax_events;
     integer forced_safe_events;
 
+    logic prev_forced_safe_flag;
+
     measured_error_period_estimator #(
         .PERIOD_INDEX_WIDTH(4),
         .MIN_PERIOD_INDEX(0),
@@ -112,9 +114,11 @@ module tb_measured_error_estimator;
             quiet_relax_events <= quiet_relax_events + 1;
         end
 
-        if (forced_safe_flag) begin
+        if (forced_safe_flag && !prev_forced_safe_flag) begin
             forced_safe_events <= forced_safe_events + 1;
         end
+
+        prev_forced_safe_flag <= forced_safe_flag;
     end
 
     task automatic check_condition(input bit condition, input string message);
@@ -161,6 +165,7 @@ module tb_measured_error_estimator;
         high_activity_events = 0;
         quiet_relax_events = 0;
         forced_safe_events = 0;
+        prev_forced_safe_flag = 1'b0;
 
         clear = 1'b0;
         enable = 1'b1;
