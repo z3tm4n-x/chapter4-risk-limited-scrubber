@@ -8,7 +8,7 @@ It is an evidence pack, not dissertation prose.
 
 ## Build metadata
 
-- Git commit: `03a333e000303f105a326e478b81bfe900e696a4`
+- Git commit: `095e36bbd4c70eb39e858a574dc430071860cc07`
 
 ## Claim matrix
 
