@@ -1,4 +1,4 @@
-.PHONY: help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
+.PHONY: help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation integrated-diagnostic-rtl schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
 
 help:
 	@echo "Targets:"
@@ -61,6 +61,9 @@ rho-d-sweep: ch3-five-year-schedule
 
 mc-accumulation:
 	python3 scripts/run_accumulation_monte_carlo.py
+
+integrated-diagnostic-rtl:
+	python3 scripts/run_integrated_diagnostic_controller_rtl.py
 
 schedule-demo:
 	python3 scripts/run_schedule_demo.py

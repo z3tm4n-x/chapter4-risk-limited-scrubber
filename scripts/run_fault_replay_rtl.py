@@ -470,6 +470,7 @@ def compile_and_run(strategy: str, tb_path: Path) -> tuple[str, dict[str, int]]:
         "rtl/ecc/secded_32_39_decoder.sv",
         "rtl/scrubber/period_scheduler.sv",
         "rtl/scrubber/scrub_pass_engine.sv",
+        "rtl/scrubber/diagnostic_supervisor.sv",
         "rtl/scrubber/adaptive_scrub_controller.sv",
         str(tb_path),
     ]

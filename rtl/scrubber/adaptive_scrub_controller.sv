@@ -28,7 +28,11 @@ module adaptive_scrub_controller #(
     parameter int PERIOD11_CYCLES = 2000,
 
     parameter int SAFE_PERIOD_INDEX = 0,
-    parameter int MAX_CONTROL_AGE_CYCLES = 200
+    parameter int MAX_CONTROL_AGE_CYCLES = 200,
+
+    parameter int DIAG_CORRECTED_ALERT_THRESHOLD = 4,
+    parameter int DIAG_ALERT_CONSECUTIVE_THRESHOLD = 2,
+    parameter int DIAG_PERSISTENT_DUE_THRESHOLD = 1
 ) (
     input  logic                            clk,
     input  logic                            reset_n,
@@ -60,7 +64,20 @@ module adaptive_scrub_controller #(
     output logic [31:0]                     write_count,
     output logic [31:0]                     corrected_count,
     output logic [31:0]                     detected_uncorrectable_count,
-    output logic [31:0]                     safe_mode_entry_count
+    output logic [31:0]                     safe_mode_entry_count,
+
+    output logic                            diag_alert_flag,
+    output logic                            diag_danger_detected_flag,
+    output logic                            diag_persistent_due_flag,
+    output logic                            diag_out_of_envelope_flag,
+    output logic                            diag_force_conservative,
+
+    output logic [31:0]                     diag_pass_corrected_count,
+    output logic [31:0]                     diag_alert_event_count,
+    output logic [31:0]                     diag_danger_event_count,
+    output logic [31:0]                     diag_new_due_word_count,
+    output logic [31:0]                     diag_persistent_due_count,
+    output logic [31:0]                     diag_consecutive_alert_passes
 );
 
     logic scheduler_pass_start;
@@ -121,6 +138,34 @@ module adaptive_scrub_controller #(
         .write_count(write_count),
         .corrected_count(corrected_count),
         .detected_uncorrectable_count(detected_uncorrectable_count)
+    );
+
+
+    diagnostic_supervisor #(
+        .ADDR_WIDTH(ADDR_WIDTH),
+        .DEPTH(DEPTH),
+        .CORRECTED_ALERT_THRESHOLD(DIAG_CORRECTED_ALERT_THRESHOLD),
+        .ALERT_CONSECUTIVE_THRESHOLD(DIAG_ALERT_CONSECUTIVE_THRESHOLD),
+        .PERSISTENT_DUE_THRESHOLD(DIAG_PERSISTENT_DUE_THRESHOLD)
+    ) diagnostic (
+        .clk(clk),
+        .reset_n(reset_n),
+        .clear_flags(1'b0),
+        .corrected_pulse(corrected_pulse),
+        .detected_uncorrectable_pulse(detected_uncorrectable_pulse),
+        .detected_uncorrectable_addr(mem_addr),
+        .pass_done(engine_pass_done),
+        .alert_flag(diag_alert_flag),
+        .danger_detected_flag(diag_danger_detected_flag),
+        .persistent_due_flag(diag_persistent_due_flag),
+        .out_of_envelope_flag(diag_out_of_envelope_flag),
+        .force_conservative(diag_force_conservative),
+        .pass_corrected_count(diag_pass_corrected_count),
+        .alert_event_count(diag_alert_event_count),
+        .danger_event_count(diag_danger_event_count),
+        .new_due_word_count(diag_new_due_word_count),
+        .persistent_due_count(diag_persistent_due_count),
+        .consecutive_alert_passes(diag_consecutive_alert_passes)
     );
 
 endmodule

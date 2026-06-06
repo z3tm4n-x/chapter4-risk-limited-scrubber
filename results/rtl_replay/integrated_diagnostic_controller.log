@@ -1,0 +1,5 @@
+rtl/ecc/secded_32_39_encoder.sv:36: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+rtl/ecc/secded_32_39_decoder.sv:46: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+INTEGRATED_DIAGNOSTIC_CONTROLLER_SUMMARY passes=5 reads=32 writes=1 corrected=1 due=3 diag_alert=1 diag_danger=1 diag_persistent=1 diag_out_of_envelope=1 diag_force_conservative=1 diag_alert_events=1 diag_new_due_words=1 diag_persistent_due=2 failures=0
+INTEGRATED_DIAGNOSTIC_CONTROLLER_PASS
+/home/z3tm4n/diss-work/chapter4-risk-limited-scrubber/generated/rtl/integrated_diagnostic_controller/tb_integrated_diagnostic_controller.sv:236: $finish called at 1675000 (1ps)

@@ -11,12 +11,12 @@ place-and-route timing closure and do not establish Fmax.
 | generic_yosys | secded_32_39_decoder | 879 | 0 | 0 | 516 | 5294 |
 | generic_yosys | period_scheduler | 1442 | 167 | 0 | 233 | 1866 |
 | generic_yosys | scrub_pass_engine | 1543 | 171 | 0 | 517 | 6273 |
-| generic_yosys | adaptive_scrub_controller | 2987 | 338 | 0 | 750 | 8505 |
+| generic_yosys | adaptive_scrub_controller | 4291 | 550 | 0 | 900 | 10421 |
 | xilinx_xc7 | secded_32_39_encoder | 104 | 0 | 32 | 1 | 248 |
 | xilinx_xc7 | secded_32_39_decoder | 324 | 0 | 143 | 33 | 834 |
 | xilinx_xc7 | period_scheduler | 720 | 167 | 162 | 3 | 1243 |
 | xilinx_xc7 | scrub_pass_engine | 861 | 171 | 168 | 28 | 1720 |
-| xilinx_xc7 | adaptive_scrub_controller | 1613 | 338 | 341 | 56 | 3261 |
+| xilinx_xc7 | adaptive_scrub_controller | 2385 | 550 | 444 | 22 | 4612 |
 
 Interpretation:
 
