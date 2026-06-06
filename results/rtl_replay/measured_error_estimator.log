@@ -1,0 +1,3 @@
+MEASURED_ERROR_ESTIMATOR_SUMMARY final_period_index=6 updates=6 high_activity_events=2 quiet_relax_events=1 forced_safe_events=2 failures=0
+MEASURED_ERROR_ESTIMATOR_PASS
+/home/z3tm4n/diss-work/chapter4-risk-limited-scrubber/generated/rtl/measured_error_estimator/tb_measured_error_estimator.sv:198: $finish called at 246000 (1ps)
