@@ -1,5 +1,5 @@
 {
-  "git_commit": "cbe20beaf66989ca2e7671b5dd4e836ae4db34b2",
+  "git_commit": "03a333e000303f105a326e478b81bfe900e696a4",
   "fixed": {
     "strategy_key": "fixed",
     "strategy": "fixed_allowed_5s",
