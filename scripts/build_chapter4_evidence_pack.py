@@ -92,6 +92,12 @@ ARTIFACTS = [
         "claim": "Counter-based measured-error policies are evaluated on the five-year series; conservative settings meet the target but use more passes than external exact-risk schedules.",
     },
     {
+        "key": "measured_policy_seed_sweep",
+        "title": "Measured-error policy seed robustness sweep",
+        "path": "results/schedules/measured_policy_seed_sweep_report.md",
+        "claim": "Measured-error policy robustness is checked over multiple Poisson seeds; conservative q16 policies meet the target in all sampled seeds.",
+    },
+    {
         "key": "synthesis",
         "title": "RTL synthesis/resource summary",
         "path": "results/synthesis/rtl_synthesis_summary.md",
@@ -202,6 +208,33 @@ def compact_key_numbers() -> list[str]:
             lines.append(
                 f"- Fastest sampled measured policy fails target: `{best_failing['policy']}`; "
                 f"risk utilization `{best_failing['risk_utilization']}`."
+            )
+
+    seed_sweep = read_csv_rows("results/schedules/measured_policy_seed_sweep_summary.csv")
+    if seed_sweep:
+        robust = [
+            row for row in seed_sweep
+            if row["target_met_fraction"] == "1"
+        ]
+
+        if robust:
+            best = min(robust, key=lambda row: float(row["pass_count_mean"]))
+            lines.append(
+                f"- Best robust measured policy over seed sweep: `{best['policy']}`; "
+                f"mean pass count `{best['pass_count_mean']}`, "
+                f"max risk utilization `{best['risk_utilization_max']}`."
+            )
+
+        failing = [
+            row for row in seed_sweep
+            if row["target_met_fraction"] != "1"
+        ]
+
+        if failing:
+            fastest_failing = min(failing, key=lambda row: float(row["pass_count_mean"]))
+            lines.append(
+                f"- Fastest seed-swept measured policy fails robustness: `{fastest_failing['policy']}`; "
+                f"target-met fraction `{fastest_failing['target_met_fraction']}`."
             )
 
     return lines

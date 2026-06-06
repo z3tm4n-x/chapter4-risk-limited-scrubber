@@ -1,5 +1,5 @@
 {
-  "git_commit": "25ae0ff51fcb9b54c5c47b0c8ed760adcf0ed101",
+  "git_commit": "6fe72b894930745d2d4c364e323856a963029ebd",
   "artifacts": [
     {
       "key": "series_import",
@@ -72,6 +72,12 @@
       "title": "Measured-error policy model evaluation",
       "path": "results/schedules/measured_policy_model_report.md",
       "claim": "Counter-based measured-error policies are evaluated on the five-year series; conservative settings meet the target but use more passes than external exact-risk schedules."
+    },
+    {
+      "key": "measured_policy_seed_sweep",
+      "title": "Measured-error policy seed robustness sweep",
+      "path": "results/schedules/measured_policy_seed_sweep_report.md",
+      "claim": "Measured-error policy robustness is checked over multiple Poisson seeds; conservative q16 policies meet the target in all sampled seeds."
     },
     {
       "key": "synthesis",

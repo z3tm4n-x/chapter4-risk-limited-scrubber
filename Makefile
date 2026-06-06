@@ -120,7 +120,7 @@ clean:
 	rm -rf __pycache__ .pytest_cache generated/rtl
 
 
-chapter4-evidence-pack: overhead-gain-certificate ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl integrated-diagnostic-rtl rho-d-sweep mc-accumulation measured-error-estimator-rtl measured-error-controller-rtl measured-policy-model
+chapter4-evidence-pack: overhead-gain-certificate ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl integrated-diagnostic-rtl rho-d-sweep mc-accumulation measured-error-estimator-rtl measured-error-controller-rtl measured-policy-model measured-policy-seed-sweep
 	python3 scripts/build_chapter4_evidence_pack.py
 
 reproduce-chapter4: test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl integrated-diagnostic-rtl rho-d-sweep mc-accumulation measured-error-estimator-rtl measured-error-controller-rtl measured-policy-model measured-policy-seed-sweep synthesis overhead-gain-certificate chapter4-evidence-pack

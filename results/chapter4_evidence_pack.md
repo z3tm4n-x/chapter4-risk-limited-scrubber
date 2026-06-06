@@ -8,7 +8,7 @@ It is an evidence pack, not dissertation prose.
 
 ## Build metadata
 
-- Git commit: `25ae0ff51fcb9b54c5c47b0c8ed760adcf0ed101`
+- Git commit: `6fe72b894930745d2d4c364e323856a963029ebd`
 
 ## Claim matrix
 
@@ -26,6 +26,7 @@ It is an evidence pack, not dissertation prose.
 | The onboard estimator relaxes on quiet passes, speeds up on corrections, and forces safe period on DUE. | `results/rtl_replay/measured_error_estimator_report.md` |
 | The measured-error estimator is integrated into a complete autonomous scrub controller. | `results/rtl_replay/measured_error_controller_report.md` |
 | Counter-based measured-error policies are evaluated on the five-year series; conservative settings meet the target but use more passes than external exact-risk schedules. | `results/schedules/measured_policy_model_report.md` |
+| Measured-error policy robustness is checked over multiple Poisson seeds; conservative q16 policies meet the target in all sampled seeds. | `results/schedules/measured_policy_seed_sweep_report.md` |
 | Flattened Yosys/XC7 synthesis estimates quantify the hardware cost of the blocks. | `results/synthesis/rtl_synthesis_summary.md` |
 | Schedule benefit and RTL resource cost are combined in one certificate. | `results/chapter4_overhead_gain_certificate.md` |
 
@@ -44,6 +45,8 @@ It is an evidence pack, not dissertation prose.
 - Monte Carlo accumulated-risk validation 4-sigma pass: `true`.
 - Best sampled target-meeting measured policy: `measured_q16_high1_max3600`; pass count `6451890`, fixed/policy gain `4.89054835095`.
 - Fastest sampled measured policy fails target: `measured_q4_high1_max120`; risk utilization `1.63030252406`.
+- Best robust measured policy over seed sweep: `measured_q16_high1_max3600`; mean pass count `6456500.96667`, max risk utilization `0.68429515097`.
+- Fastest seed-swept measured policy fails robustness: `measured_q8_high1_max120`; target-met fraction `0`.
 
 ## Aggregated artifact contents
 
@@ -480,6 +483,38 @@ Risk is evaluated separately with `q_acc_exact(lambda)` on the true series.
 - Passing `target_met=true` means the resulting measured schedule satisfies the exact accumulated-risk target for this replay.
 - Failing policies are still useful as onboard fallback demonstrations, but not as certified replacements for the Chapter 3 schedule compiler.
 - The current/delayed external schedules remain the risk-certified path because they are compiled against the full nu(t) estimate.
+
+## Measured-error policy seed robustness sweep
+
+Source artifact: `results/schedules/measured_policy_seed_sweep_report.md`.
+
+# Measured-error policy seed sweep
+
+This report repeats selected measured-error policy simulations over
+`30` Poisson seeds per policy.
+
+## Baselines
+
+| Strategy | Pass count | P mission | Risk utilization |
+|---|---:|---:|---:|
+| fixed | 31553280 | 0.00553465940419 | 0.552223573568 |
+| current adaptive | 2547210 | 0.00999993405782 | 0.999993372534 |
+| delayed 1h adaptive | 2649330 | 0.00999990177991 | 0.999990128469 |
+
+## Seed sweep summary
+
+| Policy | Target met fraction | Risk util. mean | Risk util. p95 | Risk util. max | Pass mean | Fixed/policy gain mean | Current/policy pass ratio |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| measured_q8_high1_max120 | 0 | 1.0760312605 | 1.0786183649 | 1.08136574536 | 3586240.16667 | 8.79842914406 | 0.710273122162 |
+| measured_q16_high1_max120 | 1 | 0.654492398768 | 0.65561856129 | 0.655868776125 | 6552740.4 | 4.81528003154 | 0.388724387739 |
+| measured_q16_high1_max3600 | 1 | 0.681094456074 | 0.682998757103 | 0.68429515097 | 6456500.96667 | 4.88705572305 | 0.394518643016 |
+| measured_q32_high1_max120 | 1 | 0.388949765982 | 0.389987527014 | 0.390752975896 | 12700080.3667 | 2.48449451413 | 0.200566447334 |
+
+## Interpretation
+
+- Policies with `target_met_fraction=1` satisfy the exact-risk target across all sampled seeds.
+- Aggressive policies can be useful as demonstrations of adaptation but are not certified replacements if they exceed the target.
+- The external Chapter 3 current/delayed schedules remain the primary risk-certified strategies.
 
 ## RTL synthesis/resource summary
 
