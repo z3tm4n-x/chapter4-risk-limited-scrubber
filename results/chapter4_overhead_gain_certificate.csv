@@ -1,0 +1,6 @@
+item,description,top,flow,lut,ff,cells,pass_count,fixed_over_item_gain,pass_reduction_vs_fixed,p_mission,risk_utilization,delta_lut_vs_external,delta_ff_vs_external,delta_lut_percent_vs_external,delta_ff_percent_vs_external
+external_current_adaptive_schedule,Chapter 3 current exact-risk schedule executed by external-period RTL endpoint,adaptive_scrub_controller,xilinx_xc7,444,550,2385,2547210,12.3873885545,0.919272734879,0.00999993405782,0.999993372534,0,0,0,0
+external_delayed_1h_adaptive_schedule,Chapter 3 one-hour delayed exact-risk schedule executed by same external-period endpoint,adaptive_scrub_controller,xilinx_xc7,444,550,2385,2649330,11.9099092978,0.916036304308,0.00999990177991,0.999990128469,0,0,0,0
+measured_error_onboard_fallback,Integrated onboard fallback: SEC-DED observations drive period_index autonomously,measured_error_scrub_controller,xilinx_xc7,603,654,2853,,,,,,159,104,35.8108,18.9091
+measured_error_estimator_only,Standalone measured-error period estimator,measured_error_period_estimator,xilinx_xc7,139,104,511,,,,,,,,,
+diagnostic_supervisor_only,"Standalone diagnostic supervisor for alert, persistent-DUE, and out-of-envelope flags",diagnostic_supervisor,xilinx_xc7,247,212,962,,,,,,,,,
