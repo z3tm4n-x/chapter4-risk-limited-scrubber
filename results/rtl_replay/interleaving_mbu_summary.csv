@@ -1,0 +1,3 @@
+scenario,physical_multiplicity,interleave_depth,corrected,detected_due,writes,final_uncorrectable,final_sdc,final_dangerous,failures
+D1_same_word,3,1,1,0,1,0,1,1,0
+D3_split,3,3,3,0,3,0,0,0,0
