@@ -1,0 +1,2 @@
+alert_events,danger_events,new_due_words,persistent_due,consecutive_alert_passes,out_of_envelope,force_conservative,failures
+0,2,1,1,0,1,1,0

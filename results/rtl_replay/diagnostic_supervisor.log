@@ -1,0 +1,3 @@
+DIAGNOSTIC_SUPERVISOR_SUMMARY alert_events=0 danger_events=2 new_due_words=1 persistent_due=1 consecutive_alert_passes=0 out_of_envelope=1 force_conservative=1 failures=0
+DIAGNOSTIC_SUPERVISOR_PASS
+/home/z3tm4n/diss-work/chapter4-risk-limited-scrubber/generated/rtl/diagnostic_supervisor/tb_diagnostic_supervisor.sv:190: $finish called at 156000 (1ps)
