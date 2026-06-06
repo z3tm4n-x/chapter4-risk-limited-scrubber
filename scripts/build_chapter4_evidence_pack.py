@@ -1,188 +1,254 @@
 #!/usr/bin/env python3
-"""
-Build the Chapter 4 evidence pack.
+"""Build the aggregate Chapter 4 evidence pack.
 
-This script aggregates the generated model, RTL, audit, and synthesis artifacts
-into one dissertation-facing Markdown report.
+This file intentionally aggregates reproducible artifacts only. It is not the
+chapter text. The chapter can later be written from these results.
 """
 
 from __future__ import annotations
 
 import csv
+import json
+import subprocess
 from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-RESULTS = REPO_ROOT / "results"
-OUTPUT = RESULTS / "chapter4_evidence_pack.md"
+OUT_MD = REPO_ROOT / "results" / "chapter4_evidence_pack.md"
+OUT_JSON = REPO_ROOT / "results" / "chapter4_evidence_pack.json"
 
 
-def read_csv_rows(path: Path) -> list[dict[str, str]]:
+ARTIFACTS = [
+    {
+        "key": "series_import",
+        "title": "Chapter 3 five-year series import",
+        "path": "results/schedules/ch3_series_import_summary.csv",
+        "claim": "The five-year upset series is imported and transformed into the total upset-rate series used by Chapter 3.",
+    },
+    {
+        "key": "five_year_schedule",
+        "title": "Chapter 3 five-year exact-risk schedules",
+        "path": "results/schedules/ch3_five_year_summary.md",
+        "claim": "The fixed/current/delayed schedules are compiled on the dissertation geometry and target probability.",
+    },
+    {
+        "key": "model_rtl_replay",
+        "title": "Model-to-RTL schedule replay certificate",
+        "path": "results/chapter4_model_rtl_certificate.md",
+        "claim": "The RTL controller executes model-generated period indices with zero pass-count mismatch on representative windows.",
+    },
+    {
+        "key": "fault_replay",
+        "title": "Radiation-window fault replay",
+        "path": "results/rtl_replay/ch3_fault_replay_summary.md",
+        "claim": "The selected radiation windows are replayed with fault streams and separated DUE/persistent/SDC-audit metrics.",
+    },
+    {
+        "key": "interleaving_mbu",
+        "title": "Interleaving MBU experiment",
+        "path": "results/rtl_replay/interleaving_mbu_summary.md",
+        "claim": "The same physical MBU is dangerous without interleaving and correctable when split across codewords.",
+    },
+    {
+        "key": "diagnostic_supervisor",
+        "title": "Diagnostic supervisor RTL",
+        "path": "results/rtl_replay/diagnostic_supervisor_report.md",
+        "claim": "The diagnostic block raises alert, persistent-DUE, out-of-envelope, and force-conservative flags from SEC-DED symptoms.",
+    },
+    {
+        "key": "integrated_diagnostic",
+        "title": "Integrated diagnostic controller RTL",
+        "path": "results/rtl_replay/integrated_diagnostic_controller_report.md",
+        "claim": "The top-level external-period controller exposes diagnostic flags from real scrub events.",
+    },
+    {
+        "key": "rho_d_sweep",
+        "title": "rho_D residual-budget sweep",
+        "path": "results/feasibility/rho_d_sweep_summary.md",
+        "claim": "The residual-budget boundary is reproduced numerically; above rho_crit, tau_min is insufficient.",
+    },
+    {
+        "key": "monte_carlo",
+        "title": "Accumulated-risk Monte Carlo validation",
+        "path": "results/monte_carlo/accumulation_monte_carlo_report.md",
+        "claim": "The exact accumulated-risk kernel is validated by direct random placement at accelerated lambda values.",
+    },
+    {
+        "key": "measured_estimator",
+        "title": "Measured-error period estimator RTL",
+        "path": "results/rtl_replay/measured_error_estimator_report.md",
+        "claim": "The onboard estimator relaxes on quiet passes, speeds up on corrections, and forces safe period on DUE.",
+    },
+    {
+        "key": "measured_controller",
+        "title": "Integrated measured-error controller RTL",
+        "path": "results/rtl_replay/measured_error_controller_report.md",
+        "claim": "The measured-error estimator is integrated into a complete autonomous scrub controller.",
+    },
+    {
+        "key": "synthesis",
+        "title": "RTL synthesis/resource summary",
+        "path": "results/synthesis/rtl_synthesis_summary.md",
+        "claim": "Flattened Yosys/XC7 synthesis estimates quantify the hardware cost of the blocks.",
+    },
+    {
+        "key": "overhead_gain",
+        "title": "Overhead/gain certificate",
+        "path": "results/chapter4_overhead_gain_certificate.md",
+        "claim": "Schedule benefit and RTL resource cost are combined in one certificate.",
+    },
+]
+
+
+def git_commit() -> str:
+    proc = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=REPO_ROOT,
+        check=False,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+    return proc.stdout.strip() if proc.returncode == 0 else "unknown"
+
+
+def read_text_if_exists(relative_path: str) -> str:
+    path = REPO_ROOT / relative_path
+
+    if not path.exists():
+        return f"**MISSING ARTIFACT:** `{relative_path}`\n"
+
+    return path.read_text(encoding="utf-8")
+
+
+def read_csv_rows(relative_path: str) -> list[dict[str, str]]:
+    path = REPO_ROOT / relative_path
+
+    if not path.exists():
+        return []
+
     with path.open("r", encoding="utf-8", newline="") as file:
         return list(csv.DictReader(file))
 
 
-def read_text(path: Path) -> str:
-    return path.read_text(encoding="utf-8")
+def compact_key_numbers() -> list[str]:
+    lines: list[str] = []
 
+    schedule = read_csv_rows("results/schedules/ch3_five_year_summary.csv")
+    overhead = read_csv_rows("results/chapter4_overhead_gain_certificate.csv")
+    rho_rows = read_csv_rows("results/feasibility/rho_d_sweep_summary.csv")
+    mc_rows = read_csv_rows("results/monte_carlo/accumulation_monte_carlo_summary.csv")
 
-def section(title: str) -> list[str]:
-    return ["", f"## {title}", ""]
+    if schedule:
+        fixed = next(row for row in schedule if row["strategy_key"] == "fixed")
+        current = next(row for row in schedule if row["strategy_key"] == "current")
+        delayed = next(row for row in schedule if row["strategy_key"] == "delayed_1h")
+
+        lines.extend(
+            [
+                f"- Fixed pass count: `{fixed['pass_count']}`.",
+                f"- Current adaptive pass count: `{current['pass_count']}`; fixed/current gain: `{current['gain_fixed_over_strategy']}`.",
+                f"- Delayed 1h adaptive pass count: `{delayed['pass_count']}`; fixed/delayed gain: `{delayed['gain_fixed_over_strategy']}`.",
+                f"- Current adaptive mission probability: `{current['p_mission']}`.",
+                f"- Delayed 1h mission probability: `{delayed['p_mission']}`.",
+            ]
+        )
+
+    if overhead:
+        external = next(row for row in overhead if row["item"] == "external_current_adaptive_schedule")
+        measured = next(row for row in overhead if row["item"] == "measured_error_onboard_fallback")
+
+        lines.extend(
+            [
+                f"- External adaptive controller XC7 estimate: `{external['lut']}` LUT, `{external['ff']}` FF.",
+                f"- Measured-error controller XC7 estimate: `{measured['lut']}` LUT, `{measured['ff']}` FF.",
+                f"- Measured-error increment over external endpoint: `+{measured['delta_lut_vs_external']}` LUT, `+{measured['delta_ff_vs_external']}` FF.",
+            ]
+        )
+
+    if rho_rows:
+        # Pick the last selectable and first insufficient rows around the boundary.
+        selectable = [row for row in rho_rows if row["status"] == "scrub_period_selectable"]
+        insufficient = [row for row in rho_rows if row["status"] == "bandwidth_or_tau_min_insufficient"]
+
+        if selectable:
+            lines.append(f"- Last sampled selectable rho_D: `{selectable[-1]['rho_D']}`.")
+        if insufficient:
+            lines.append(f"- First sampled tau_min-insufficient rho_D: `{insufficient[0]['rho_D']}`.")
+
+    if mc_rows:
+        all_pass = all(row["pass_z_4sigma"] == "true" for row in mc_rows)
+        lines.append(f"- Monte Carlo accumulated-risk validation 4-sigma pass: `{str(all_pass).lower()}`.")
+
+    return lines
 
 
 def main() -> int:
-    feasibility_rows = read_csv_rows(RESULTS / "feasibility" / "feasibility_summary.csv")
-    schedule_rows = read_csv_rows(RESULTS / "schedules" / "schedule_summary.csv")
-    synthesis_rows = read_csv_rows(RESULTS / "synthesis" / "rtl_synthesis_summary.csv")
+    OUT_MD.parent.mkdir(parents=True, exist_ok=True)
 
-    fixed = next(row for row in schedule_rows if row["strategy"].startswith("fixed"))
-    adaptive = next(row for row in schedule_rows if row["strategy"].startswith("adaptive"))
+    metadata = {
+        "git_commit": git_commit(),
+        "artifacts": ARTIFACTS,
+    }
 
-    adaptive_xc7 = next(
-        row
-        for row in synthesis_rows
-        if row["flow"] == "xilinx_xc7" and row["top"] == "adaptive_scrub_controller"
-    )
-
-    lines: list[str] = [
+    lines = [
         "# Chapter 4 evidence pack",
         "",
-        "This report aggregates the reproducible artifacts for the Chapter 4",
-        "hardware implementation of the risk-limited adaptive SEC-DED scrubber.",
+        "This aggregate file collects reproducible model, RTL, fault-replay,",
+        "diagnostic, measured-mode, feasibility, Monte Carlo, and synthesis",
+        "artifacts for the Chapter 4 implementation.",
         "",
-        "The controller is treated as the hardware endpoint of the Chapter 3",
-        "schedule compiler. It consumes an external `period_index` and does not",
-        "compute the radiation-risk model inside RTL.",
+        "It is an evidence pack, not dissertation prose.",
         "",
-    ]
-
-    lines += section("Claim matrix")
-
-    lines += [
+        "## Build metadata",
+        "",
+        f"- Git commit: `{metadata['git_commit']}`",
+        "",
+        "## Claim matrix",
+        "",
         "| Claim | Evidence artifact |",
         "|---|---|",
-        "| Chapter 2 feasibility handoff distinguishes instant-risk, bandwidth-limited, and selectable regions | `results/feasibility/feasibility_summary.md` |",
-        "| Chapter 3 schedule compiler emits an implementable exact-risk period-index schedule | `results/schedules/schedule_summary.md` |",
-        "| SEC-DED datapath corrects all single-bit errors and detects all double-bit errors in the tested 39-bit codeword space | `results/rtl_replay/secded_exhaustive_report.md` |",
-        "| Period scheduler applies external period indices and enters conservative mode when updates are stale | `results/rtl_replay/period_scheduler_report.md` |",
-        "| Scrub pass engine performs a complete memory pass, correction writeback, and DUE reporting | `results/rtl_replay/scrub_pass_engine_report.md` |",
-        "| Integrated controller combines scheduler and scrub engine without computing the risk model in RTL | `results/rtl_replay/adaptive_controller_report.md` |",
-        "| Dangerous-state accounting distinguishes online DUE diagnostics from verification-only SDC audit | `results/rtl_replay/dangerous_state_audit_report.md` |",
-        "| Flattened synthesis gives hardware resource estimates for the controller | `results/synthesis/rtl_synthesis_summary.md` |",
-        "",
     ]
 
-    lines += section("Feasibility handoff from Chapter 2")
+    for artifact in ARTIFACTS:
+        lines.append(f"| {artifact['claim']} | `{artifact['path']}` |")
 
-    lines += [
-        "| Case | Status | g_D | E_inst | E_residual | E_acc(tau_min) | Slack |",
-        "|---|---|---:|---:|---:|---:|---:|",
-    ]
-
-    for row in feasibility_rows:
-        lines.append(
-            "| {case_name} | {status} | {g_D} | {E_inst} | {E_residual} | "
-            "{E_acc_at_tau_min} | {risk_slack_after_tau_min} |".format(**row)
-        )
-
-    lines += [
-        "",
-        "Interpretation: Chapter 4 only proceeds to hardware period scheduling for",
-        "cases classified as `scrub_period_selectable`. The other two regions require",
-        "architectural changes or a lower achievable minimum period before the",
-        "scheduler can satisfy the risk budget.",
-        "",
-    ]
-
-    lines += section("Implementable schedule result from Chapter 3")
-
-    lines += [
-        "| Strategy | Exact E_acc | P_mission | Pass count | Risk utilization | Tau range, s |",
-        "|---|---:|---:|---:|---:|---:|",
-    ]
-
-    for row in schedule_rows:
-        lines.append(
-            "| {strategy} | {risk_e} | {p_mission} | {pass_count} | "
-            "{risk_utilization} | {min_tau_seconds}..{max_tau_seconds} |".format(**row)
-        )
-
-    lines += [
-        "",
-        f"The adaptive exact-risk floor-down schedule reduces full-pass count from "
-        f"`{fixed['pass_count']}` to `{adaptive['pass_count']}`, giving a fixed/adaptive "
-        f"gain of `{adaptive['gain_fixed_over_strategy']}`.",
-        "",
-    ]
-
-    lines += section("RTL verification reports")
-
-    for report_name, title in [
-        ("secded_exhaustive_report.md", "SEC-DED exhaustive verification"),
-        ("period_scheduler_report.md", "Period scheduler verification"),
-        ("scrub_pass_engine_report.md", "Scrub pass engine verification"),
-        ("adaptive_controller_report.md", "Integrated adaptive controller verification"),
-        ("dangerous_state_audit_report.md", "Dangerous-state audit verification"),
-    ]:
-        report_path = RESULTS / "rtl_replay" / report_name
-        report_text = read_text(report_path)
-
-        lines += [
-            f"### {title}",
+    lines.extend(
+        [
             "",
-            f"Source artifact: `results/rtl_replay/{report_name}`.",
+            "## Compact key numbers",
+            "",
+            *compact_key_numbers(),
+            "",
+            "## Aggregated artifact contents",
             "",
         ]
+    )
 
-        # Include report content after its first heading to avoid nested duplicate H1.
-        report_lines = report_text.splitlines()
-        if report_lines and report_lines[0].startswith("# "):
-            report_lines = report_lines[1:]
-
-        lines += report_lines
-        lines += [""]
-
-    lines += section("Synthesis/resource estimate")
-
-    lines += [
-        "| Flow | Top | Cells | FF estimate | LUT estimate | MUX estimate | Wire bits |",
-        "|---|---|---:|---:|---:|---:|---:|",
-    ]
-
-    for row in synthesis_rows:
-        lines.append(
-            "| {flow} | {top} | {cells} | {ff_estimate} | {lut_estimate} | "
-            "{mux_estimate} | {wire_bits} |".format(**row)
+    for artifact in ARTIFACTS:
+        lines.extend(
+            [
+                f"## {artifact['title']}",
+                "",
+                f"Source artifact: `{artifact['path']}`.",
+                "",
+                read_text_if_exists(artifact["path"]).strip(),
+                "",
+            ]
         )
 
-    lines += [
-        "",
-        "For the integrated `adaptive_scrub_controller`, the flattened XC7 estimate is:",
-        "",
-        f"- cells: `{adaptive_xc7['cells']}`;",
-        f"- FF estimate: `{adaptive_xc7['ff_estimate']}`;",
-        f"- LUT estimate: `{adaptive_xc7['lut_estimate']}`;",
-        f"- MUX estimate: `{adaptive_xc7['mux_estimate']}`.",
-        "",
-        "This is a synthesis/resource estimate only. It does not establish Fmax",
-        "because no target-specific placement and routing has been performed.",
-        "",
-    ]
+    OUT_MD.write_text("\n".join(lines), encoding="utf-8")
 
-    lines += section("Explicit limits")
+    with OUT_JSON.open("w", encoding="utf-8") as file:
+        json.dump(metadata, file, indent=2, ensure_ascii=False)
 
-    lines += [
-        "- The RTL controller does not compute `nu(t)`, `g_D`, `E_inst`, or `E_residual`.",
-        "- The RTL controller consumes an externally generated `period_index` stream.",
-        "- SEC-DED online logic does not guarantee detection of every 3+ bit corruption.",
-        "- `final_sdc_words` is a verification-audit metric based on a golden reference.",
-        "- The MBU feasibility cases are illustrative unless technology-specific `p_m` and `h_m^(D)` values are supplied.",
-        "- Yosys estimates are not timing closure and do not claim maximum frequency.",
-        "",
-    ]
+    print("Wrote", OUT_MD)
+    print("Wrote", OUT_JSON)
+    print()
+    print("=== Compact key numbers ===")
+    for line in compact_key_numbers():
+        print(line)
 
-    OUTPUT.write_text("\n".join(lines), encoding="utf-8")
-    print("Chapter 4 evidence pack written to", OUTPUT)
     return 0
 
 

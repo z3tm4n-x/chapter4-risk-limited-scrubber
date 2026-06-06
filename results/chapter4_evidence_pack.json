@@ -1,0 +1,83 @@
+{
+  "git_commit": "03a333e000303f105a326e478b81bfe900e696a4",
+  "artifacts": [
+    {
+      "key": "series_import",
+      "title": "Chapter 3 five-year series import",
+      "path": "results/schedules/ch3_series_import_summary.csv",
+      "claim": "The five-year upset series is imported and transformed into the total upset-rate series used by Chapter 3."
+    },
+    {
+      "key": "five_year_schedule",
+      "title": "Chapter 3 five-year exact-risk schedules",
+      "path": "results/schedules/ch3_five_year_summary.md",
+      "claim": "The fixed/current/delayed schedules are compiled on the dissertation geometry and target probability."
+    },
+    {
+      "key": "model_rtl_replay",
+      "title": "Model-to-RTL schedule replay certificate",
+      "path": "results/chapter4_model_rtl_certificate.md",
+      "claim": "The RTL controller executes model-generated period indices with zero pass-count mismatch on representative windows."
+    },
+    {
+      "key": "fault_replay",
+      "title": "Radiation-window fault replay",
+      "path": "results/rtl_replay/ch3_fault_replay_summary.md",
+      "claim": "The selected radiation windows are replayed with fault streams and separated DUE/persistent/SDC-audit metrics."
+    },
+    {
+      "key": "interleaving_mbu",
+      "title": "Interleaving MBU experiment",
+      "path": "results/rtl_replay/interleaving_mbu_summary.md",
+      "claim": "The same physical MBU is dangerous without interleaving and correctable when split across codewords."
+    },
+    {
+      "key": "diagnostic_supervisor",
+      "title": "Diagnostic supervisor RTL",
+      "path": "results/rtl_replay/diagnostic_supervisor_report.md",
+      "claim": "The diagnostic block raises alert, persistent-DUE, out-of-envelope, and force-conservative flags from SEC-DED symptoms."
+    },
+    {
+      "key": "integrated_diagnostic",
+      "title": "Integrated diagnostic controller RTL",
+      "path": "results/rtl_replay/integrated_diagnostic_controller_report.md",
+      "claim": "The top-level external-period controller exposes diagnostic flags from real scrub events."
+    },
+    {
+      "key": "rho_d_sweep",
+      "title": "rho_D residual-budget sweep",
+      "path": "results/feasibility/rho_d_sweep_summary.md",
+      "claim": "The residual-budget boundary is reproduced numerically; above rho_crit, tau_min is insufficient."
+    },
+    {
+      "key": "monte_carlo",
+      "title": "Accumulated-risk Monte Carlo validation",
+      "path": "results/monte_carlo/accumulation_monte_carlo_report.md",
+      "claim": "The exact accumulated-risk kernel is validated by direct random placement at accelerated lambda values."
+    },
+    {
+      "key": "measured_estimator",
+      "title": "Measured-error period estimator RTL",
+      "path": "results/rtl_replay/measured_error_estimator_report.md",
+      "claim": "The onboard estimator relaxes on quiet passes, speeds up on corrections, and forces safe period on DUE."
+    },
+    {
+      "key": "measured_controller",
+      "title": "Integrated measured-error controller RTL",
+      "path": "results/rtl_replay/measured_error_controller_report.md",
+      "claim": "The measured-error estimator is integrated into a complete autonomous scrub controller."
+    },
+    {
+      "key": "synthesis",
+      "title": "RTL synthesis/resource summary",
+      "path": "results/synthesis/rtl_synthesis_summary.md",
+      "claim": "Flattened Yosys/XC7 synthesis estimates quantify the hardware cost of the blocks."
+    },
+    {
+      "key": "overhead_gain",
+      "title": "Overhead/gain certificate",
+      "path": "results/chapter4_overhead_gain_certificate.md",
+      "claim": "Schedule benefit and RTL resource cost are combined in one certificate."
+    }
+  ]
+}

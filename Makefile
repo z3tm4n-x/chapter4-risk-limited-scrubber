@@ -1,6 +1,7 @@
-.PHONY: help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation integrated-diagnostic-rtl measured-error-estimator-rtl measured-error-controller-rtl overhead-gain-certificate schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
+.PHONY: chapter4-evidence-pack help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation integrated-diagnostic-rtl measured-error-estimator-rtl measured-error-controller-rtl overhead-gain-certificate schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
 
 help:
+	@echo "  chapter4-evidence-pack - build aggregate Chapter 4 evidence pack"
 	@echo "Targets:"
 	@echo "  check-env           - show tool versions"
 	@echo "  test                - run Python unit tests"
@@ -114,3 +115,7 @@ evidence: test schedule-demo feasibility-demo rtl synthesis
 clean:
 	rm -f *.vcd *.fst *.out *.vvp
 	rm -rf __pycache__ .pytest_cache generated/rtl
+
+
+chapter4-evidence-pack: overhead-gain-certificate ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl integrated-diagnostic-rtl rho-d-sweep mc-accumulation measured-error-estimator-rtl measured-error-controller-rtl
+	python3 scripts/build_chapter4_evidence_pack.py
