@@ -21,6 +21,7 @@ It is an evidence pack, not dissertation prose.
 | The same physical MBU is dangerous without interleaving and correctable when split across codewords. | `results/rtl_replay/interleaving_mbu_summary.md` |
 | The diagnostic block raises alert, persistent-DUE, out-of-envelope, and force-conservative flags from SEC-DED symptoms. | `results/rtl_replay/diagnostic_supervisor_report.md` |
 | The top-level external-period controller exposes diagnostic flags from real scrub events. | `results/rtl_replay/integrated_diagnostic_controller_report.md` |
+| The Chapter 3 minimum scrub period is connected to an explicit hardware service-rate model and shown feasible for the dissertation memory geometry. | `results/feasibility/tau_min_certificate.md` |
 | The residual-budget boundary is reproduced numerically; above rho_crit, tau_min is insufficient. | `results/feasibility/rho_d_sweep_summary.md` |
 | The exact accumulated-risk kernel is validated by direct random placement at accelerated lambda values. | `results/monte_carlo/accumulation_monte_carlo_report.md` |
 | The onboard estimator relaxes on quiet passes, speeds up on corrections, and forces safe period on DUE. | `results/rtl_replay/measured_error_estimator_report.md` |
@@ -42,6 +43,7 @@ It is an evidence pack, not dissertation prose.
 - Measured-error increment over external endpoint: `+159` LUT, `+104` FF.
 - Last sampled selectable rho_D: `0.88955`.
 - First sampled tau_min-insufficient rho_D: `0.89`.
+- Tau-min pass time: `0.01935836` s; margin `51.65726848761982`; feasible `true`.
 - Monte Carlo accumulated-risk validation 4-sigma pass: `true`.
 - Best sampled target-meeting measured policy: `measured_q16_high1_max3600`; pass count `6451890`, fixed/policy gain `4.89054835095`.
 - Fastest sampled measured policy fails target: `measured_q4_high1_max120`; risk utilization `1.63030252406`.
@@ -304,6 +306,47 @@ Interpretation:
 - Corrected SEC-DED events are visible to the integrated diagnostic path.
 - Same-word persistent DUE raises danger and persistent-DUE diagnostics.
 - `diag_force_conservative` is a system-level request; the controller still does not compute the radiation model.
+
+## Tau-min hardware feasibility certificate
+
+Source artifact: `results/feasibility/tau_min_certificate.md`.
+
+# Tau-min hardware feasibility certificate
+
+This certificate connects the Chapter 3 minimum scrub period to an
+explicit hardware service-rate model.
+
+It is not a place-and-route timing report. It only checks whether one
+complete scrub pass can fit inside the configured minimum period.
+
+## Parameters and results
+
+| Metric | Value |
+|---|---:|
+| codeword_count | 1935832 |
+| codeword_bits | 39 |
+| protected_bits | 75497448 |
+| scrub_clock_hz | 100000000.0 |
+| cycles_per_word | 1.0 |
+| pipeline_overhead_cycles | 4.0 |
+| pass_cycles | 1935836.0 |
+| pass_time_seconds | 0.01935836 |
+| effective_words_per_second | 100000000.0 |
+| effective_bits_per_second | 3900000000.0 |
+| target_tau_min_seconds | 1.0 |
+| tau_min_margin | 51.65726848761982 |
+| tau_min_feasible | true |
+
+## Interpretation
+
+- One complete pass over `1935832` SEC-DED codewords takes `0.01935836` s under the configured service-rate model.
+- The Chapter 3 minimum period is `1` s.
+- The resulting tau-min margin is `51.6572684876`.
+- Tau-min feasibility verdict: `true`.
+
+If the memory subsystem provides a lower effective scrub bandwidth,
+the configuration must be updated and the residual-risk boundary
+must be recomputed.
 
 ## rho_D residual-budget sweep
 

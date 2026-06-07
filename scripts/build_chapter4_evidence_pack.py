@@ -62,6 +62,12 @@ ARTIFACTS = [
         "claim": "The top-level external-period controller exposes diagnostic flags from real scrub events.",
     },
     {
+        "key": "tau_min_certificate",
+        "title": "Tau-min hardware feasibility certificate",
+        "path": "results/feasibility/tau_min_certificate.md",
+        "claim": "The Chapter 3 minimum scrub period is connected to an explicit hardware service-rate model and shown feasible for the dissertation memory geometry.",
+    },
+    {
         "key": "rho_d_sweep",
         "title": "rho_D residual-budget sweep",
         "path": "results/feasibility/rho_d_sweep_summary.md",
@@ -149,6 +155,7 @@ def compact_key_numbers() -> list[str]:
     schedule = read_csv_rows("results/schedules/ch3_five_year_summary.csv")
     overhead = read_csv_rows("results/chapter4_overhead_gain_certificate.csv")
     rho_rows = read_csv_rows("results/feasibility/rho_d_sweep_summary.csv")
+    tau_rows = read_csv_rows("results/feasibility/tau_min_certificate.csv")
     mc_rows = read_csv_rows("results/monte_carlo/accumulation_monte_carlo_summary.csv")
 
     if schedule:
@@ -187,6 +194,13 @@ def compact_key_numbers() -> list[str]:
             lines.append(f"- Last sampled selectable rho_D: `{selectable[-1]['rho_D']}`.")
         if insufficient:
             lines.append(f"- First sampled tau_min-insufficient rho_D: `{insufficient[0]['rho_D']}`.")
+
+    if tau_rows:
+        tau = {row["metric"]: row["value"] for row in tau_rows}
+        lines.append(
+            f"- Tau-min pass time: `{tau['pass_time_seconds']}` s; "
+            f"margin `{tau['tau_min_margin']}`; feasible `{tau['tau_min_feasible']}`."
+        )
 
     if mc_rows:
         all_pass = all(row["pass_z_4sigma"] == "true" for row in mc_rows)

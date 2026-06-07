@@ -44,6 +44,12 @@
       "claim": "The top-level external-period controller exposes diagnostic flags from real scrub events."
     },
     {
+      "key": "tau_min_certificate",
+      "title": "Tau-min hardware feasibility certificate",
+      "path": "results/feasibility/tau_min_certificate.md",
+      "claim": "The Chapter 3 minimum scrub period is connected to an explicit hardware service-rate model and shown feasible for the dissertation memory geometry."
+    },
+    {
       "key": "rho_d_sweep",
       "title": "rho_D residual-budget sweep",
       "path": "results/feasibility/rho_d_sweep_summary.md",
