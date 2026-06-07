@@ -36,7 +36,8 @@ module adaptive_scrub_controller #(
 
     parameter int DIAG_CORRECTED_ALERT_THRESHOLD = 4,
     parameter int DIAG_ALERT_CONSECUTIVE_THRESHOLD = 2,
-    parameter int DIAG_PERSISTENT_DUE_THRESHOLD = 1
+    parameter int DIAG_PERSISTENT_DUE_THRESHOLD = 1,
+    parameter int DIAG_DUE_TRACKER_ENTRIES = 16
 ) (
     input  logic                            clk,
     input  logic                            reset_n,
@@ -152,7 +153,8 @@ module adaptive_scrub_controller #(
         .DEPTH(DEPTH),
         .CORRECTED_ALERT_THRESHOLD(DIAG_CORRECTED_ALERT_THRESHOLD),
         .ALERT_CONSECUTIVE_THRESHOLD(DIAG_ALERT_CONSECUTIVE_THRESHOLD),
-        .PERSISTENT_DUE_THRESHOLD(DIAG_PERSISTENT_DUE_THRESHOLD)
+        .PERSISTENT_DUE_THRESHOLD(DIAG_PERSISTENT_DUE_THRESHOLD),
+        .DUE_TRACKER_ENTRIES(DIAG_DUE_TRACKER_ENTRIES)
     ) diagnostic (
         .clk(clk),
         .reset_n(reset_n),

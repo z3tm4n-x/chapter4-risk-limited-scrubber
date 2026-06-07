@@ -122,6 +122,12 @@ ARTIFACTS = [
         "claim": "Flattened Yosys/XC7 synthesis estimates quantify the hardware cost of the blocks.",
     },
     {
+        "key": "ch4_geometry_synthesis",
+        "title": "Chapter 4 dissertation-geometry synthesis",
+        "path": "results/synthesis/ch4_geometry_synthesis_summary.md",
+        "claim": "Key RTL tops are synthesized with the dissertation memory address width and codeword count.",
+    },
+    {
         "key": "overhead_gain",
         "title": "Overhead/gain certificate",
         "path": "results/chapter4_overhead_gain_certificate.md",

@@ -17,22 +17,22 @@ the Chapter 4 RTL resource estimates.
 |---|---:|---:|---:|---|
 | SEC-DED encoder | 32 | 0 | 104 | ECC encode datapath |
 | SEC-DED decoder | 143 | 0 | 324 | ECC decode/correction datapath |
-| Period scheduler | 162 | 167 | 720 | External period-index endpoint |
+| Period scheduler | 163 | 167 | 726 | External period-index endpoint |
 | Scrub pass engine | 168 | 171 | 861 | Full memory pass and writeback |
-| Diagnostic supervisor | 247 | 212 | 962 | Alert/DUE/out-of-envelope flags |
-| External adaptive controller | 444 | 550 | 2385 | Chapter 3 schedule endpoint |
+| Diagnostic supervisor | 347 | 276 | 1231 | Alert/DUE/out-of-envelope flags |
+| External adaptive controller | 528 | 614 | 2612 | Chapter 3 schedule endpoint |
 | Measured-error estimator | 139 | 104 | 511 | Onboard period estimator only |
-| Measured-error controller | 603 | 654 | 2853 | Integrated onboard fallback |
+| Measured-error controller | 682 | 718 | 3084 | Integrated onboard fallback |
 
 ## Incremental measured-mode cost
 
 | Comparison | Delta LUT | Delta FF | Delta LUT % | Delta FF % |
 |---|---:|---:|---:|---:|
-| measured_error_scrub_controller - adaptive_scrub_controller | 159 | 104 | 35.8108 | 18.9091 |
+| measured_error_scrub_controller - adaptive_scrub_controller | 154 | 104 | 29.1667 | 16.9381 |
 
 ## Interpretation
 
 - The external current adaptive schedule reduces pass count by `12.3874x` relative to the best allowed fixed schedule.
 - The delayed one-hour adaptive schedule reduces pass count by `11.9099x`.
-- The measured-error onboard fallback costs `+159` LUT and `+104` FF over the external-period endpoint.
+- The measured-error onboard fallback costs `+154` LUT and `+104` FF over the external-period endpoint.
 - These are synthesis estimates only; they do not establish timing closure or Fmax.

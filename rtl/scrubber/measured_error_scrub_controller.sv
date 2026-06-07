@@ -43,7 +43,8 @@ module measured_error_scrub_controller #(
 
     parameter int DIAG_CORRECTED_ALERT_THRESHOLD = 4,
     parameter int DIAG_ALERT_CONSECUTIVE_THRESHOLD = 2,
-    parameter int DIAG_PERSISTENT_DUE_THRESHOLD = 1
+    parameter int DIAG_PERSISTENT_DUE_THRESHOLD = 1,
+    parameter int DIAG_DUE_TRACKER_ENTRIES = 16
 ) (
     input  logic                            clk,
     input  logic                            reset_n,
@@ -151,7 +152,8 @@ module measured_error_scrub_controller #(
         .MAX_CONTROL_AGE_CYCLES(MAX_CONTROL_AGE_CYCLES),
         .DIAG_CORRECTED_ALERT_THRESHOLD(DIAG_CORRECTED_ALERT_THRESHOLD),
         .DIAG_ALERT_CONSECUTIVE_THRESHOLD(DIAG_ALERT_CONSECUTIVE_THRESHOLD),
-        .DIAG_PERSISTENT_DUE_THRESHOLD(DIAG_PERSISTENT_DUE_THRESHOLD)
+        .DIAG_PERSISTENT_DUE_THRESHOLD(DIAG_PERSISTENT_DUE_THRESHOLD),
+        .DIAG_DUE_TRACKER_ENTRIES(DIAG_DUE_TRACKER_ENTRIES)
     ) controller (
         .clk(clk),
         .reset_n(reset_n),
