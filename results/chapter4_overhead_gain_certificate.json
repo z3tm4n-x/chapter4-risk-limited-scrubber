@@ -1,5 +1,5 @@
 {
-  "git_commit": "25ae0ff51fcb9b54c5c47b0c8ed760adcf0ed101",
+  "generated_by": "build_overhead_gain_certificate.py",
   "fixed": {
     "strategy_key": "fixed",
     "strategy": "fixed_allowed_5s",

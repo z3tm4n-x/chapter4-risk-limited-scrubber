@@ -145,7 +145,7 @@ def write_outputs() -> None:
     five_second_row = next(row for row in fixed_sweep_rows if row["tau_seconds"] == "5")
 
     certificate = {
-        "git_commit": git_commit(),
+        "generated_by": "build_ch3_model_rtl_certificate.py",
         "series": {
             "hours": import_metrics["hour_count"],
             "start": import_metrics["start_timestamp_utc"],

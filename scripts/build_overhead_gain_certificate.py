@@ -228,7 +228,7 @@ def main() -> int:
         writer.writerows(rows)
 
     certificate = {
-        "git_commit": git_commit(),
+        "generated_by": "build_overhead_gain_certificate.py",
         "fixed": fixed,
         "current": current,
         "delayed_1h": delayed,
