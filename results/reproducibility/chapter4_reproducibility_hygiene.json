@@ -1,0 +1,17 @@
+{
+  "generated_by": "check_reproducibility_hygiene.py",
+  "transient_patterns": [
+    "results/rtl_replay/*.log",
+    "results/synthesis/logs/*.log"
+  ],
+  "tracked_transient_logs": [],
+  "metrics": {
+    "tracked_transient_log_count": "0",
+    "rtl_replay_log_ignored": "true",
+    "synthesis_log_ignored": "true",
+    "summary_csv_tracked_allowed": "true",
+    "summary_md_tracked_allowed": "true",
+    "summary_json_tracked_allowed": "true",
+    "hygiene_pass": "true"
+  }
+}

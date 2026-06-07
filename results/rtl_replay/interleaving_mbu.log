@@ -1,7 +1,0 @@
-rtl/ecc/secded_32_39_encoder.sv:36: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
-rtl/ecc/secded_32_39_decoder.sv:46: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
-rtl/ecc/secded_32_39_decoder.sv:46: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
-INTERLEAVING_MBU_SUMMARY scenario=D1_same_word physical_multiplicity=3 interleave_depth=1 corrected=1 detected_due=0 writes=1 final_uncorrectable=0 final_sdc=1 final_dangerous=1 failures=0
-INTERLEAVING_MBU_SUMMARY scenario=D3_split physical_multiplicity=3 interleave_depth=3 corrected=3 detected_due=0 writes=3 final_uncorrectable=0 final_sdc=0 final_dangerous=0 failures=0
-INTERLEAVING_MBU_PASS
-/home/z3tm4n/diss-work/chapter4-risk-limited-scrubber/generated/rtl/interleaving_mbu/tb_interleaving_mbu.sv:252: $finish called at 733000 (1ps)

@@ -1,6 +1,7 @@
-.PHONY: ch4-geometry-synthesis tau-min-certificate measured-policy-seed-sweep measured-policy-model reproduce-chapter4 chapter4-evidence-pack-full help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation integrated-diagnostic-rtl measured-error-estimator-rtl measured-error-controller-rtl overhead-gain-certificate schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean chapter4-evidence-pack
+.PHONY: reproducibility-hygiene ch4-geometry-synthesis tau-min-certificate measured-policy-seed-sweep measured-policy-model reproduce-chapter4 chapter4-evidence-pack-full help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation integrated-diagnostic-rtl measured-error-estimator-rtl measured-error-controller-rtl overhead-gain-certificate schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean chapter4-evidence-pack
 
 help:
+	@echo "  reproducibility-hygiene - check transient log tracking policy"
 	@echo "  ch4-geometry-synthesis - synthesize key RTL tops at dissertation memory geometry"
 	@echo "  tau-min-certificate - compute hardware feasibility margin for tau_min"
 	@echo "  measured-policy-seed-sweep - evaluate measured-error policy robustness across seeds"
@@ -146,3 +147,7 @@ reproduce-chapter4: test tau-min-certificate import-ch3-upsets period-table ch3-
 
 ch4-geometry-synthesis:
 	python3 scripts/run_ch4_geometry_synthesis.py
+
+
+reproducibility-hygiene:
+	python3 scripts/check_reproducibility_hygiene.py

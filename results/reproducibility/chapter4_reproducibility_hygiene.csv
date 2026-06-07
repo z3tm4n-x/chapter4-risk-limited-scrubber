@@ -1,0 +1,8 @@
+metric,value
+tracked_transient_log_count,0
+rtl_replay_log_ignored,true
+synthesis_log_ignored,true
+summary_csv_tracked_allowed,true
+summary_md_tracked_allowed,true
+summary_json_tracked_allowed,true
+hygiene_pass,true

@@ -133,6 +133,12 @@ ARTIFACTS = [
         "path": "results/chapter4_overhead_gain_certificate.md",
         "claim": "Schedule benefit and RTL resource cost are combined in one certificate.",
     },
+    {
+        "key": "reproducibility_hygiene",
+        "title": "Chapter 4 reproducibility hygiene audit",
+        "path": "results/reproducibility/chapter4_reproducibility_hygiene.md",
+        "claim": "Transient runtime logs are ignored while durable summary/certificate artifacts remain tracked.",
+    },
 ]
 
 

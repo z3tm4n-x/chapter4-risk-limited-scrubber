@@ -33,6 +33,7 @@ It is an evidence pack, not dissertation prose.
 | Flattened Yosys/XC7 synthesis estimates quantify the hardware cost of the blocks. | `results/synthesis/rtl_synthesis_summary.md` |
 | Key RTL tops are synthesized with the dissertation memory address width and codeword count. | `results/synthesis/ch4_geometry_synthesis_summary.md` |
 | Schedule benefit and RTL resource cost are combined in one certificate. | `results/chapter4_overhead_gain_certificate.md` |
+| Transient runtime logs are ignored while durable summary/certificate artifacts remain tracked. | `results/reproducibility/chapter4_reproducibility_hygiene.md` |
 
 ## Compact key numbers
 
@@ -734,3 +735,37 @@ the Chapter 4 RTL resource estimates.
 - The delayed one-hour adaptive schedule reduces pass count by `11.9099x`.
 - The measured-error onboard fallback costs `+154` LUT and `+104` FF over the external-period endpoint.
 - These are synthesis estimates only; they do not establish timing closure or Fmax.
+
+## Chapter 4 reproducibility hygiene audit
+
+Source artifact: `results/reproducibility/chapter4_reproducibility_hygiene.md`.
+
+# Chapter 4 reproducibility hygiene audit
+
+This audit checks that transient runtime logs are not tracked as durable
+evidence artifacts.
+
+Tracked evidence remains in summary/certificate `csv`, `md`, and `json`
+files. Runtime `.log` files are regenerated locally and ignored.
+
+## Metrics
+
+| Metric | Value |
+|---|---:|
+| tracked_transient_log_count | 0 |
+| rtl_replay_log_ignored | true |
+| synthesis_log_ignored | true |
+| summary_csv_tracked_allowed | true |
+| summary_md_tracked_allowed | true |
+| summary_json_tracked_allowed | true |
+| hygiene_pass | true |
+
+## Tracked transient logs
+
+- none
+
+## Interpretation
+
+- Full Chapter 4 reproduction may regenerate raw logs.
+- Regenerated logs should not by themselves dirty the git worktree.
+- Durable evidence is carried by committed summary/certificate artifacts.

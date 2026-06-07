@@ -1,6 +1,0 @@
-rtl/ecc/secded_32_39_encoder.sv:36: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
-rtl/ecc/secded_32_39_decoder.sv:46: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
-rtl/scrubber/diagnostic_supervisor.sv:66: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
-MEASURED_ERROR_CONTROLLER_SUMMARY passes=8 reads=56 writes=3 corrected=3 due=3 updates=7 high_activity=1 quiet_relax=1 forced_safe=1 final_period_index=0 diag_danger=1 diag_force=1 failures=0
-MEASURED_ERROR_CONTROLLER_PASS
-/home/z3tm4n/diss-work/chapter4-risk-limited-scrubber/generated/rtl/measured_error_controller/tb_measured_error_controller.sv:286: $finish called at 129275000 (1ps)

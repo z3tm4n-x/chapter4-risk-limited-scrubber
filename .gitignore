@@ -20,3 +20,7 @@ results/logs/
 
 # synthesis logs are reproducible and can be large
 results/synthesis/logs/
+# Generated runtime logs. Summary/certificate CSV/MD/JSON files remain tracked.
+results/rtl_replay/*.log
+results/synthesis/logs/*.log
+results/logs/
