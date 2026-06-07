@@ -5,6 +5,10 @@
 //
 // The controller does not compute the radiation/risk model. It executes an
 // implementable schedule produced outside RTL by the Chapter 3 compiler.
+//
+// The period scheduler counts coarse timebase ticks. Simulation may compress
+// time by asserting time_tick every clk; deployment can drive time_tick from
+// a 1 Hz or other configured timer.
 
 `timescale 1ns/1ps
 
@@ -36,6 +40,7 @@ module adaptive_scrub_controller #(
 ) (
     input  logic                            clk,
     input  logic                            reset_n,
+    input  logic                            time_tick,
 
     input  logic                            period_update_valid,
     input  logic [PERIOD_INDEX_WIDTH-1:0]   period_index,
@@ -105,6 +110,7 @@ module adaptive_scrub_controller #(
     ) scheduler (
         .clk(clk),
         .reset_n(reset_n),
+        .time_tick(time_tick),
         .period_update_valid(period_update_valid),
         .period_index(period_index),
         .pass_done(engine_pass_done),

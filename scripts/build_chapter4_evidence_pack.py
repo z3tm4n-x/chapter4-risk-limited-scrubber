@@ -68,6 +68,12 @@ ARTIFACTS = [
         "claim": "The Chapter 3 minimum scrub period is connected to an explicit hardware service-rate model and shown feasible for the dissertation memory geometry.",
     },
     {
+        "key": "timebase_contract",
+        "title": "RTL timebase contract",
+        "path": "results/rtl_replay/timebase_contract.md",
+        "claim": "The RTL scheduler counts coarse timebase ticks rather than long raw implementation-clock intervals.",
+    },
+    {
         "key": "rho_d_sweep",
         "title": "rho_D residual-budget sweep",
         "path": "results/feasibility/rho_d_sweep_summary.md",

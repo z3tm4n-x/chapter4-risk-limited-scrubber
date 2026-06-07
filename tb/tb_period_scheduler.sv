@@ -12,6 +12,7 @@ module tb_period_scheduler;
 
     logic clk;
     logic reset_n;
+    logic time_tick;
 
     logic period_update_valid;
     logic [2:0] period_index;
@@ -50,6 +51,7 @@ module tb_period_scheduler;
     ) dut (
         .clk(clk),
         .reset_n(reset_n),
+        .time_tick(time_tick),
         .period_update_valid(period_update_valid),
         .period_index(period_index),
         .pass_done(pass_done),
@@ -134,6 +136,7 @@ module tb_period_scheduler;
         period_index = 3'd0;
 
         reset_n = 1'b0;
+        time_tick = 1'b1;
         repeat (5) @(posedge clk);
         reset_n = 1'b1;
 

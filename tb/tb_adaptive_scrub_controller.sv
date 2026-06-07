@@ -17,6 +17,7 @@ module tb_adaptive_scrub_controller;
 
     logic clk;
     logic reset_n;
+    logic time_tick;
 
     logic period_update_valid;
     logic [2:0] period_index;
@@ -79,6 +80,7 @@ module tb_adaptive_scrub_controller;
     ) dut (
         .clk(clk),
         .reset_n(reset_n),
+        .time_tick(time_tick),
         .period_update_valid(period_update_valid),
         .period_index(period_index),
         .mem_read_en(mem_read_en),
@@ -142,6 +144,7 @@ module tb_adaptive_scrub_controller;
         period_index = 3'd0;
 
         reset_n = 1'b0;
+        time_tick = 1'b1;
 
         // Initialize memory while reset is asserted.
         for (addr = 0; addr < DEPTH; addr = addr + 1) begin

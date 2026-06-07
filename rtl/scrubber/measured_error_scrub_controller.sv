@@ -47,6 +47,7 @@ module measured_error_scrub_controller #(
 ) (
     input  logic                            clk,
     input  logic                            reset_n,
+    input  logic                            time_tick,
 
     input  logic                            measured_enable,
     input  logic                            measured_clear,
@@ -154,6 +155,7 @@ module measured_error_scrub_controller #(
     ) controller (
         .clk(clk),
         .reset_n(reset_n),
+        .time_tick(time_tick),
         .period_update_valid(measured_period_update_valid),
         .period_index(measured_period_index),
         .mem_read_en(mem_read_en),

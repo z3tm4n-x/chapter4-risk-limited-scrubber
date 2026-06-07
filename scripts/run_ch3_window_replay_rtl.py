@@ -220,6 +220,7 @@ module {tb_name};
     ) dut (
         .clk(clk),
         .reset_n(reset_n),
+        .time_tick(1'b1),
         .period_update_valid(period_update_valid),
         .period_index(period_index),
         .mem_read_en(mem_read_en),

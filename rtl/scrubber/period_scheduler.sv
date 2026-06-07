@@ -5,6 +5,14 @@
 // period_index and launches full scrub passes so that the interval between two
 // checks of the same codeword tracks the selected full-pass period.
 //
+// Time representation:
+//   - clk is the implementation clock.
+//   - time_tick is a coarse timebase tick.
+//   - PERIOD*_CYCLES are legacy parameter names kept for compatibility;
+//     they are interpreted as PERIOD*_TICKS by the scheduler.
+//   - RTL replay may compress time by asserting time_tick every clk.
+//   - A deployment may drive time_tick from a 1 Hz or other configured timer.
+//
 // If external updates become stale, the scheduler falls back to a conservative
 // safe period index.
 
@@ -31,6 +39,7 @@ module period_scheduler #(
 ) (
     input  logic                            clk,
     input  logic                            reset_n,
+    input  logic                            time_tick,
 
     input  logic                            period_update_valid,
     input  logic [PERIOD_INDEX_WIDTH-1:0]   period_index,
@@ -39,7 +48,7 @@ module period_scheduler #(
 
     output logic                            pass_start,
     output logic [PERIOD_INDEX_WIDTH-1:0]   applied_period_index,
-    output logic [31:0]                     selected_period_cycles,
+    output logic [31:0]                     selected_period_cycles, // legacy name: selected period in time ticks
     output logic                            safe_mode_active,
     output logic                            stale_control_flag,
     output logic [31:0]                     last_pass_cycles,
@@ -54,9 +63,9 @@ module period_scheduler #(
     state_t state;
 
     logic [PERIOD_INDEX_WIDTH-1:0] commanded_period_index;
-    logic [31:0]                   control_age_cycles;
-    logic [31:0]                   wait_counter;
-    logic [31:0]                   pass_cycle_counter;
+    logic [31:0]                   control_age_cycles; // legacy name: control age in time ticks
+    logic [31:0]                   wait_counter;        // wait time in time ticks
+    logic [31:0]                   pass_cycle_counter;  // legacy name: pass duration in time ticks
     logic                          safe_mode_active_d;
 
     function automatic logic [PERIOD_INDEX_WIDTH-1:0] clamp_period_index(
@@ -146,11 +155,12 @@ module period_scheduler #(
         end else begin
             pass_start <= 1'b0;
 
-            // External control update.
+            // External control update. Staleness is measured in coarse
+            // timebase ticks, not raw implementation-clock cycles.
             if (period_update_valid) begin
                 commanded_period_index <= clamp_period_index(period_index);
                 control_age_cycles <= 32'd0;
-            end else if (control_age_cycles < MAX_CONTROL_AGE_CYCLES[31:0]) begin
+            end else if (time_tick && control_age_cycles < MAX_CONTROL_AGE_CYCLES[31:0]) begin
                 control_age_cycles <= control_age_cycles + 32'd1;
             end
 
@@ -166,9 +176,11 @@ module period_scheduler #(
 
                     if (wait_counter == 32'd0) begin
                         pass_start <= 1'b1;
+                        // Preserve the legacy compressed-time accounting:
+                        // a launched pass consumes at least one scheduler tick.
                         pass_cycle_counter <= 32'd1;
                         state <= S_INPASS;
-                    end else begin
+                    end else if (time_tick) begin
                         wait_counter <= wait_counter - 32'd1;
                     end
                 end
@@ -181,7 +193,7 @@ module period_scheduler #(
                             pass_cycle_counter + 32'd1
                         );
                         state <= S_WAIT;
-                    end else begin
+                    end else if (time_tick) begin
                         pass_cycle_counter <= pass_cycle_counter + 32'd1;
                     end
                 end

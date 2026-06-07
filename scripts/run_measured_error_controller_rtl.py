@@ -145,6 +145,7 @@ module tb_measured_error_controller;
     ) dut (
         .clk(clk),
         .reset_n(reset_n),
+        .time_tick(1'b1),
         .measured_enable(measured_enable),
         .measured_clear(measured_clear),
         .mem_read_en(mem_read_en),

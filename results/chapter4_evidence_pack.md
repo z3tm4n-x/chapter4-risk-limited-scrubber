@@ -22,6 +22,7 @@ It is an evidence pack, not dissertation prose.
 | The diagnostic block raises alert, persistent-DUE, out-of-envelope, and force-conservative flags from SEC-DED symptoms. | `results/rtl_replay/diagnostic_supervisor_report.md` |
 | The top-level external-period controller exposes diagnostic flags from real scrub events. | `results/rtl_replay/integrated_diagnostic_controller_report.md` |
 | The Chapter 3 minimum scrub period is connected to an explicit hardware service-rate model and shown feasible for the dissertation memory geometry. | `results/feasibility/tau_min_certificate.md` |
+| The RTL scheduler counts coarse timebase ticks rather than long raw implementation-clock intervals. | `results/rtl_replay/timebase_contract.md` |
 | The residual-budget boundary is reproduced numerically; above rho_crit, tau_min is insufficient. | `results/feasibility/rho_d_sweep_summary.md` |
 | The exact accumulated-risk kernel is validated by direct random placement at accelerated lambda values. | `results/monte_carlo/accumulation_monte_carlo_report.md` |
 | The onboard estimator relaxes on quiet passes, speeds up on corrections, and forces safe period on DUE. | `results/rtl_replay/measured_error_estimator_report.md` |
@@ -347,6 +348,31 @@ complete scrub pass can fit inside the configured minimum period.
 If the memory subsystem provides a lower effective scrub bandwidth,
 the configuration must be updated and the residual-risk boundary
 must be recomputed.
+
+## RTL timebase contract
+
+Source artifact: `results/rtl_replay/timebase_contract.md`.
+
+# RTL timebase contract
+
+The Chapter 3 schedule compiler emits period indices for a table of
+physical scrub periods. The RTL scheduler does not count long physical
+periods in raw implementation-clock cycles.
+
+The scheduler uses a coarse `time_tick` input:
+
+- `clk` is the implementation clock.
+- `time_tick` is the timebase event used by the period scheduler.
+- Legacy `PERIOD*_CYCLES` parameter names are kept for compatibility, but
+  are interpreted by the scheduler as period ticks.
+- RTL replay compresses time by asserting `time_tick` every simulation clock.
+- A real deployment may drive `time_tick` from a 1 Hz timer or another
+  configured time quantum.
+- The tau-min certificate separately checks that one full scrub pass fits
+  inside the minimum physical period.
+
+This contract avoids representing long physical periods, such as 3600 s, as
+large raw system-clock counts.
 
 ## rho_D residual-budget sweep
 
