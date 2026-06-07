@@ -1,6 +1,7 @@
-.PHONY: measured-policy-seed-sweep measured-policy-model reproduce-chapter4 chapter4-evidence-pack help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation integrated-diagnostic-rtl measured-error-estimator-rtl measured-error-controller-rtl overhead-gain-certificate schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
+.PHONY: tau-min-certificate measured-policy-seed-sweep measured-policy-model reproduce-chapter4 chapter4-evidence-pack help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation integrated-diagnostic-rtl measured-error-estimator-rtl measured-error-controller-rtl overhead-gain-certificate schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
 
 help:
+	@echo "  tau-min-certificate - compute hardware feasibility margin for tau_min"
 	@echo "  measured-policy-seed-sweep - evaluate measured-error policy robustness across seeds"
 	@echo "  measured-policy-model - evaluate measured-error policies on five-year series"
 	@echo "  reproduce-chapter4 - rebuild all Chapter 4 evidence from sources"
@@ -134,3 +135,7 @@ measured-policy-model: ch3-five-year-schedule
 
 measured-policy-seed-sweep: ch3-five-year-schedule
 	python3 scripts/run_measured_policy_seed_sweep.py
+
+
+tau-min-certificate:
+	python3 scripts/build_tau_min_certificate.py

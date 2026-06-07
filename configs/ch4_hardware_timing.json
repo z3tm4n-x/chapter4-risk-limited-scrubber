@@ -1,0 +1,15 @@
+{
+  "name": "chapter4_tau_min_hardware_timing",
+  "description": "Hardware timing assumptions used to justify tau_min for the Chapter 4 scrub controller.",
+  "codeword_count": 1935832,
+  "codeword_bits": 39,
+  "scrub_clock_hz": 100000000,
+  "cycles_per_word": 1,
+  "pipeline_overhead_cycles": 4,
+  "target_tau_min_seconds": 1.0,
+  "notes": [
+    "The scrub engine is modeled as one protected SEC-DED codeword service per scrub clock cycle.",
+    "The certificate checks that one full pass over the protected memory fits within tau_min.",
+    "If the memory subsystem provides fewer effective words per second, this configuration must be updated."
+  ]
+}

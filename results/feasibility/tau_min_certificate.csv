@@ -1,0 +1,14 @@
+metric,value
+codeword_count,1935832
+codeword_bits,39
+protected_bits,75497448
+scrub_clock_hz,100000000.0
+cycles_per_word,1.0
+pipeline_overhead_cycles,4.0
+pass_cycles,1935836.0
+pass_time_seconds,0.01935836
+effective_words_per_second,100000000.0
+effective_bits_per_second,3900000000.0
+target_tau_min_seconds,1.0
+tau_min_margin,51.65726848761982
+tau_min_feasible,true
