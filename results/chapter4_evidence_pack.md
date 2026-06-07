@@ -20,6 +20,7 @@ It is an evidence pack, not dissertation prose.
 | The selected radiation windows are replayed with fault streams and separated DUE/persistent/SDC-audit metrics. | `results/rtl_replay/ch3_fault_replay_summary.md` |
 | The same physical MBU is dangerous without interleaving and correctable when split across codewords. | `results/rtl_replay/interleaving_mbu_summary.md` |
 | The diagnostic block raises alert, persistent-DUE, out-of-envelope, and force-conservative flags from SEC-DED symptoms. | `results/rtl_replay/diagnostic_supervisor_report.md` |
+| Persistent-DUE diagnostics use bounded associative state rather than a full depth-wide bitmap. | `results/rtl_replay/due_tracker_contract.md` |
 | The top-level external-period controller exposes diagnostic flags from real scrub events. | `results/rtl_replay/integrated_diagnostic_controller_report.md` |
 | The Chapter 3 minimum scrub period is connected to an explicit hardware service-rate model and shown feasible for the dissertation memory geometry. | `results/feasibility/tau_min_certificate.md` |
 | The RTL scheduler counts coarse timebase ticks rather than long raw implementation-clock intervals. | `results/rtl_replay/timebase_contract.md` |
@@ -275,6 +276,31 @@ Interpretation:
 - A new DUE raises `danger_detected_flag` and `force_conservative`.
 - Repeated DUE at the same word raises `persistent_due_flag` and `out_of_envelope_flag`.
 - The block observes SEC-DED symptoms; it does not compute the radiation model.
+
+## Limited DUE tracker contract
+
+Source artifact: `results/rtl_replay/due_tracker_contract.md`.
+
+# Limited DUE tracker contract
+
+The diagnostic supervisor does not implement a full `DEPTH`-bit DUE-history
+bitmap. Persistent-DUE detection is implemented with a bounded associative
+tracker.
+
+Contract:
+
+- A tracked DUE address observed for the first time increments `new_due_word_count`.
+- A tracked DUE address observed again raises `persistent_due_flag`.
+- Persistent DUE can raise `out_of_envelope_flag` and therefore
+  `force_conservative`.
+- If the bounded tracker is exhausted, the supervisor raises
+  `out_of_envelope_flag` conservatively rather than allocating an unbounded
+  per-word bitmap.
+- The tracker is diagnostic evidence, not part of the Chapter 2/3 exact-risk
+  computation.
+
+This keeps diagnostic state bounded when the protected memory depth is scaled
+to the dissertation geometry.
 
 ## Integrated diagnostic controller RTL
 
@@ -600,20 +626,20 @@ place-and-route timing closure and do not establish Fmax.
 |---|---|---:|---:|---:|---:|---:|
 | generic_yosys | secded_32_39_encoder | 117 | 0 | 0 | 0 | 321 |
 | generic_yosys | secded_32_39_decoder | 879 | 0 | 0 | 516 | 5294 |
-| generic_yosys | period_scheduler | 1442 | 167 | 0 | 233 | 1866 |
+| generic_yosys | period_scheduler | 1513 | 167 | 0 | 297 | 1938 |
 | generic_yosys | scrub_pass_engine | 1543 | 171 | 0 | 517 | 6273 |
-| generic_yosys | diagnostic_supervisor | 1822 | 212 | 0 | 655 | 2243 |
-| generic_yosys | adaptive_scrub_controller | 4291 | 550 | 0 | 900 | 10421 |
+| generic_yosys | diagnostic_supervisor | 2629 | 276 | 0 | 1084 | 3191 |
+| generic_yosys | adaptive_scrub_controller | 4754 | 614 | 0 | 1025 | 10917 |
 | generic_yosys | measured_error_period_estimator | 1302 | 104 | 0 | 540 | 2170 |
-| generic_yosys | measured_error_scrub_controller | 5593 | 654 | 0 | 1440 | 13252 |
+| generic_yosys | measured_error_scrub_controller | 6055 | 718 | 0 | 1565 | 13756 |
 | xilinx_xc7 | secded_32_39_encoder | 104 | 0 | 32 | 1 | 248 |
 | xilinx_xc7 | secded_32_39_decoder | 324 | 0 | 143 | 33 | 834 |
-| xilinx_xc7 | period_scheduler | 720 | 167 | 162 | 3 | 1243 |
+| xilinx_xc7 | period_scheduler | 726 | 167 | 163 | 8 | 1253 |
 | xilinx_xc7 | scrub_pass_engine | 861 | 171 | 168 | 28 | 1720 |
-| xilinx_xc7 | diagnostic_supervisor | 962 | 212 | 247 | 1 | 1401 |
-| xilinx_xc7 | adaptive_scrub_controller | 2385 | 550 | 444 | 22 | 4612 |
+| xilinx_xc7 | diagnostic_supervisor | 1231 | 276 | 347 | 46 | 1768 |
+| xilinx_xc7 | adaptive_scrub_controller | 2612 | 614 | 528 | 40 | 5026 |
 | xilinx_xc7 | measured_error_period_estimator | 511 | 104 | 139 | 1 | 833 |
-| xilinx_xc7 | measured_error_scrub_controller | 2853 | 654 | 603 | 29 | 6185 |
+| xilinx_xc7 | measured_error_scrub_controller | 3084 | 718 | 682 | 55 | 6614 |
 
 Interpretation:
 

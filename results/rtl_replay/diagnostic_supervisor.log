@@ -1,3 +1,4 @@
+rtl/scrubber/diagnostic_supervisor.sv:66: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
 DIAGNOSTIC_SUPERVISOR_SUMMARY alert_path_alert_events=2 alert_path_out_of_envelope=1 clear_path_verified=1 danger_events=2 new_due_words=1 persistent_due=1 out_of_envelope=1 force_conservative=1 failures=0
 DIAGNOSTIC_SUPERVISOR_PASS
 /home/z3tm4n/diss-work/chapter4-risk-limited-scrubber/generated/rtl/diagnostic_supervisor/tb_diagnostic_supervisor.sv:208: $finish called at 156000 (1ps)

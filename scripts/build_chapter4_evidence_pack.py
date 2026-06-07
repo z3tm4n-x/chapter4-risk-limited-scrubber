@@ -56,6 +56,12 @@ ARTIFACTS = [
         "claim": "The diagnostic block raises alert, persistent-DUE, out-of-envelope, and force-conservative flags from SEC-DED symptoms.",
     },
     {
+        "key": "due_tracker_contract",
+        "title": "Limited DUE tracker contract",
+        "path": "results/rtl_replay/due_tracker_contract.md",
+        "claim": "Persistent-DUE diagnostics use bounded associative state rather than a full depth-wide bitmap.",
+    },
+    {
         "key": "integrated_diagnostic",
         "title": "Integrated diagnostic controller RTL",
         "path": "results/rtl_replay/integrated_diagnostic_controller_report.md",
