@@ -1,11 +1,12 @@
-.PHONY: tau-min-certificate measured-policy-seed-sweep measured-policy-model reproduce-chapter4 chapter4-evidence-pack help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation integrated-diagnostic-rtl measured-error-estimator-rtl measured-error-controller-rtl overhead-gain-certificate schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean
+.PHONY: tau-min-certificate measured-policy-seed-sweep measured-policy-model reproduce-chapter4 chapter4-evidence-pack-full help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation integrated-diagnostic-rtl measured-error-estimator-rtl measured-error-controller-rtl overhead-gain-certificate schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean chapter4-evidence-pack
 
 help:
 	@echo "  tau-min-certificate - compute hardware feasibility margin for tau_min"
 	@echo "  measured-policy-seed-sweep - evaluate measured-error policy robustness across seeds"
 	@echo "  measured-policy-model - evaluate measured-error policies on five-year series"
 	@echo "  reproduce-chapter4 - rebuild all Chapter 4 evidence from sources"
-	@echo "  chapter4-evidence-pack - build aggregate Chapter 4 evidence pack"
+	@echo "  chapter4-evidence-pack - quickly rebuild aggregate Chapter 4 evidence pack only"
+	@echo "  chapter4-evidence-pack-full - rebuild dependencies and aggregate Chapter 4 evidence pack"
 	@echo "Targets:"
 	@echo "  check-env           - show tool versions"
 	@echo "  test                - run Python unit tests"
@@ -121,14 +122,6 @@ clean:
 	rm -rf __pycache__ .pytest_cache generated/rtl
 
 
-chapter4-evidence-pack: overhead-gain-certificate ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl integrated-diagnostic-rtl rho-d-sweep mc-accumulation measured-error-estimator-rtl measured-error-controller-rtl measured-policy-model measured-policy-seed-sweep tau-min-certificate
-	python3 scripts/build_chapter4_evidence_pack.py
-
-reproduce-chapter4: test tau-min-certificate import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl integrated-diagnostic-rtl rho-d-sweep mc-accumulation measured-error-estimator-rtl measured-error-controller-rtl measured-policy-model measured-policy-seed-sweep synthesis overhead-gain-certificate chapter4-evidence-pack
-	@echo "Chapter 4 reproduction complete."
-
-
-
 measured-policy-model: ch3-five-year-schedule
 	python3 scripts/run_measured_policy_model.py
 
@@ -139,3 +132,12 @@ measured-policy-seed-sweep: ch3-five-year-schedule
 
 tau-min-certificate:
 	python3 scripts/build_tau_min_certificate.py
+
+chapter4-evidence-pack:
+	python3 scripts/build_chapter4_evidence_pack.py
+
+chapter4-evidence-pack-full: overhead-gain-certificate ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl integrated-diagnostic-rtl rho-d-sweep mc-accumulation measured-error-estimator-rtl measured-error-controller-rtl measured-policy-model measured-policy-seed-sweep tau-min-certificate
+	python3 scripts/build_chapter4_evidence_pack.py
+
+reproduce-chapter4: test tau-min-certificate import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl integrated-diagnostic-rtl rho-d-sweep mc-accumulation measured-error-estimator-rtl measured-error-controller-rtl measured-policy-model measured-policy-seed-sweep synthesis overhead-gain-certificate chapter4-evidence-pack-full
+	@echo "Chapter 4 reproduction complete."
