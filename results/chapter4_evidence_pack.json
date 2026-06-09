@@ -110,6 +110,12 @@
       "claim": "Key RTL tops are synthesized with the dissertation memory address width and codeword count."
     },
     {
+      "key": "vivado_ooc_impl",
+      "title": "Vivado out-of-context implementation report",
+      "path": "results/vivado_ooc/vivado_ooc_report.md",
+      "claim": "Selected Chapter 4 RTL tops close timing in out-of-context implementation on a commercial AMD/Xilinx FPGA demonstrator."
+    },
+    {
       "key": "overhead_gain",
       "title": "Overhead/gain certificate",
       "path": "results/chapter4_overhead_gain_certificate.md",

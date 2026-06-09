@@ -1,0 +1,5 @@
+top,part,highest_passing_mhz,highest_passing_period_ns,wns_at_highest_passing_ns,lut_at_highest_passing,ff_at_highest_passing,bram_at_highest_passing,dsp_at_highest_passing,power_w_at_highest_passing,next_failing_mhz,next_failing_wns_ns,effective_words_per_sec,pass_time_seconds,tau_min_margin
+period_scheduler,xc7a200tfbg484-2,200.000000,5.000000,0.419,196,148,0,0,0.126,250.000000,-0.273,100000000,0.01935836,51.6572684876
+scrub_pass_engine,xc7a200tfbg484-2,300.030003,3.333000,0.445,119,188,0,0,0.134,,,100000000,0.01935836,51.6572684876
+adaptive_scrub_controller,xc7a200tfbg484-2,133.333333,7.500000,0.837,533,884,0,0,0.142,200.000000,-0.578,100000000,0.01935836,51.6572684876
+measured_error_scrub_controller,xc7a200tfbg484-2,133.333333,7.500000,0.533,604,957,0,0,0.145,200.000000,-0.523,100000000,0.01935836,51.6572684876

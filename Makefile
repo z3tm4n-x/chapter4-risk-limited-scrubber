@@ -1,6 +1,7 @@
-.PHONY: reproducibility-hygiene ch4-geometry-synthesis tau-min-certificate measured-policy-seed-sweep measured-policy-model reproduce-chapter4 chapter4-evidence-pack-full help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation integrated-diagnostic-rtl measured-error-estimator-rtl measured-error-controller-rtl overhead-gain-certificate schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean chapter4-evidence-pack
+.PHONY: vivado-ooc-impl reproducibility-hygiene ch4-geometry-synthesis tau-min-certificate measured-policy-seed-sweep measured-policy-model reproduce-chapter4 chapter4-evidence-pack-full help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation integrated-diagnostic-rtl measured-error-estimator-rtl measured-error-controller-rtl overhead-gain-certificate schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean chapter4-evidence-pack
 
 help:
+	@echo "  vivado-ooc-impl - run Vivado OOC implementation/timing sweep"
 	@echo "  reproducibility-hygiene - check transient log tracking policy"
 	@echo "  ch4-geometry-synthesis - synthesize key RTL tops at dissertation memory geometry"
 	@echo "  tau-min-certificate - compute hardware feasibility margin for tau_min"
@@ -151,3 +152,7 @@ ch4-geometry-synthesis:
 
 reproducibility-hygiene:
 	python3 scripts/check_reproducibility_hygiene.py
+
+
+vivado-ooc-impl:
+	python3 scripts/run_vivado_ooc_impl.py --part xc7a200tfbg484-2 --vivado $(HOME)/bin/vivado-wsl
