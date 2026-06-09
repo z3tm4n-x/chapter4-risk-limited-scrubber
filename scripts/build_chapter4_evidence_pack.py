@@ -80,6 +80,12 @@ ARTIFACTS = [
         "claim": "The RTL scheduler counts coarse timebase ticks rather than long raw implementation-clock intervals.",
     },
     {
+        "key": "interleaving_gd_case",
+        "title": "Interleaving g(D) feasibility case",
+        "path": "results/feasibility/interleaving_gd_case_report.md",
+        "claim": "The instantaneous dangerous-mapping budget share rho_D is computed from an interleaving/multiplicity model rather than treated as a free parameter.",
+    },
+    {
         "key": "rho_d_sweep",
         "title": "rho_D residual-budget sweep",
         "path": "results/feasibility/rho_d_sweep_summary.md",
