@@ -192,6 +192,8 @@ def compact_key_numbers() -> list[str]:
     overhead = read_csv_rows("results/chapter4_overhead_gain_certificate.csv")
     rho_rows = read_csv_rows("results/feasibility/rho_d_sweep_summary.csv")
     tau_rows = read_csv_rows("results/feasibility/tau_min_certificate.csv")
+    gd_rows = read_csv_rows("results/feasibility/interleaving_gd_case_summary.csv")
+    vivado_rows = read_csv_rows("results/vivado_ooc/vivado_ooc_summary.csv")
     mc_rows = read_csv_rows("results/monte_carlo/accumulation_monte_carlo_summary.csv")
 
     if schedule:
@@ -236,6 +238,80 @@ def compact_key_numbers() -> list[str]:
         lines.append(
             f"- Tau-min pass time: `{tau['pass_time_seconds']}` s; "
             f"margin `{tau['tau_min_margin']}`; feasible `{tau['tau_min_feasible']}`."
+        )
+
+    if gd_rows:
+        selectable_by_mean: dict[str, list[dict[str, str]]] = {}
+        for row in gd_rows:
+            if row["status"] == "scrub_period_selectable":
+                selectable_by_mean.setdefault(row["mean_multiplicity"], []).append(row)
+
+        minima: list[str] = []
+        for mean_m in sorted(selectable_by_mean, key=lambda value: float(value)):
+            best = min(
+                selectable_by_mean[mean_m],
+                key=lambda row: int(row["interleaving_depth_D"]),
+            )
+            minima.append(f"m={mean_m}: D={best['interleaving_depth_D']}")
+
+        if minima:
+            lines.append(
+                "- Interleaving g(D) minimum selectable depths: "
+                + "; ".join(f"`{item}`" for item in minima)
+                + "."
+            )
+
+        main_m2 = [
+            row for row in gd_rows
+            if abs(float(row["mean_multiplicity"]) - 2.0) < 1e-12
+        ]
+        if main_m2:
+            d24 = next((row for row in main_m2 if row["interleaving_depth_D"] == "24"), None)
+            d25 = next((row for row in main_m2 if row["interleaving_depth_D"] == "25"), None)
+
+            if d24 is not None:
+                lines.append(
+                    f"- Main g(D) case at mean multiplicity 2: `D=24` is "
+                    f"`{d24['status']}` with rho_D `{d24['rho_D']}`."
+                )
+
+            if d25 is not None:
+                lines.append(
+                    f"- Main g(D) case at mean multiplicity 2: `D=25` is "
+                    f"`{d25['status']}` with rho_D `{d25['rho_D']}` "
+                    f"and pass count `{d25['schedule_pass_count']}`."
+                )
+
+    if vivado_rows:
+        adaptive = next(
+            (row for row in vivado_rows if row["top"] == "adaptive_scrub_controller"),
+            None,
+        )
+        measured_vivado = next(
+            (row for row in vivado_rows if row["top"] == "measured_error_scrub_controller"),
+            None,
+        )
+
+        if adaptive is not None:
+            lines.append(
+                f"- Vivado OOC adaptive controller: `{adaptive['highest_passing_mhz']}` MHz, "
+                f"WNS `{adaptive['wns_at_highest_passing_ns']}` ns, "
+                f"`{adaptive['lut_at_highest_passing']}` LUT, "
+                f"`{adaptive['ff_at_highest_passing']}` FF."
+            )
+
+        if measured_vivado is not None:
+            lines.append(
+                f"- Vivado OOC measured-error controller: `{measured_vivado['highest_passing_mhz']}` MHz, "
+                f"WNS `{measured_vivado['wns_at_highest_passing_ns']}` ns, "
+                f"`{measured_vivado['lut_at_highest_passing']}` LUT, "
+                f"`{measured_vivado['ff_at_highest_passing']}` FF."
+            )
+
+        tau_source = adaptive or measured_vivado or vivado_rows[0]
+        lines.append(
+            f"- Vivado OOC tau-min check: pass time `{tau_source['pass_time_seconds']}` s, "
+            f"margin `{tau_source['tau_min_margin']}` under the configured memory service-rate model."
         )
 
     if mc_rows:

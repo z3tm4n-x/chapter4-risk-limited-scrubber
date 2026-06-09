@@ -50,6 +50,12 @@ It is an evidence pack, not dissertation prose.
 - Last sampled selectable rho_D: `0.88955`.
 - First sampled tau_min-insufficient rho_D: `0.89`.
 - Tau-min pass time: `0.01935836` s; margin `51.65726848761982`; feasible `true`.
+- Interleaving g(D) minimum selectable depths: `m=1.5: D=16`; `m=2: D=25`; `m=3: D=41`.
+- Main g(D) case at mean multiplicity 2: `D=24` is `bandwidth_or_tau_min_insufficient` with rho_D `0.919117251552`.
+- Main g(D) case at mean multiplicity 2: `D=25` is `scrub_period_selectable` with rho_D `0.459558625776` and pass count `5222760`.
+- Vivado OOC adaptive controller: `133.333333` MHz, WNS `0.837` ns, `533` LUT, `884` FF.
+- Vivado OOC measured-error controller: `133.333333` MHz, WNS `0.533` ns, `604` LUT, `957` FF.
+- Vivado OOC tau-min check: pass time `0.01935836` s, margin `51.6572684876` under the configured memory service-rate model.
 - Monte Carlo accumulated-risk validation 4-sigma pass: `true`.
 - Best sampled target-meeting measured policy: `measured_q16_high1_max3600`; pass count `6451890`, fixed/policy gain `4.89054835095`.
 - Fastest sampled measured policy fails target: `measured_q4_high1_max120`; risk utilization `1.63030252406`.
