@@ -2,32 +2,85 @@
   "generated_by": "build_tau_min_certificate.py",
   "config": {
     "name": "chapter4_tau_min_hardware_timing",
-    "description": "Hardware timing assumptions used to justify tau_min for the Chapter 4 scrub controller.",
+    "description": "Hardware and memory-interface timing assumptions used to justify tau_min for the Chapter 4 scrub controller.",
     "codeword_count": 1935832,
     "codeword_bits": 39,
-    "scrub_clock_hz": 100000000,
-    "cycles_per_word": 1,
     "pipeline_overhead_cycles": 4,
     "target_tau_min_seconds": 1.0,
+    "primary_scenario": "memory_interface_limited",
+    "scenarios": [
+      {
+        "key": "controller_core_ooc",
+        "description": "Controller-core service model: one protected SEC-DED codeword per 100 MHz scrub clock.",
+        "scrub_clock_hz": 100000000,
+        "cycles_per_word": 1.0
+      },
+      {
+        "key": "memory_interface_limited",
+        "description": "System-level memory-interface-limited model from Chapter 3: sustained 256 Mbit/s scrub service bandwidth shared with system overhead.",
+        "effective_bits_per_second": 256000000
+      }
+    ],
     "notes": [
-      "The scrub engine is modeled as one protected SEC-DED codeword service per scrub clock cycle.",
-      "The certificate checks that one full pass over the protected memory fits within tau_min.",
-      "If the memory subsystem provides fewer effective words per second, this configuration must be updated."
+      "The controller-core model checks that the RTL core is not the bottleneck.",
+      "The memory-interface-limited model is the binding Chapter 3 assumption for selecting tau_min = 1 s.",
+      "If the sustained memory service bandwidth changes, the primary scenario must be updated."
     ]
   },
+  "primary_scenario": "memory_interface_limited",
   "metrics": {
     "codeword_count": 1935832,
     "codeword_bits": 39,
     "protected_bits": 75497448,
-    "scrub_clock_hz": 100000000.0,
-    "cycles_per_word": 1.0,
     "pipeline_overhead_cycles": 4.0,
-    "pass_cycles": 1935836.0,
-    "pass_time_seconds": 0.01935836,
-    "effective_words_per_second": 100000000.0,
-    "effective_bits_per_second": 3900000000.0,
     "target_tau_min_seconds": 1.0,
-    "tau_min_margin": 51.65726848761982,
-    "tau_min_feasible": "true"
-  }
+    "primary_scenario": "memory_interface_limited",
+    "pass_time_seconds": 0.294912515625,
+    "effective_words_per_second": 6564102.564102564,
+    "effective_bits_per_second": 256000000.0,
+    "tau_min_margin": 3.3908360853411987,
+    "tau_min_feasible": "true",
+    "controller_core_ooc_pass_time_seconds": 0.01935836,
+    "controller_core_ooc_effective_words_per_second": 100000000.0,
+    "controller_core_ooc_effective_bits_per_second": 3900000000.0,
+    "controller_core_ooc_tau_min_margin": 51.65726848761982,
+    "controller_core_ooc_tau_min_feasible": "true",
+    "memory_interface_limited_pass_time_seconds": 0.294912515625,
+    "memory_interface_limited_effective_words_per_second": 6564102.564102564,
+    "memory_interface_limited_effective_bits_per_second": 256000000.0,
+    "memory_interface_limited_tau_min_margin": 3.3908360853411987,
+    "memory_interface_limited_tau_min_feasible": "true"
+  },
+  "detail": [
+    {
+      "scenario": "controller_core_ooc",
+      "description": "Controller-core service model: one protected SEC-DED codeword per 100 MHz scrub clock.",
+      "service_model": "clocked_codeword_service",
+      "codeword_count": 1935832,
+      "codeword_bits": 39,
+      "protected_bits": 75497448,
+      "pass_cycles": 1935836.0,
+      "pass_time_seconds": 0.01935836,
+      "effective_words_per_second": 100000000.0,
+      "effective_bits_per_second": 3900000000.0,
+      "target_tau_min_seconds": 1.0,
+      "tau_min_margin": 51.65726848761982,
+      "tau_min_feasible": "true"
+    },
+    {
+      "scenario": "memory_interface_limited",
+      "description": "System-level memory-interface-limited model from Chapter 3: sustained 256 Mbit/s scrub service bandwidth shared with system overhead.",
+      "service_model": "memory_interface_bandwidth",
+      "codeword_count": 1935832,
+      "codeword_bits": 39,
+      "protected_bits": 75497448,
+      "pass_cycles": "",
+      "pass_time_seconds": 0.294912515625,
+      "effective_words_per_second": 6564102.564102564,
+      "effective_bits_per_second": 256000000.0,
+      "target_tau_min_seconds": 1.0,
+      "tau_min_margin": 3.3908360853411987,
+      "tau_min_feasible": "true"
+    }
+  ]
 }

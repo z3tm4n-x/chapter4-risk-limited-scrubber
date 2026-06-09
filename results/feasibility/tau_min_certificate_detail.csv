@@ -1,0 +1,3 @@
+scenario,description,service_model,codeword_count,codeword_bits,protected_bits,pass_cycles,pass_time_seconds,effective_words_per_second,effective_bits_per_second,target_tau_min_seconds,tau_min_margin,tau_min_feasible
+controller_core_ooc,Controller-core service model: one protected SEC-DED codeword per 100 MHz scrub clock.,clocked_codeword_service,1935832,39,75497448,1935836.0,0.01935836,100000000.0,3900000000.0,1.0,51.65726848761982,true
+memory_interface_limited,System-level memory-interface-limited model from Chapter 3: sustained 256 Mbit/s scrub service bandwidth shared with system overhead.,memory_interface_bandwidth,1935832,39,75497448,,0.294912515625,6564102.564102564,256000000.0,1.0,3.3908360853411987,true
