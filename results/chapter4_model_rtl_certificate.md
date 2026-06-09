@@ -22,6 +22,7 @@ the Chapter 4 RTL window replay results.
 | fixed | 0.00553465940419 | 0.00555003238058 | 0.552223573568 | 31553280 | 1 | 5..5 | 7.24295991773 |
 | current | 0.00999993405782 | 0.0100502692452 | 0.999993372534 | 2547210 | 12.3873885545 | 1..120 | 1 |
 | delayed_1h | 0.00999990177991 | 0.0100502366413 | 0.999990128469 | 2649330 | 11.9099092978 | 1..120 | 1.04935369403 |
+| forecast | 0.00999996701742 | 0.0100503025378 | 0.999996685112 | 2602620 | 12.1236600041 | 1..120 | 1.02772015543 |
 
 ## Fixed-candidate boundary
 
@@ -35,16 +36,22 @@ Therefore fixed/adaptive gain is larger than the continuous 1+CV^2 bound because
 |---|---|---:|---:|---:|---:|---:|---:|---:|
 | current | quiet_background | 1470 | 1470 | 1470 | 0 | 0 | 0 | 0 |
 | delayed_1h | quiet_background | 1470 | 1470 | 1470 | 0 | 0 | 0 | 0 |
+| forecast | quiet_background | 1470 | 1470 | 1470 | 0 | 0 | 0 | 0 |
 | current | storm_rise | 15270 | 15270 | 15270 | 0 | 0 | 0 | 0 |
 | delayed_1h | storm_rise | 15300 | 15300 | 15300 | 0 | 0 | 0 | 0 |
+| forecast | storm_rise | 17340 | 17340 | 17340 | 0 | 0 | 0 | 0 |
 | current | storm_peak | 105600 | 105600 | 105600 | 0 | 0 | 0 | 0 |
 | delayed_1h | storm_peak | 105300 | 105300 | 105300 | 0 | 0 | 0 | 0 |
+| forecast | storm_peak | 107460 | 107460 | 107460 | 0 | 0 | 0 | 0 |
 | current | storm_decay | 5340 | 5340 | 5340 | 0 | 0 | 0 | 0 |
 | delayed_1h | storm_decay | 5490 | 5490 | 5490 | 0 | 0 | 0 | 0 |
+| forecast | storm_decay | 5430 | 5430 | 5430 | 0 | 0 | 0 | 0 |
 | current | tau_min_saturation | 100260 | 100260 | 100260 | 0 | 0 | 0 | 0 |
 | delayed_1h | tau_min_saturation | 98520 | 98520 | 98520 | 0 | 0 | 0 | 0 |
+| forecast | tau_min_saturation | 100680 | 100680 | 100680 | 0 | 0 | 0 | 0 |
 | current | delayed_sensitive | 31800 | 31800 | 31800 | 0 | 0 | 0 | 0 |
 | delayed_1h | delayed_sensitive | 32790 | 32790 | 32790 | 0 | 0 | 0 | 0 |
+| forecast | delayed_sensitive | 32790 | 32790 | 32790 | 0 | 0 | 0 | 0 |
 
 ## Verdict
 

@@ -200,12 +200,21 @@ def compact_key_numbers() -> list[str]:
         fixed = next(row for row in schedule if row["strategy_key"] == "fixed")
         current = next(row for row in schedule if row["strategy_key"] == "current")
         delayed = next(row for row in schedule if row["strategy_key"] == "delayed_1h")
+        forecast = next((row for row in schedule if row["strategy_key"] == "forecast"), None)
 
         lines.extend(
             [
                 f"- Fixed pass count: `{fixed['pass_count']}`.",
                 f"- Current adaptive pass count: `{current['pass_count']}`; fixed/current gain: `{current['gain_fixed_over_strategy']}`.",
                 f"- Delayed 1h adaptive pass count: `{delayed['pass_count']}`; fixed/delayed gain: `{delayed['gain_fixed_over_strategy']}`.",
+                *(
+                    [
+                        f"- Forecast-corrected adaptive pass count: `{forecast['pass_count']}`; fixed/forecast gain: `{forecast['gain_fixed_over_strategy']}`; risk utilization: `{forecast['risk_utilization']}`.",
+                        f"- Forecast correction reduces delayed-schedule passes by `{int(float(delayed['pass_count'])) - int(float(forecast['pass_count']))}` ({100.0 * (int(float(delayed['pass_count'])) - int(float(forecast['pass_count']))) / float(delayed['pass_count']):.4g}%).",
+                    ]
+                    if forecast
+                    else []
+                ),
                 f"- Current adaptive mission probability: `{current['p_mission']}`.",
                 f"- Delayed 1h mission probability: `{delayed['p_mission']}`.",
             ]

@@ -2,7 +2,7 @@
 """Build Chapter 4 overhead/gain certificate.
 
 This artifact combines:
-  - Chapter 3 five-year fixed/current/delayed schedule results;
+  - Chapter 3 five-year fixed/current/delayed/forecast schedule results;
   - RTL synthesis estimates for the external-period endpoint;
   - RTL synthesis estimates for diagnostic and measured-error fallback logic.
 
@@ -80,6 +80,7 @@ def main() -> int:
     fixed = row_by_key(schedule_rows, "strategy_key", "fixed")
     current = row_by_key(schedule_rows, "strategy_key", "current")
     delayed = row_by_key(schedule_rows, "strategy_key", "delayed_1h")
+    forecast = row_by_key(schedule_rows, "strategy_key", "forecast")
 
     xc7_adaptive = synthesis_row(synthesis_rows, "xilinx_xc7", "adaptive_scrub_controller")
     xc7_measured = synthesis_row(synthesis_rows, "xilinx_xc7", "measured_error_scrub_controller")
@@ -101,12 +102,15 @@ def main() -> int:
     fixed_passes = float_field(fixed, "pass_count")
     current_passes = float_field(current, "pass_count")
     delayed_passes = float_field(delayed, "pass_count")
+    forecast_passes = float_field(forecast, "pass_count")
 
     current_gain = fixed_passes / current_passes
     delayed_gain = fixed_passes / delayed_passes
+    forecast_gain = fixed_passes / forecast_passes
 
     pass_reduction_current = 1.0 - current_passes / fixed_passes
     pass_reduction_delayed = 1.0 - delayed_passes / fixed_passes
+    pass_reduction_forecast = 1.0 - forecast_passes / fixed_passes
 
     rows = [
         {
@@ -140,6 +144,24 @@ def main() -> int:
             "pass_reduction_vs_fixed": f"{pass_reduction_delayed:.12g}",
             "p_mission": delayed["p_mission"],
             "risk_utilization": delayed["risk_utilization"],
+            "delta_lut_vs_external": "0",
+            "delta_ff_vs_external": "0",
+            "delta_lut_percent_vs_external": "0",
+            "delta_ff_percent_vs_external": "0",
+        },
+        {
+            "item": "external_forecast_adaptive_schedule",
+            "description": "Chapter 3 forecast-corrected exact-risk schedule executed by same external-period endpoint",
+            "top": "adaptive_scrub_controller",
+            "flow": "xilinx_xc7",
+            "lut": str(adaptive_lut),
+            "ff": str(adaptive_ff),
+            "cells": xc7_adaptive["cells"],
+            "pass_count": forecast["pass_count"],
+            "fixed_over_item_gain": f"{forecast_gain:.12g}",
+            "pass_reduction_vs_fixed": f"{pass_reduction_forecast:.12g}",
+            "p_mission": forecast["p_mission"],
+            "risk_utilization": forecast["risk_utilization"],
             "delta_lut_vs_external": "0",
             "delta_ff_vs_external": "0",
             "delta_lut_percent_vs_external": "0",
@@ -232,6 +254,7 @@ def main() -> int:
         "fixed": fixed,
         "current": current,
         "delayed_1h": delayed,
+        "forecast": forecast,
         "synthesis_xc7": {
             "secded_32_39_encoder": xc7_encoder,
             "secded_32_39_decoder": xc7_decoder,

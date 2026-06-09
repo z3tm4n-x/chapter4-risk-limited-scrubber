@@ -39,6 +39,7 @@ SCHEDULE_PATHS = {
     "fixed": OUT_DIR / "ch3_five_year_schedule_fixed.csv",
     "current": OUT_DIR / "ch3_five_year_schedule_current.csv",
     "delayed_1h": OUT_DIR / "ch3_five_year_schedule_delayed_1h.csv",
+    "forecast": OUT_DIR / "ch3_five_year_schedule_forecast.csv",
 }
 
 
@@ -80,6 +81,65 @@ def delayed_estimate(values: list[float], delay_steps: int = 1) -> list[float]:
         estimate.append(values[source_index])
 
     return estimate
+
+
+def forecast_growth_estimate(
+    values: list[float],
+    *,
+    q_threshold: float = 1.35,
+    beta: float = 0.7,
+    rmax: float = 2.5,
+) -> list[float]:
+    """Causal Chapter-3 forecast correction for one-hour delayed estimates.
+
+    nu_hat(t_i) = nu(t_{i-1}) * M(t_i), where M is activated only after
+    sufficiently fast growth between t_{i-2} and t_{i-1}.  This implements
+    equations (3.17)--(3.18) from Chapter 3.
+    """
+
+    if not values:
+        return []
+
+    eps = 1e-30
+    estimate: list[float] = []
+
+    for index in range(len(values)):
+        delayed_index = max(0, index - 1)
+        delayed_value = max(values[delayed_index], eps)
+
+        if index < 2:
+            multiplier = 1.0
+        else:
+            previous_value = max(values[index - 2], eps)
+            growth_ratio = delayed_value / previous_value
+
+            if growth_ratio > q_threshold:
+                multiplier = min(rmax, growth_ratio ** beta)
+            else:
+                multiplier = 1.0
+
+        estimate.append(delayed_value * multiplier)
+
+    return estimate
+
+
+def forecast_trigger_count(
+    values: list[float],
+    *,
+    q_threshold: float = 1.35,
+) -> int:
+    if len(values) < 3:
+        return 0
+
+    eps = 1e-30
+    count = 0
+
+    for index in range(2, len(values)):
+        ratio = max(values[index - 1], eps) / max(values[index - 2], eps)
+        if ratio > q_threshold:
+            count += 1
+
+    return count
 
 
 def eta_shape(nu_values: list[float], estimate_values: list[float], dt_hours: list[float]) -> float:
@@ -228,6 +288,7 @@ def write_summary(rows: list[dict[str, str]], series_metrics: dict[str, float]) 
         f"| cv2 | {series_metrics['cv2']:.12g} |",
         f"| eta_const = 1 + CV^2 | {series_metrics['eta_const']:.12g} |",
         f"| max_nu_per_hour | {series_metrics['max_nu']:.12g} |",
+        f"| forecast correction trigger count | {int(series_metrics['forecast_trigger_count'])} |",
         "",
         "## Strategies",
         "",
@@ -335,6 +396,12 @@ def main() -> int:
     periods = normalize_period_set(float(value) for value in config["period_set_seconds"])
 
     delayed_values = delayed_estimate(nu_values, delay_steps=1)
+    forecast_values = forecast_growth_estimate(
+        nu_values,
+        q_threshold=1.35,
+        beta=0.7,
+        rmax=2.5,
+    )
 
     print("Compiling fixed schedule...")
     fixed = compile_fixed_allowed_schedule(
@@ -365,21 +432,35 @@ def main() -> int:
         strategy="adaptive_delayed_1h_exact_floor_down",
     )
 
+    print("Compiling forecast-corrected adaptive schedule...")
+    forecast = find_largest_c_under_exact_risk(
+        nu_values=nu_values,
+        estimate_values=forecast_values,
+        dt_hours=dt_hours,
+        target_e=target_e,
+        period_set_seconds=periods,
+        geometry=geometry,
+        strategy="adaptive_forecast_growth_q1p35_beta0p7_rmax2p5_exact_floor_down",
+    )
+
     results = {
         "fixed": fixed,
         "current": current,
         "delayed_1h": delayed,
+        "forecast": forecast,
     }
 
     estimates = {
         "fixed": [mean(nu_values) for _ in nu_values],
         "current": list(nu_values),
         "delayed_1h": delayed_values,
+        "forecast": forecast_values,
     }
 
     write_schedule(SCHEDULE_PATHS["fixed"], fixed, timestamps, nu_values, estimates["fixed"], dt_hours)
     write_schedule(SCHEDULE_PATHS["current"], current, timestamps, nu_values, estimates["current"], dt_hours)
     write_schedule(SCHEDULE_PATHS["delayed_1h"], delayed, timestamps, nu_values, estimates["delayed_1h"], dt_hours)
+    write_schedule(SCHEDULE_PATHS["forecast"], forecast, timestamps, nu_values, estimates["forecast"], dt_hours)
 
     fixed_pass_count = fixed.stats.pass_count
 
@@ -387,6 +468,7 @@ def main() -> int:
         "fixed": eta_shape(nu_values, estimates["fixed"], dt_hours),
         "current": eta_shape(nu_values, estimates["current"], dt_hours),
         "delayed_1h": eta_shape(nu_values, estimates["delayed_1h"], dt_hours),
+        "forecast": eta_shape(nu_values, estimates["forecast"], dt_hours),
     }
 
     summary_rows = [
@@ -400,6 +482,7 @@ def main() -> int:
         "cv2": cv2(nu_values),
         "eta_const": 1.0 + cv2(nu_values),
         "max_nu": max(nu_values),
+        "forecast_trigger_count": float(forecast_trigger_count(nu_values, q_threshold=1.35)),
     }
 
     write_summary(summary_rows, series_metrics)

@@ -27,6 +27,7 @@ PERIOD_TABLE_PATH = REPO_ROOT / "results" / "schedules" / "ch3_period_table.csv"
 SCHEDULE_PATHS = {
     "current": REPO_ROOT / "results" / "schedules" / "ch3_five_year_schedule_current.csv",
     "delayed_1h": REPO_ROOT / "results" / "schedules" / "ch3_five_year_schedule_delayed_1h.csv",
+    "forecast": REPO_ROOT / "results" / "schedules" / "ch3_five_year_schedule_forecast.csv",
 }
 
 # 1 second in the Chapter 3 schedule is represented by this many RTL cycles.
@@ -497,7 +498,7 @@ def main() -> int:
     rows_for_summary: list[dict[str, str]] = []
 
     for window in windows:
-        for strategy in ("current", "delayed_1h"):
+        for strategy in ("current", "delayed_1h", "forecast"):
             subset = window_schedule_rows(schedule_by_strategy[strategy], window)
             tb_path = generate_tb(strategy, window, periods, subset)
             log_path, values = compile_and_run(strategy, window, tb_path)

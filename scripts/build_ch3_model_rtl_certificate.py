@@ -140,6 +140,7 @@ def write_outputs() -> None:
     best_fixed = next(row for row in summary_rows if row["strategy_key"] == "fixed")
     current = next(row for row in summary_rows if row["strategy_key"] == "current")
     delayed = next(row for row in summary_rows if row["strategy_key"] == "delayed_1h")
+    forecast = next(row for row in summary_rows if row["strategy_key"] == "forecast")
 
     ten_second_row = next(row for row in fixed_sweep_rows if row["tau_seconds"] == "10")
     five_second_row = next(row for row in fixed_sweep_rows if row["tau_seconds"] == "5")
@@ -160,6 +161,7 @@ def write_outputs() -> None:
         "best_fixed": best_fixed,
         "current": current,
         "delayed_1h": delayed,
+        "forecast": forecast,
         "fixed_5s": five_second_row,
         "fixed_10s": ten_second_row,
         "window_replay_cases": len(replay_rows),
