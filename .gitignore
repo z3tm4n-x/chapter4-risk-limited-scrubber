@@ -24,3 +24,8 @@ results/synthesis/logs/
 results/rtl_replay/*.log
 results/synthesis/logs/*.log
 results/logs/
+
+# Vivado transient run logs
+results/vivado_ooc/runs/**/*.log
+results/vivado_ooc_smoke/
+clockInfo.txt
