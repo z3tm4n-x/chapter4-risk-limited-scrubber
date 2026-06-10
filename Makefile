@@ -1,6 +1,7 @@
-.PHONY: interleaving-gd-case vivado-ooc-impl reproducibility-hygiene ch4-geometry-synthesis tau-min-certificate measured-policy-seed-sweep measured-policy-model reproduce-chapter4 chapter4-evidence-pack-full help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation integrated-diagnostic-rtl measured-error-estimator-rtl measured-error-controller-rtl overhead-gain-certificate schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean chapter4-evidence-pack
+.PHONY: ch3-lag-sweep interleaving-gd-case vivado-ooc-impl reproducibility-hygiene ch4-geometry-synthesis tau-min-certificate measured-policy-seed-sweep measured-policy-model reproduce-chapter4 chapter4-evidence-pack-full help check-env test import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl rho-d-sweep mc-accumulation integrated-diagnostic-rtl measured-error-estimator-rtl measured-error-controller-rtl overhead-gain-certificate schedule-demo feasibility-demo schedule-replay-rtl fault-replay-rtl secded-rtl scheduler-rtl pass-engine-rtl controller-rtl dangerous-audit-rtl rtl synthesis evidence clean chapter4-evidence-pack
 
 help:
+	@echo "  ch3-lag-sweep - evaluate sensitivity to estimate lag and session-limited updates"
 	@echo "  interleaving-gd-case - compute g(D), rho_D, and residual-budget feasibility"
 	@echo "  vivado-ooc-impl - run Vivado OOC implementation/timing sweep"
 	@echo "  reproducibility-hygiene - check transient log tracking policy"
@@ -140,10 +141,10 @@ tau-min-certificate:
 chapter4-evidence-pack:
 	python3 scripts/build_chapter4_evidence_pack.py
 
-chapter4-evidence-pack-full: overhead-gain-certificate ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl integrated-diagnostic-rtl interleaving-gd-case rho-d-sweep mc-accumulation measured-error-estimator-rtl measured-error-controller-rtl measured-policy-model measured-policy-seed-sweep tau-min-certificate
+chapter4-evidence-pack-full: ch3-lag-sweep overhead-gain-certificate ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl integrated-diagnostic-rtl interleaving-gd-case rho-d-sweep mc-accumulation measured-error-estimator-rtl measured-error-controller-rtl measured-policy-model measured-policy-seed-sweep tau-min-certificate
 	python3 scripts/build_chapter4_evidence_pack.py
 
-reproduce-chapter4: test tau-min-certificate import-ch3-upsets period-table ch3-five-year-schedule select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl integrated-diagnostic-rtl interleaving-gd-case rho-d-sweep mc-accumulation measured-error-estimator-rtl measured-error-controller-rtl measured-policy-model measured-policy-seed-sweep synthesis overhead-gain-certificate chapter4-evidence-pack-full
+reproduce-chapter4: test tau-min-certificate import-ch3-upsets period-table ch3-five-year-schedule ch3-lag-sweep select-ch3-windows ch3-window-replay-rtl ch3-model-rtl-certificate ch3-fault-replay-rtl interleaving-mbu-rtl diagnostic-supervisor-rtl integrated-diagnostic-rtl interleaving-gd-case rho-d-sweep mc-accumulation measured-error-estimator-rtl measured-error-controller-rtl measured-policy-model measured-policy-seed-sweep synthesis overhead-gain-certificate chapter4-evidence-pack-full
 	@echo "Chapter 4 reproduction complete."
 
 
@@ -161,3 +162,7 @@ vivado-ooc-impl:
 
 interleaving-gd-case: ch3-five-year-schedule rho-d-sweep
 	python3 scripts/run_interleaving_gd_case.py
+
+
+ch3-lag-sweep: ch3-five-year-schedule
+	python3 scripts/run_ch3_lag_sweep.py
