@@ -32,6 +32,12 @@ ARTIFACTS = [
         "claim": "The fixed/current/delayed schedules are compiled on the dissertation geometry and target probability.",
     },
     {
+        "key": "c_transfer_check",
+        "title": "Chapter 3 C-transfer train/test certificate",
+        "path": "results/schedules/ch3_c_transfer_check_certificate.md",
+        "claim": "The adaptive C coefficient is checked for transferability between calm and active disjoint windows of the five-year series.",
+    },
+    {
         "key": "model_rtl_replay",
         "title": "Model-to-RTL schedule replay certificate",
         "path": "results/chapter4_model_rtl_certificate.md",
@@ -326,6 +332,26 @@ def compact_key_numbers() -> list[str]:
     if mc_rows:
         all_pass = all(row["pass_z_4sigma"] == "true" for row in mc_rows)
         lines.append(f"- Monte Carlo accumulated-risk validation 4-sigma pass: `{str(all_pass).lower()}`.")
+
+    c_transfer = read_csv_rows("results/schedules/ch3_c_transfer_check_summary.csv")
+    if c_transfer:
+        delayed_rows = [row for row in c_transfer if row["strategy"] == "delayed_1h"]
+        calm_to_active = next((row for row in delayed_rows if row["direction"] == "early_to_late"), None)
+        active_to_calm = next((row for row in delayed_rows if row["direction"] == "late_to_early"), None)
+
+        if calm_to_active is not None:
+            lines.append(
+                f"- C-transfer delayed_1h early-to-late test: verdict `{calm_to_active['verdict']}`, "
+                f"test risk utilization `{calm_to_active['test_risk_utilization']}`, "
+                f"C_train/C_required_test `{calm_to_active['c_train_over_c_required_on_test']}`."
+            )
+
+        if active_to_calm is not None:
+            lines.append(
+                f"- C-transfer delayed_1h late-to-early test: verdict `{active_to_calm['verdict']}`, "
+                f"test risk utilization `{active_to_calm['test_risk_utilization']}`, "
+                f"C_train/C_required_test `{active_to_calm['c_train_over_c_required_on_test']}`."
+            )
 
     measured_policy = read_csv_rows("results/schedules/measured_policy_model_summary.csv")
     if measured_policy:

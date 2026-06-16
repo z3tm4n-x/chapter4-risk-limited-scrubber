@@ -16,6 +16,7 @@ It is an evidence pack, not dissertation prose.
 |---|---|
 | The five-year upset series is imported and transformed into the total upset-rate series used by Chapter 3. | `results/schedules/ch3_series_import_summary.csv` |
 | The fixed/current/delayed schedules are compiled on the dissertation geometry and target probability. | `results/schedules/ch3_five_year_summary.md` |
+| The adaptive C coefficient is checked for transferability between calm and active disjoint windows of the five-year series. | `results/schedules/ch3_c_transfer_check_certificate.md` |
 | The RTL controller executes model-generated period indices with zero pass-count mismatch on representative windows. | `results/chapter4_model_rtl_certificate.md` |
 | The selected radiation windows are replayed with fault streams and separated DUE/persistent/SDC-audit metrics. | `results/rtl_replay/ch3_fault_replay_summary.md` |
 | The same physical MBU is dangerous without interleaving and correctable when split across codewords. | `results/rtl_replay/interleaving_mbu_summary.md` |
@@ -59,6 +60,8 @@ It is an evidence pack, not dissertation prose.
 - Vivado OOC measured-error controller: `133.333333` MHz, WNS `0.533` ns, `604` LUT, `957` FF.
 - Vivado OOC tau-min check: pass time `0.01935836` s, margin `51.6572684876` under the configured memory service-rate model.
 - Monte Carlo accumulated-risk validation 4-sigma pass: `true`.
+- C-transfer delayed_1h early-to-late test: verdict `pass`, test risk utilization `0.800976032248`, C_train/C_required_test `0.696094448818`.
+- C-transfer delayed_1h late-to-early test: verdict `fail`, test risk utilization `1.48354365458`, C_train/C_required_test `1.43658666105`.
 - Best sampled target-meeting measured policy: `measured_q16_high1_max3600`; pass count `6451890`, fixed/policy gain `4.89054835095`.
 - Fastest sampled measured policy fails target: `measured_q4_high1_max120`; risk utilization `1.63030252406`.
 - Best robust measured policy over seed sweep: `measured_q16_high1_max3600`; mean pass count `6456500.96667`, max risk utilization `0.68429515097`.
@@ -155,6 +158,56 @@ main Chapter 3 configuration.
 | current | 0.0100502692452 | 0.00999993405782 | 2547210 | 12.3873885545 | 1..120 | 1 |
 | delayed_1h | 0.0100502366413 | 0.00999990177991 | 2649330 | 11.9099092978 | 1..120 | 1.04935369403 |
 | forecast | 0.0100503025378 | 0.00999996701742 | 2602620 | 12.1236600041 | 1..120 | 1.02772015543 |
+
+## Chapter 3 C-transfer train/test certificate
+
+Source artifact: `results/schedules/ch3_c_transfer_check_certificate.md`.
+
+# Chapter 3 C-transfer train/test certificate
+
+## Purpose
+
+This certificate checks whether the adaptive-schedule coefficient `C`,
+calibrated on one disjoint part of the five-year series, remains safe on
+another part without reoptimization.
+
+The check is not a proof of a future mission. It is a transferability
+test on held-out portions of the reconstructed Chapter 3 series.
+
+## Rules
+
+- Budget rule: Train and test windows are compared to proportional shares of the full five-year additive risk budget. This is a transferability criterion based on uniform budget consumption, not a claim that the optimal schedule must spend risk uniformly in time.
+- Edge rule: For unavailable history at the beginning of each train/test window, clamp the source index to 0, identical to delayed_1h.
+
+## Results
+
+| Direction | Strategy | Train | Test | Test risk util. | Test passes | Gain vs 5 s | C_train/C_required_test | Verdict |
+|---|---|---|---|---:|---:|---:|---:|---:|
+| early_to_late | current | early_2021_2023 | late_2024_2025 | 0.723146675373 | 863160 | 14.6342277214 | 0.630260835518 | pass |
+| early_to_late | delayed_1h | early_2021_2023 | late_2024_2025 | 0.800976032248 | 867090 | 14.567899526 | 0.696094448818 | pass |
+| early_to_late | forecast | early_2021_2023 | late_2024_2025 | 0.746919901511 | 873630 | 14.4588441331 | 0.637809979526 | pass |
+| late_to_early | current | late_2024_2025 | early_2021_2023 | 1.60065793737 | 1250286 | 15.1338173826 | 1.58664467732 | fail |
+| late_to_early | delayed_1h | late_2024_2025 | early_2021_2023 | 1.48354365458 | 1370262 | 13.8087460646 | 1.43658666105 | fail |
+| late_to_early | forecast | late_2024_2025 | early_2021_2023 | 1.58630984183 | 1271688 | 14.8791212939 | 1.56786508851 | fail |
+
+## Interpretation
+
+- The transfer check shows that the early 2021--2023 window is more
+  restrictive for adaptive-C calibration under the proportional-budget
+  criterion, although the later 2024--2025 window contains the largest
+  individual event peaks.
+- This is consistent with the fact that the early window has a higher mean
+  upset rate, while the late window has much higher variability. The late
+  window is difficult for fixed-period operation, but its high variability
+  is precisely where adaptive scheduling gains leverage.
+- A value `C_train/C_required_test < 1` means that the train-calibrated
+  coefficient is more conservative than required on the test window.
+- A value `C_train/C_required_test > 1` means that the train-calibrated
+  coefficient is too permissive on the test window and must be reduced by
+  that factor or replaced by a qualification-scenario calibration.
+- Therefore `C` must be selected over a qualification envelope of
+  representative scenarios using the most restrictive exact-risk-calibrated
+  value, rather than by visual inspection of the largest event peak.
 
 ## Model-to-RTL schedule replay certificate
 

@@ -1,0 +1,40 @@
+{
+  "name": "ch3_c_transfer_check",
+  "description": "Train/test transfer check for the C coefficient used by exact-risk adaptive schedules.",
+  "base_config": "configs/ch3_main_1pct.json",
+  "series_path": "data/ch3_five_year_upsets.csv",
+  "target_mission_probability": 0.01,
+  "windows": {
+    "early_2021_2023": {
+      "start_year": 2021,
+      "end_year": 2023
+    },
+    "late_2024_2025": {
+      "start_year": 2024,
+      "end_year": 2025
+    }
+  },
+  "directions": [
+    {
+      "key": "early_to_late",
+      "train": "early_2021_2023",
+      "test": "late_2024_2025"
+    },
+    {
+      "key": "late_to_early",
+      "train": "late_2024_2025",
+      "test": "early_2021_2023"
+    }
+  ],
+  "strategies": [
+    "current",
+    "delayed_1h",
+    "forecast"
+  ],
+  "edge_rule": "For unavailable history at the beginning of each train/test window, clamp the source index to 0, identical to delayed_1h.",
+  "budget_rule": "Train and test windows are compared to proportional shares of the full five-year additive risk budget. This is a transferability criterion based on uniform budget consumption, not a claim that the optimal schedule must spend risk uniformly in time.",
+  "pre_registered_interpretation": {
+    "early_to_late": "Calibration on the early high-mean window is tested on the later high-variability window.",
+    "late_to_early": "Calibration on the later high-variability window is tested on the earlier high-mean window."
+  }
+}
