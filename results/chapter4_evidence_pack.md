@@ -16,7 +16,7 @@ It is an evidence pack, not dissertation prose.
 |---|---|
 | The five-year upset series is imported and transformed into the total upset-rate series used by Chapter 3. | `results/schedules/ch3_series_import_summary.csv` |
 | The fixed/current/delayed schedules are compiled on the dissertation geometry and target probability. | `results/schedules/ch3_five_year_summary.md` |
-| The adaptive C coefficient is checked for transferability between calm and active disjoint windows of the five-year series. | `results/schedules/ch3_c_transfer_check_certificate.md` |
+| The adaptive C coefficient is checked for transferability between early and late disjoint windows of the five-year series. | `results/schedules/ch3_c_transfer_check_certificate.md` |
 | The RTL controller executes model-generated period indices with zero pass-count mismatch on representative windows. | `results/chapter4_model_rtl_certificate.md` |
 | The selected radiation windows are replayed with fault streams and separated DUE/persistent/SDC-audit metrics. | `results/rtl_replay/ch3_fault_replay_summary.md` |
 | The same physical MBU is dangerous without interleaving and correctable when split across codewords. | `results/rtl_replay/interleaving_mbu_summary.md` |

@@ -35,7 +35,7 @@ ARTIFACTS = [
         "key": "c_transfer_check",
         "title": "Chapter 3 C-transfer train/test certificate",
         "path": "results/schedules/ch3_c_transfer_check_certificate.md",
-        "claim": "The adaptive C coefficient is checked for transferability between calm and active disjoint windows of the five-year series.",
+        "claim": "The adaptive C coefficient is checked for transferability between early and late disjoint windows of the five-year series.",
     },
     {
         "key": "model_rtl_replay",
