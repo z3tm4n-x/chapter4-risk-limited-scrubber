@@ -171,3 +171,6 @@ ch3-lag-sweep: ch3-five-year-schedule
 
 ch3-c-transfer-check: ch3-five-year-schedule
 	python3 scripts/run_ch3_c_transfer_check.py
+
+rate-burst-stress:
+	python3 scripts/run_measured_policy_rate_burst_stress.py

@@ -1,0 +1,196 @@
+{
+  "name": "ch4_rate_burst_stress",
+  "description": "Finite-correlation rate-burst stress test for the measured-error autonomous scrub policy.",
+  "base_config": "configs/ch3_main_1pct.json",
+  "series_path": "data/ch3_five_year_upsets.csv",
+  "schedule_summary_path": "results/schedules/ch3_five_year_summary.csv",
+  "measured_policy_seed_sweep_summary_path": "results/schedules/measured_policy_seed_sweep_summary.csv",
+  "purpose": [
+    "Check whether the autonomous measured-error policy remains admissible when the hourly Chapter 3 rate series is modulated by finite-duration sub-hourly rate bursts.",
+    "The model preserves the hourly mean rate from data/ch3_five_year_upsets.csv and changes only the temporal concentration of the rate within each hour.",
+    "This is the primary burst-stress model because finite-correlation rate bursts are period-sensitive: shorter scrub periods can resolve the burst, unlike the pass-level constant-VMR negative-binomial counterexample."
+  ],
+  "policies": [
+    {
+      "name": "measured_q16_high1_max3600",
+      "initial_index": 6,
+      "min_index": 0,
+      "max_index": 11,
+      "high_threshold": 1,
+      "quiet_threshold": 16,
+      "speedup_step": 1,
+      "relax_step": 1,
+      "role": "canonical measured-error autonomous fallback policy"
+    }
+  ],
+  "baselines": [
+    {
+      "name": "always_tau_min_1s",
+      "period_index": 0,
+      "role": "conservative lower-period reference within the accumulated-risk model"
+    }
+  ],
+  "rate_burst_model": {
+    "type": "piecewise_gamma_rate_multiplier",
+    "count_model": "poisson_conditional_on_rate_path",
+    "hourly_mean_preservation": "normalize multipliers inside each hour so the time average of g(t) over the hour is exactly 1",
+    "lambda_model": "lambda(t) = nu_hour * g(t)",
+    "burst_duration_seconds": [
+      300,
+      600,
+      900,
+      1800
+    ],
+    "rate_cv2": [
+      0.0,
+      0.5,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.85,
+      0.9,
+      0.95,
+      1.0,
+      2.0,
+      4.0,
+      8.0
+    ],
+    "notes": [
+      "rate_cv2=0 is the Poisson sanity case and is independent of burst_duration_seconds.",
+      "burst_duration_seconds controls the finite correlation time of the rate multiplier.",
+      "This model stresses temporally resolved accumulated single-error arrivals, not instantaneous MBU/MCU mapping."
+    ],
+    "explicit_scenarios": [
+      {
+        "scenario": "poisson_sanity",
+        "burst_duration_seconds": 0,
+        "rate_cv2": 0.0
+      },
+      {
+        "burst_duration_seconds": 300,
+        "rate_cv2": 0.5
+      },
+      {
+        "burst_duration_seconds": 300,
+        "rate_cv2": 0.6
+      },
+      {
+        "burst_duration_seconds": 300,
+        "rate_cv2": 0.65
+      },
+      {
+        "burst_duration_seconds": 300,
+        "rate_cv2": 0.7
+      },
+      {
+        "burst_duration_seconds": 300,
+        "rate_cv2": 0.75
+      },
+      {
+        "burst_duration_seconds": 600,
+        "rate_cv2": 0.5
+      },
+      {
+        "burst_duration_seconds": 600,
+        "rate_cv2": 0.6
+      },
+      {
+        "burst_duration_seconds": 600,
+        "rate_cv2": 0.65
+      },
+      {
+        "burst_duration_seconds": 600,
+        "rate_cv2": 0.7
+      },
+      {
+        "burst_duration_seconds": 600,
+        "rate_cv2": 0.75
+      },
+      {
+        "burst_duration_seconds": 900,
+        "rate_cv2": 0.75
+      },
+      {
+        "burst_duration_seconds": 900,
+        "rate_cv2": 0.85
+      },
+      {
+        "burst_duration_seconds": 900,
+        "rate_cv2": 0.9
+      },
+      {
+        "burst_duration_seconds": 900,
+        "rate_cv2": 0.95
+      },
+      {
+        "burst_duration_seconds": 900,
+        "rate_cv2": 1.0
+      },
+      {
+        "burst_duration_seconds": 1800,
+        "rate_cv2": 1.0
+      },
+      {
+        "burst_duration_seconds": 1800,
+        "rate_cv2": 2.0
+      },
+      {
+        "burst_duration_seconds": 1800,
+        "rate_cv2": 4.0
+      },
+      {
+        "burst_duration_seconds": 1800,
+        "rate_cv2": 8.0
+      }
+    ]
+  },
+  "simulation": {
+    "pilot_seed_count": 5,
+    "final_seed_count": 30,
+    "seed_count": 30,
+    "master_seed": 20260621,
+    "risk_convention": "pathwise additive risk E_path = sum_i -log(1 - p_acc_given_k(K_i)); P_path = 1 - exp(-E_path)",
+    "history_edge_rule": "At the beginning of the mission the policy starts from initial_index; no unavailable prior history is required.",
+    "observability_assumption": "The policy observes the realized corrected-error count K_i for the completed pass. This is the same idealized observation convention as the existing measured-policy simulations."
+  },
+  "admissibility_rule": {
+    "sampled_admissible": "target_met_fraction >= 0.99 and risk_utilization_p99 <= 1.0",
+    "stronger_reported_flag": "sampled_all_pass = max_risk_utilization <= 1.0",
+    "target_probability": 0.01,
+    "target_e_source": "base_config target_mission_probability"
+  },
+  "pre_registered_prediction": [
+    "The rate_cv2=0 sanity case should reproduce the existing Poisson measured-policy seed-sweep within Monte Carlo tolerance.",
+    "The final focused grid is selected from the pilot run before increasing seed_count from 5 to 30.",
+    "The admissible boundary is expected between rate_cv2=0.5 and 0.75 for 300 s and 600 s bursts, between 0.75 and 1.0 for 900 s bursts, and above 1.0 for 1800 s bursts.",
+    "The boundary is expected to move to lower admissible rate_cv2 as burst_duration_seconds decreases.",
+    "The always_tau_min_1s baseline is expected to remain sampled-admissible on the tested finite-correlation grid, but no claim is made for arbitrary unbounded burstiness.",
+    "Failures are interpreted as the boundary between temporally resolvable accumulated single-error control and unresolved burst/instantaneous mechanisms."
+  ],
+  "reported_metrics": [
+    "target_met_fraction",
+    "sampled_all_pass",
+    "risk_utilization_mean",
+    "risk_utilization_p95",
+    "risk_utilization_p99",
+    "risk_utilization_max",
+    "p_mission_mean",
+    "p_mission_p95",
+    "p_mission_p99",
+    "pass_count_mean",
+    "pass_count_p95",
+    "pass_count_max",
+    "fixed_over_policy_gain_mean",
+    "observed_corrections_mean",
+    "observed_corrections_p99",
+    "high_activity_events_mean",
+    "relax_events_mean"
+  ],
+  "out_paths": {
+    "summary_csv": "results/monte_carlo/rate_burst_stress_summary.csv",
+    "detail_csv": "results/monte_carlo/rate_burst_stress_detail.csv",
+    "report_md": "results/monte_carlo/rate_burst_stress_report.md",
+    "certificate_json": "results/monte_carlo/rate_burst_stress_certificate.json"
+  }
+}
