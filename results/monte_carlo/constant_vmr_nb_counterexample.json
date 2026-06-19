@@ -1,0 +1,233 @@
+{
+  "generated_by": "run_constant_vmr_nb_counterexample.py",
+  "interpretation": "Pass-level constant-VMR negative-binomial overdispersion adds a schedule-independent accumulated-risk penalty. It is therefore reported as a counterexample/model diagnostic, not used as the primary scrub-period robustness stress model.",
+  "geometry": {
+    "word_bits": 39,
+    "codeword_count": 1935832,
+    "physical_bits": 75497448,
+    "alpha": 2.516641390536027e-07
+  },
+  "target": {
+    "target_p": 0.01,
+    "target_e": 0.010050335853501442
+  },
+  "series": {
+    "hour_count": 43824,
+    "sum_nu_hours": 309956.95391371317
+  },
+  "nb_penalty": {
+    "delta_e_per_phi_minus_1": 0.07800504995037183,
+    "delta_utilization_per_phi_minus_1": 7.761437138759458
+  },
+  "thresholds": [
+    {
+      "scenario": "external_current_adaptive",
+      "baseline_utilization": "0.999993372534",
+      "phi_at_budget": "1.0000008539",
+      "description": "Current exact-risk external adaptive schedule; already near full budget."
+    },
+    {
+      "scenario": "measured_q16_high1_max3600_seed_mean",
+      "baseline_utilization": "0.681094456074",
+      "phi_at_budget": "1.04108846573",
+      "description": "Canonical measured-error fallback policy, seed-sweep mean."
+    },
+    {
+      "scenario": "always_tau_min_1s",
+      "baseline_utilization": "0.110444748612",
+      "phi_at_budget": "1.1146121827",
+      "description": "Always run at tau_min=1 s; analytic conservative floor within the Poisson model."
+    }
+  ],
+  "rows": [
+    {
+      "scenario": "external_current_adaptive",
+      "phi": "1",
+      "baseline_utilization": "0.999993372534",
+      "nb_penalty_e": "0",
+      "nb_penalty_utilization": "0",
+      "total_utilization_rare_regime": "0.999993372534",
+      "verdict": "pass"
+    },
+    {
+      "scenario": "external_current_adaptive",
+      "phi": "1.04",
+      "baseline_utilization": "0.999993372534",
+      "nb_penalty_e": "0.00312020199801",
+      "nb_penalty_utilization": "0.31045748555",
+      "total_utilization_rare_regime": "1.31045085808",
+      "verdict": "fail"
+    },
+    {
+      "scenario": "external_current_adaptive",
+      "phi": "1.13",
+      "baseline_utilization": "0.999993372534",
+      "nb_penalty_e": "0.0101406564935",
+      "nb_penalty_utilization": "1.00898682804",
+      "total_utilization_rare_regime": "2.00898020057",
+      "verdict": "fail"
+    },
+    {
+      "scenario": "external_current_adaptive",
+      "phi": "2",
+      "baseline_utilization": "0.999993372534",
+      "nb_penalty_e": "0.0780050499504",
+      "nb_penalty_utilization": "7.76143713876",
+      "total_utilization_rare_regime": "8.76143051129",
+      "verdict": "fail"
+    },
+    {
+      "scenario": "external_current_adaptive",
+      "phi": "4",
+      "baseline_utilization": "0.999993372534",
+      "nb_penalty_e": "0.234015149851",
+      "nb_penalty_utilization": "23.2843114163",
+      "total_utilization_rare_regime": "24.2843047888",
+      "verdict": "fail"
+    },
+    {
+      "scenario": "external_current_adaptive",
+      "phi": "8",
+      "baseline_utilization": "0.999993372534",
+      "nb_penalty_e": "0.546035349653",
+      "nb_penalty_utilization": "54.3300599713",
+      "total_utilization_rare_regime": "55.3300533439",
+      "verdict": "fail"
+    },
+    {
+      "scenario": "external_current_adaptive",
+      "phi": "16",
+      "baseline_utilization": "0.999993372534",
+      "nb_penalty_e": "1.17007574926",
+      "nb_penalty_utilization": "116.421557081",
+      "total_utilization_rare_regime": "117.421550454",
+      "verdict": "fail"
+    },
+    {
+      "scenario": "measured_q16_high1_max3600_seed_mean",
+      "phi": "1",
+      "baseline_utilization": "0.681094456074",
+      "nb_penalty_e": "0",
+      "nb_penalty_utilization": "0",
+      "total_utilization_rare_regime": "0.681094456074",
+      "verdict": "pass"
+    },
+    {
+      "scenario": "measured_q16_high1_max3600_seed_mean",
+      "phi": "1.04",
+      "baseline_utilization": "0.681094456074",
+      "nb_penalty_e": "0.00312020199801",
+      "nb_penalty_utilization": "0.31045748555",
+      "total_utilization_rare_regime": "0.991551941624",
+      "verdict": "pass"
+    },
+    {
+      "scenario": "measured_q16_high1_max3600_seed_mean",
+      "phi": "1.13",
+      "baseline_utilization": "0.681094456074",
+      "nb_penalty_e": "0.0101406564935",
+      "nb_penalty_utilization": "1.00898682804",
+      "total_utilization_rare_regime": "1.69008128411",
+      "verdict": "fail"
+    },
+    {
+      "scenario": "measured_q16_high1_max3600_seed_mean",
+      "phi": "2",
+      "baseline_utilization": "0.681094456074",
+      "nb_penalty_e": "0.0780050499504",
+      "nb_penalty_utilization": "7.76143713876",
+      "total_utilization_rare_regime": "8.44253159483",
+      "verdict": "fail"
+    },
+    {
+      "scenario": "measured_q16_high1_max3600_seed_mean",
+      "phi": "4",
+      "baseline_utilization": "0.681094456074",
+      "nb_penalty_e": "0.234015149851",
+      "nb_penalty_utilization": "23.2843114163",
+      "total_utilization_rare_regime": "23.9654058724",
+      "verdict": "fail"
+    },
+    {
+      "scenario": "measured_q16_high1_max3600_seed_mean",
+      "phi": "8",
+      "baseline_utilization": "0.681094456074",
+      "nb_penalty_e": "0.546035349653",
+      "nb_penalty_utilization": "54.3300599713",
+      "total_utilization_rare_regime": "55.0111544274",
+      "verdict": "fail"
+    },
+    {
+      "scenario": "measured_q16_high1_max3600_seed_mean",
+      "phi": "16",
+      "baseline_utilization": "0.681094456074",
+      "nb_penalty_e": "1.17007574926",
+      "nb_penalty_utilization": "116.421557081",
+      "total_utilization_rare_regime": "117.102651537",
+      "verdict": "fail"
+    },
+    {
+      "scenario": "always_tau_min_1s",
+      "phi": "1",
+      "baseline_utilization": "0.110444748612",
+      "nb_penalty_e": "0",
+      "nb_penalty_utilization": "0",
+      "total_utilization_rare_regime": "0.110444748612",
+      "verdict": "pass"
+    },
+    {
+      "scenario": "always_tau_min_1s",
+      "phi": "1.04",
+      "baseline_utilization": "0.110444748612",
+      "nb_penalty_e": "0.00312020199801",
+      "nb_penalty_utilization": "0.31045748555",
+      "total_utilization_rare_regime": "0.420902234162",
+      "verdict": "pass"
+    },
+    {
+      "scenario": "always_tau_min_1s",
+      "phi": "1.13",
+      "baseline_utilization": "0.110444748612",
+      "nb_penalty_e": "0.0101406564935",
+      "nb_penalty_utilization": "1.00898682804",
+      "total_utilization_rare_regime": "1.11943157665",
+      "verdict": "fail"
+    },
+    {
+      "scenario": "always_tau_min_1s",
+      "phi": "2",
+      "baseline_utilization": "0.110444748612",
+      "nb_penalty_e": "0.0780050499504",
+      "nb_penalty_utilization": "7.76143713876",
+      "total_utilization_rare_regime": "7.87188188737",
+      "verdict": "fail"
+    },
+    {
+      "scenario": "always_tau_min_1s",
+      "phi": "4",
+      "baseline_utilization": "0.110444748612",
+      "nb_penalty_e": "0.234015149851",
+      "nb_penalty_utilization": "23.2843114163",
+      "total_utilization_rare_regime": "23.3947561649",
+      "verdict": "fail"
+    },
+    {
+      "scenario": "always_tau_min_1s",
+      "phi": "8",
+      "baseline_utilization": "0.110444748612",
+      "nb_penalty_e": "0.546035349653",
+      "nb_penalty_utilization": "54.3300599713",
+      "total_utilization_rare_regime": "54.4405047199",
+      "verdict": "fail"
+    },
+    {
+      "scenario": "always_tau_min_1s",
+      "phi": "16",
+      "baseline_utilization": "0.110444748612",
+      "nb_penalty_e": "1.17007574926",
+      "nb_penalty_utilization": "116.421557081",
+      "total_utilization_rare_regime": "116.53200183",
+      "verdict": "fail"
+    }
+  ]
+}
